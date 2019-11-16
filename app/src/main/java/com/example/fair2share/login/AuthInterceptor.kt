@@ -6,9 +6,9 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 class AuthInterceptor: Interceptor {
-    companion object {
-        fun newInstance() = AuthInterceptor()
-    }
+//    companion object {
+//        fun newInstance() = AuthInterceptor()
+//    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
