@@ -8,17 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.fair2share.R
 import com.example.fair2share.data_models.LoginProperty
 import com.example.fair2share.databinding.FragmentLoginBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 class LoginFragment : Fragment() {
 
-//    companion object {
-//        fun newInstance() = LoginFragment()
-//    }
-
+    private var _viewModelJob = Job()
+    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
 
     private lateinit var viewModel: LoginViewModel
     private lateinit var binding: FragmentLoginBinding
@@ -31,9 +35,17 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        binding.btnLogin.setOnClickListener({event ->
-            viewModel.login(binding.txtLoginEmail.text.toString(), binding.txtLoginPassword.text.toString())
-        })
+        binding.btnLogin.setOnClickListener{view: View ->
+            _coroutineScope.launch {
+                try {
+                    viewModel.login(binding.txtLoginEmail.text.toString(), binding.txtLoginPassword.text.toString())
+                    view.findNavController().navigate(R.id.action_loginFragment_to_fragmentProfile)
+                } catch (t : Throwable){
+                    //show error on screen
+                    Log.e("LoginFragment", t.message)
+                }
+            }
+        }
     }
 
 }

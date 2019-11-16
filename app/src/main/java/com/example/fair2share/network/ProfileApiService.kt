@@ -1,16 +1,15 @@
 package com.example.fair2share.network
 
 import com.example.fair2share.BuildConfig
-import com.example.fair2share.data_models.LoginProperty
 import com.example.fair2share.login.AuthInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -24,22 +23,22 @@ private val moshi = Moshi.Builder()
 
 private val retrofitJsonMap =
     Retrofit.Builder()
-    .client(httpClient)
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .addCallAdapterFactory(CoroutineCallAdapterFactory())
-    .baseUrl(BuildConfig.BASE_URL)
-    .build()
+        .client(httpClient)
+        //.addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .baseUrl(BuildConfig.BASE_URL)
+        .build()
 
 
-interface AccountApiService {
-    @POST("Account")
-    fun login(@Body loginProperty: LoginProperty):
+interface ProfileApiService {
+    @GET("Profile")
+    fun profile():
             Deferred<String>
 }
 
-object AccountApi {
-    val retrofitService : AccountApiService by lazy {
-        retrofitJsonMap.create(AccountApiService::class.java)
+object ProfileApi {
+    val retrofitService : ProfileApiService by lazy {
+        retrofitJsonMap.create(ProfileApiService::class.java)
     }
-    var token : String = ""
 }
