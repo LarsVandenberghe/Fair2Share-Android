@@ -1,6 +1,7 @@
 package com.example.fair2share.network
 
 import com.example.fair2share.BuildConfig
+import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.login.AuthInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
@@ -24,8 +25,8 @@ private val moshi = Moshi.Builder()
 private val retrofitJsonMap =
     Retrofit.Builder()
         .client(httpClient)
-        //.addConverterFactory(MoshiConverterFactory.create(moshi))
-        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        //.addConverterFactory(ScalarsConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .baseUrl(BuildConfig.BASE_URL)
         .build()
@@ -34,7 +35,7 @@ private val retrofitJsonMap =
 interface ProfileApiService {
     @GET("Profile")
     fun profile():
-            Deferred<String>
+            Deferred<ProfileProperty>
 }
 
 object ProfileApi {

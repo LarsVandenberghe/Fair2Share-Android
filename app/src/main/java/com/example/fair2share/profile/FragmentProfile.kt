@@ -6,28 +6,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.example.fair2share.R
+import com.example.fair2share.databinding.FragmentProfileFragmentBinding
 
 
 class FragmentProfile : Fragment() {
 
-//    companion object {
-//        fun newInstance() = FragmentProfile()
-//    }
-
     private lateinit var viewModel: FragmentProfileViewModel
+    private lateinit var binding: FragmentProfileFragmentBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_profile_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile_fragment, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(FragmentProfileViewModel::class.java)
-        viewModel.profile()
+        //binding.profileViewModel = viewModel.profile
+        viewModel.profile.observe(this, Observer{ data ->
+            binding.profile = data
+        })
     }
 
 }
