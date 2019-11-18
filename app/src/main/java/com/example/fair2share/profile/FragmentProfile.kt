@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.databinding.FragmentProfileBinding
 
@@ -34,6 +35,8 @@ class FragmentProfile : Fragment() {
                 adapter.data = it
             }
         })
+
+        (activity as MainActivity).bindProfileToNavHeader(viewModel)
 
     }
 }

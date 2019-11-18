@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fair2share.BuildConfig
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.network.ProfileApi
 import kotlinx.coroutines.CoroutineScope
@@ -27,5 +28,9 @@ class FragmentProfileViewModel : ViewModel() {
         _coroutineScope.launch {
             _profile.value = ProfileApi.retrofitService.profile().await()
         }
+    }
+
+    fun getProfilePicUrl(profile : ProfileProperty): String{
+        return String.format("%s/api/Profile/image/%s", BuildConfig.BASE_URL, profile.profileId)
     }
 }
