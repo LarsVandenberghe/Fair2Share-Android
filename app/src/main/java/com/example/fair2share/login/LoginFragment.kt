@@ -2,6 +2,7 @@ package com.example.fair2share.login
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.data_models.LoginProperty
 import com.example.fair2share.databinding.FragmentLoginBinding
@@ -44,7 +46,7 @@ class LoginFragment : Fragment() {
             _coroutineScope.launch {
                 try {
                     viewModel.login(binding.txtLoginEmail.text.toString(), binding.txtLoginPassword.text.toString())
-                    view.findNavController().navigate(R.id.action_loginFragment_to_fragmentProfile)
+                    startActivity(Intent(context, MainActivity::class.java))
                 } catch (t : Throwable){
                     //show error on screen
                     Log.e("LoginFragment", t.message)

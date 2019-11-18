@@ -3,20 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/fragmentProfile">
 
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.fair2share.login.LoginFragment"
-        android:label="login_fragment"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_fragmentProfile"
-            app:destination="@id/fragmentProfile" />
-    </fragment>
     <fragment
         android:id="@+id/fragmentProfile"
         android:name="com.example.fair2share.profile.FragmentProfile"
         android:label="fragment_profile_fragment"
-        tools:layout="@layout/fragment_profile_fragment" />
+        tools:layout="@layout/fragment_profile" />
 </navigation>

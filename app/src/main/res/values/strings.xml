@@ -3,5 +3,7 @@
     <string name="login_email_placeholder">email</string>
     <string name="btn_login">Login</string>
     <string name="login_lbl1">Email</string>
-    <string name="login_lbl2" >Password</string>
+    <string name="login_lbl2">Password</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>
