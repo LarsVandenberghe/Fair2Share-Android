@@ -38,5 +38,6 @@ class FragmentProfile : Fragment() {
 
         (activity as MainActivity).bindProfileToNavHeader(viewModel)
 
+
     }
 }

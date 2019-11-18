@@ -31,6 +31,6 @@ class FragmentProfileViewModel : ViewModel() {
     }
 
     fun getProfilePicUrl(profile : ProfileProperty): String{
-        return String.format("%s/api/Profile/image/%s", BuildConfig.BASE_URL, profile.profileId)
+        return String.format("%sProfile/image/%s", BuildConfig.BASE_URL, profile.profileId)
     }
 }
