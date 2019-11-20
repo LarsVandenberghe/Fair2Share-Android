@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.fair2share.MainActivity
@@ -28,9 +29,6 @@ import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
-    private var _viewModelJob = Job()
-    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
-
     private lateinit var viewModel: LoginViewModel
     private lateinit var binding: FragmentLoginBinding
 
@@ -42,18 +40,21 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+
+
         binding.btnLogin.setOnClickListener{view: View ->
-            _coroutineScope.launch {
-                try {
-                    viewModel.login(binding.txtLoginEmail.text.toString(), binding.txtLoginPassword.text.toString())
-                    startActivity(Intent(context, MainActivity::class.java))
-                } catch (t : Throwable){
-                    //show error on screen
-                    Log.e("LoginFragment", t.message)
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                }
-            }
+            viewModel.login(binding.txtLoginEmail.text.toString(), binding.txtLoginPassword.text.toString())
         }
+
+        viewModel.loggedIn.observe(this, Observer { bool ->
+            if (bool){
+                startActivity(Intent(context, MainActivity::class.java))
+            }
+        })
+
+        viewModel.errorMessage.observe(this, Observer { message  ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        })
 
         binding.loginPane.setOnClickListener{ view: View ->
                 val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
