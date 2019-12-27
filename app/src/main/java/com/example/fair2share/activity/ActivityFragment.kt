@@ -16,6 +16,8 @@ class ActivityFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModelFactory = ActivityFragmentViewModelFactory(arguments!!.getLong("activityId")!!)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActivityFragmentViewModel::class.java)
+
+
     }
 
     override fun onCreateView(

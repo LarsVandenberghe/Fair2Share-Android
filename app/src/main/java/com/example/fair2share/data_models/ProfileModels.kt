@@ -16,6 +16,16 @@ data class ActivityProperty (
     val name: String,
     val description: String?,
     val currencyType: Int,
-    val participants: List<ProfileProperty>?
-    //val transactions: Int?,
+    val participants: List<ProfileProperty>?,
+    val transactions: List<TransactionProperty>?
+)
+
+data class TransactionProperty(
+    val transactionId: Long,
+    val name: String,
+    val description: String?,
+    val timeStamp: String,
+    val payment: Double,
+    val profilesInTransaction: List<ProfileProperty>,
+    val paidBy: ProfileProperty
 )
