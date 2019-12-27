@@ -1,7 +1,11 @@
 package com.example.fair2share
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -15,6 +19,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.fair2share.databinding.ActivityMainBinding
 import com.example.fair2share.databinding.NavHeaderBinding
 import com.example.fair2share.profile.FragmentProfileViewModel
+import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -37,6 +43,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
         NavigationUI.setupWithNavController(binding.navView, navController)
+        (drawerLayout.navView as NavigationView).setNavigationItemSelectedListener {
+            if (  it.itemId == R.id.logoutActivity ){
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+            return@setNavigationItemSelectedListener false
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
