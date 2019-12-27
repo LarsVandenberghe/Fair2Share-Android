@@ -20,16 +20,8 @@ class FragmentProfile : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var adapter: ActivityBindingAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-        adapter = ActivityBindingAdapter()
-        binding.activityList.adapter = adapter
-        (activity as AppCompatActivity).supportActionBar?.title = "Profile"
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(FragmentProfileViewModel::class.java)
         viewModel.profile.observe(this, Observer{ data ->
 
@@ -38,9 +30,15 @@ class FragmentProfile : Fragment() {
                 adapter.data = it
             }
         })
-
         (activity as MainActivity).bindProfileToNavHeader(viewModel)
+    }
 
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+        adapter = ActivityBindingAdapter()
+        binding.activityList.adapter = adapter
+        viewModel.update()
+        (activity as AppCompatActivity).supportActionBar?.title = "Profile"
+        return binding.root
     }
 }

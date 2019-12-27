@@ -29,7 +29,7 @@ class ActivityFragmentViewModel(val activity : ActivityProperty):ViewModel() {
     val summary: LiveData<List<Pair<ProfileProperty, Double>>>
         get() = _summary
 
-    init {
+    fun update(){
         coroutineScope.launch {
             _transactions.value = ActivityApi.retrofitService.getActivityTransactions(activity.activityId).await()
             _participants.value = ActivityApi.retrofitService.getActivityParticipants(activity.activityId).await().participants

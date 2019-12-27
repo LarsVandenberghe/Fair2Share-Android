@@ -23,11 +23,8 @@ class FragmentProfileViewModel : ViewModel() {
     val profile: LiveData<ProfileProperty>
         get() = _profile
 
-    init {
-        loadProfile()
-    }
 
-    private fun loadProfile(){
+    fun update(){
         _coroutineScope.launch {
             _profile.value = ProfileApi.retrofitService.profile().await()
         }

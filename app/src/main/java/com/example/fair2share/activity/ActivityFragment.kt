@@ -41,6 +41,7 @@ class ActivityFragment : Fragment() {
         viewModel.summary.observe(this, Observer { summaryItem ->
             summaryAdapter.data = summaryItem
         })
+        viewModel.update()
 
         (activity as AppCompatActivity).supportActionBar?.title = viewModel.activity.name
         return binding.root
