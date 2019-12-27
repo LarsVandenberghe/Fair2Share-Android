@@ -3,12 +3,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity.ActivityFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:background="#2196F3"
+            android:padding="15dp"
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/fragment_activity_summary_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/summary_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="25dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:background="#2196F3"
+            android:padding="15dp"
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/fragment_activity_transactions_title" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/transaction_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-    </FrameLayout>
+    </LinearLayout>
 </layout>

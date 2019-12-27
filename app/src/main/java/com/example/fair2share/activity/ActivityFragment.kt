@@ -21,8 +21,6 @@ class ActivityFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModelFactory = ActivityFragmentViewModelFactory(arguments?.getParcelable<ActivityProperty>("activity")!!)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActivityFragmentViewModel::class.java)
-        (activity as AppCompatActivity).supportActionBar?.title = viewModel.activity.name
-
     }
 
     override fun onCreateView(
@@ -30,11 +28,21 @@ class ActivityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentActivityBinding>(inflater, R.layout.fragment_activity, container, false)
-        val adapter = TransactionBindingAdapter(viewModel.activity.currencyType)
-        binding.transactionList.adapter = adapter
+        val transactionAdapter = TransactionBindingAdapter(viewModel.activity.currencyType)
+        val summaryAdapter = SummaryBindingAdapter(viewModel.activity.currencyType)
+
+        binding.transactionList.adapter = transactionAdapter
+        binding.summaryList.adapter = summaryAdapter
+
         viewModel.transactions.observe(this, Observer { transactions ->
-            adapter.data = transactions.reversed()
+            transactionAdapter.data = transactions.reversed()
         })
+
+        viewModel.summary.observe(this, Observer { summaryItem ->
+            summaryAdapter.data = summaryItem
+        })
+
+        (activity as AppCompatActivity).supportActionBar?.title = viewModel.activity.name
         return binding.root
     }
 

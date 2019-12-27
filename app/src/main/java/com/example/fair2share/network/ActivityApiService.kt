@@ -2,6 +2,7 @@ package com.example.fair2share.network
 
 import com.example.fair2share.BuildConfig
 import com.example.fair2share.data_models.ActivityProperty
+import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.data_models.TransactionProperty
 import com.example.fair2share.login.AuthInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -33,13 +34,21 @@ private val retrofitJsonMap =
 
 
 interface ActvityApiService {
-    @GET("Activity/{id}")
-    fun getActivity(@Path("id") id : Long):
-            Deferred<ActivityProperty>
+//    @GET("Activity/{id}")
+//    fun getActivity(@Path("id") id : Long):
+//            Deferred<ActivityProperty>
 
     @GET("Activity/{id}/transactions")
     fun getActivityTransactions(@Path("id") id : Long):
             Deferred<List<TransactionProperty>>
+
+    @GET("Activity/{id}/summary")
+    fun getActivitySummary(@Path("id") id : Long):
+            Deferred<Map<String, Double>>
+
+    @GET("Activity/{id}/participants")
+    fun getActivityParticipants(@Path("id") id : Long):
+            Deferred<ActivityProperty>
 }
 
 object ActivityApi {

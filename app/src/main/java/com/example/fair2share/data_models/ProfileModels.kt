@@ -62,3 +62,8 @@ data class TransactionProperty(
     val profilesInTransaction: List<ProfileProperty>,
     val paidBy: ProfileProperty
 )
+
+data class KeyValueProperty(
+    val key: Long,
+    val value: Any
+)
