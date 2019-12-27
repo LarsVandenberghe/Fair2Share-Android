@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.databinding.FragmentProfileBinding
+
 
 class FragmentProfile : Fragment() {
 
@@ -22,6 +24,7 @@ class FragmentProfile : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         adapter = ActivityBindingAdapter()
         binding.activityList.adapter = adapter
+        (activity as AppCompatActivity).supportActionBar?.title = "Profile"
         return binding.root
     }
 

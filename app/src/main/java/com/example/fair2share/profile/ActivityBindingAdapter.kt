@@ -33,7 +33,7 @@ class ActivityBindingAdapter : RecyclerView.Adapter<RowItemViewHolder>() {
         val item = data[position]
 
         val bundle = Bundle()
-        bundle.putLong("activityId", item.activityId)
+        bundle.putParcelable("activity", item)
         holder.rowView.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_fragmentProfile_to_activityFragment, bundle))
         (holder.rowView.getChildAt(0) as TextView).text = String.format("%s", item.name)
     }

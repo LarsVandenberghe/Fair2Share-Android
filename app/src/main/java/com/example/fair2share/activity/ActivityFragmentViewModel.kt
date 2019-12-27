@@ -11,17 +11,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ActivityFragmentViewModel(private val activityId : Long):ViewModel() {
+class ActivityFragmentViewModel(val activity : ActivityProperty):ViewModel() {
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-    private val _activity = MutableLiveData<ActivityProperty>()
-    val activity: LiveData<ActivityProperty>
-        get() = _activity
+//    private val _activity = MutableLiveData<ActivityProperty>()
+//    val activity: LiveData<ActivityProperty>
+//        get() = _activity
 
     init {
         coroutineScope.launch {
             //_activity.value = ActivityApi.retrofitService.getActivity(activityId).await()
-            Log.i("ActivityFragmentVM",  ActivityApi.retrofitService.getActivityTransactions(activityId).await().toString())
+            Log.i("ActivityFragmentVM",  ActivityApi.retrofitService.getActivityTransactions(activity.activityId).await().toString())
         }
     }
 }

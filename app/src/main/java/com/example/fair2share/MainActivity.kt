@@ -49,12 +49,12 @@ class MainActivity : AppCompatActivity() {
         vm.profile.observe(this, Observer { data ->
             bind.profile = data
 
-            Glide.with(bind.image.context)
+            Glide.with(bind.navProfileImg.context)
                 .load(vm.getProfilePicUrl(data))
                 .apply(
                     RequestOptions().placeholder(R.drawable.default_user)
                         .error(R.drawable.default_user)
-                ).into(bind.image)
+                ).into(bind.navProfileImg)
         })
     }
 }
