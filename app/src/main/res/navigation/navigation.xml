@@ -25,5 +25,9 @@
         android:id="@+id/createActivityFragment"
         android:name="com.example.fair2share.activity.CreateActivityFragment"
         android:label="fragment_create_activity"
-        tools:layout="@layout/fragment_create_activity" />
+        tools:layout="@layout/fragment_create_activity" >
+        <action
+            android:id="@+id/action_createActivityFragment_to_fragmentProfile"
+            app:destination="@id/fragmentProfile" />
+    </fragment>
 </navigation>

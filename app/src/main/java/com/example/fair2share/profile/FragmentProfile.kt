@@ -2,13 +2,13 @@ package com.example.fair2share.profile
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.databinding.FragmentProfileBinding
@@ -31,14 +31,41 @@ class FragmentProfile : Fragment() {
             }
         })
         (activity as MainActivity).bindProfileToNavHeader(viewModel)
+        viewModel.errorMessage.observe(this, Observer { errorMsg ->
+            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+        })
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-        adapter = ActivityBindingAdapter()
+        adapter = ActivityBindingAdapter(viewModel)
         binding.activityList.adapter = adapter
         viewModel.update()
-        (activity as AppCompatActivity).supportActionBar?.title = "Profile"
+        binding.button.setOnClickListener{
+            navigateToCreateActivity()
+        }
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.fragment_profile_title)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.profile_overflow_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.add_activity_btn -> {
+                navigateToCreateActivity()
+                return true
+            } else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun navigateToCreateActivity(){
+//        val bundle = Bundle()
+//        bundle.putLong("person", viewModel.profile.value!!.profileId)
+        findNavController().navigate(R.id.action_fragmentProfile_to_createActivityFragment)
     }
 }

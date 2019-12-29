@@ -3,7 +3,9 @@ package com.example.fair2share.profile
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +13,7 @@ import com.example.fair2share.R
 import com.example.fair2share.RowItemViewHolder
 import com.example.fair2share.data_models.ActivityProperty
 
-class ActivityBindingAdapter : RecyclerView.Adapter<RowItemViewHolder>() {
+class ActivityBindingAdapter(val viewModel: FragmentProfileViewModel) : RecyclerView.Adapter<RowItemViewHolder>() {
     var data =  listOf<ActivityProperty>()
         set(value) {
             field = value
@@ -35,6 +37,9 @@ class ActivityBindingAdapter : RecyclerView.Adapter<RowItemViewHolder>() {
         val bundle = Bundle()
         bundle.putParcelable("activity", item)
         holder.rowView.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_fragmentProfile_to_activityFragment, bundle))
-        (holder.rowView.getChildAt(0) as TextView).text = String.format("%s", item.name)
+        holder.rowView.findViewById<TextView>(R.id.recycler_profile_activity_lbl).text = String.format("%s", item.name)
+        holder.rowView.findViewById<ImageButton>(R.id.recycler_profile_activity_delete_btn).setOnClickListener{
+            viewModel.removeActivity(item)
+        }
     }
 }

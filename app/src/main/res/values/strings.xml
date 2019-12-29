@@ -13,4 +13,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_activity_summary_title">Summary</string>
     <string name="fragment_activity_transactions_title">Transactions</string>
+    <string name="fragment_profile_title">Profile</string>
+    <string name="fragment_create_activity_title">Add Activity</string>
+    <string name="fragment_create_activity_name_lbl">Name*</string>
+    <string name="fragment_create_activity_name_placeholder">name</string>
+    <string name="fragment_create_activity_description_lbl">Description</string>
+    <string name="fragment_create_activity_description_placeholder">description</string>
+    <string name="fragment_create_activity_valuta_lbl">Valuta*</string>
 </resources>

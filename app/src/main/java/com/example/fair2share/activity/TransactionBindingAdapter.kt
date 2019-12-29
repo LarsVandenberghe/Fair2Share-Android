@@ -10,7 +10,7 @@ import com.example.fair2share.RowItemViewHolder
 import com.example.fair2share.data_models.TransactionProperty
 import com.example.fair2share.data_models.Valutas
 
-class TransactionBindingAdapter(val valutaType : Int)  : RecyclerView.Adapter<RowItemViewHolder>() {
+class TransactionBindingAdapter(val viewModel: ActivityFragmentViewModel)  : RecyclerView.Adapter<RowItemViewHolder>() {
     var data =  listOf<TransactionProperty>()
         set(value) {
             field = value
@@ -30,6 +30,6 @@ class TransactionBindingAdapter(val valutaType : Int)  : RecyclerView.Adapter<Ro
 
     override fun onBindViewHolder(holder: RowItemViewHolder, position: Int) {
         holder.rowView.findViewById<TextView>(R.id.recycler_transaction_name).text = data[position].name
-        holder.rowView.findViewById<TextView>(R.id.recycler_transaction_price).text = String.format("%s %.2f", Valutas.values()[valutaType].getSymbol(),data[position].payment)
+        holder.rowView.findViewById<TextView>(R.id.recycler_transaction_price).text = String.format("%s %.2f", Valutas.values()[viewModel.activity.currencyType].getSymbol(),data[position].payment)
     }
 }

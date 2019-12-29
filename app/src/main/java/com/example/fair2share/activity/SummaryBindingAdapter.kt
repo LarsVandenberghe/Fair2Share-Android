@@ -8,10 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fair2share.R
 import com.example.fair2share.RowItemViewHolder
 import com.example.fair2share.data_models.ProfileProperty
-import com.example.fair2share.data_models.TransactionProperty
 import com.example.fair2share.data_models.Valutas
 
-class SummaryBindingAdapter(val valutaType : Int) : RecyclerView.Adapter<RowItemViewHolder>() {
+class SummaryBindingAdapter(val viewModel: ActivityFragmentViewModel) : RecyclerView.Adapter<RowItemViewHolder>() {
     var data =  listOf<Pair<ProfileProperty, Double>>()
         set(value) {
             field = value
@@ -31,6 +30,6 @@ class SummaryBindingAdapter(val valutaType : Int) : RecyclerView.Adapter<RowItem
 
     override fun onBindViewHolder(holder: RowItemViewHolder, position: Int) {
         holder.rowView.findViewById<TextView>(R.id.recycler_transaction_name).text = String.format("%s %s", data[position].first.firstname, data[position].first.lastname)
-        holder.rowView.findViewById<TextView>(R.id.recycler_transaction_price).text = String.format("%s %.2f", Valutas.values()[valutaType].getSymbol(),data[position].second)
+        holder.rowView.findViewById<TextView>(R.id.recycler_transaction_price).text = String.format("%s %.2f", Valutas.values()[viewModel.activity.currencyType].getSymbol(),data[position].second)
     }
 }

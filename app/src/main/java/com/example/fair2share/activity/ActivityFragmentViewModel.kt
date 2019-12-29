@@ -1,5 +1,6 @@
 package com.example.fair2share.activity
 
+import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ActivityFragmentViewModel(val activity : ActivityProperty):ViewModel() {
+class ActivityFragmentViewModel(var activity : ActivityProperty):ViewModel() {
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     private val _transactions = MutableLiveData<List<TransactionProperty>>()
@@ -22,8 +23,6 @@ class ActivityFragmentViewModel(val activity : ActivityProperty):ViewModel() {
         get() = _transactions
 
     private val _participants = MutableLiveData<List<ProfileProperty>>()
-//    val participants: LiveData<List<ProfileProperty>>
-//        get() = _participants
 
     private val _summary = MutableLiveData<List<Pair<ProfileProperty, Double>>>()
     val summary: LiveData<List<Pair<ProfileProperty, Double>>>
@@ -31,9 +30,10 @@ class ActivityFragmentViewModel(val activity : ActivityProperty):ViewModel() {
 
     fun update(){
         coroutineScope.launch {
-            _transactions.value = ActivityApi.retrofitService.getActivityTransactions(activity.activityId).await()
-            _participants.value = ActivityApi.retrofitService.getActivityParticipants(activity.activityId).await().participants
-            _summary.value = ActivityApi.retrofitService.getActivitySummary(activity.activityId).await().map {
+            activity = ActivityApi.retrofitService.getActivity(activity.activityId!!).await()
+            _transactions.value = ActivityApi.retrofitService.getActivityTransactions(activity.activityId!!).await()
+            _participants.value = ActivityApi.retrofitService.getActivityParticipants(activity.activityId!!).await().participants
+            _summary.value = ActivityApi.retrofitService.getActivitySummary(activity.activityId!!).await().map {
                 var profile = (_participants.value as List).find {participant ->
                     participant.profileId == it.key.toLong()
                 }

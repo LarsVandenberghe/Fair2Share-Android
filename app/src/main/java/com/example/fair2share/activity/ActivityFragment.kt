@@ -28,8 +28,8 @@ class ActivityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentActivityBinding>(inflater, R.layout.fragment_activity, container, false)
-        val transactionAdapter = TransactionBindingAdapter(viewModel.activity.currencyType)
-        val summaryAdapter = SummaryBindingAdapter(viewModel.activity.currencyType)
+        val transactionAdapter = TransactionBindingAdapter(viewModel)
+        val summaryAdapter = SummaryBindingAdapter(viewModel)
 
         binding.transactionList.adapter = transactionAdapter
         binding.summaryList.adapter = summaryAdapter

@@ -15,7 +15,7 @@ data class ProfileProperty (
 )
 
 data class ActivityProperty (
-    val activityId: Long,
+    val activityId: Long?,
     val name: String,
     val description: String?,
     val currencyType: Int,
@@ -32,7 +32,7 @@ data class ActivityProperty (
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(activityId)
+        parcel.writeLong(activityId!!)
         parcel.writeString(name)
         parcel.writeString(description)
         parcel.writeInt(currencyType)
