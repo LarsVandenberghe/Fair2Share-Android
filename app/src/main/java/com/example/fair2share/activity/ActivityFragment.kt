@@ -1,14 +1,14 @@
 package com.example.fair2share.activity
 
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.example.fair2share.R
 import com.example.fair2share.data_models.ActivityProperty
 import com.example.fair2share.databinding.FragmentActivityBinding
@@ -21,6 +21,7 @@ class ActivityFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModelFactory = ActivityFragmentViewModelFactory(arguments?.getParcelable<ActivityProperty>("activity")!!)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActivityFragmentViewModel::class.java)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -41,10 +42,35 @@ class ActivityFragment : Fragment() {
         viewModel.summary.observe(this, Observer { summaryItem ->
             summaryAdapter.data = summaryItem
         })
+
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
+        viewModel.navigate.observe(this, Observer {
+            if (it){
+                findNavController().navigate(R.id.action_activityFragment_to_fragmentProfile)
+            }
+        })
+
         viewModel.update()
 
         (activity as AppCompatActivity).supportActionBar?.title = viewModel.activity.name
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.activity_overflow_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.remove_activity_btn -> {
+                viewModel.removeActivity(viewModel.activity)
+                return true
+            } else -> super.onOptionsItemSelected(item)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

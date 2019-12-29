@@ -15,9 +15,11 @@
     <string name="fragment_activity_transactions_title">Transactions</string>
     <string name="fragment_profile_title">Profile</string>
     <string name="fragment_create_activity_title">Add Activity</string>
+    <string name="remove_activity">Remove Activity</string>
     <string name="fragment_create_activity_name_lbl">Name*</string>
     <string name="fragment_create_activity_name_placeholder">name</string>
     <string name="fragment_create_activity_description_lbl">Description</string>
     <string name="fragment_create_activity_description_placeholder">description</string>
     <string name="fragment_create_activity_valuta_lbl">Valuta*</string>
+    <string name="fragment_create_transaction_title">Add Transaction</string>
 </resources>

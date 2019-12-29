@@ -64,8 +64,6 @@ class FragmentProfile : Fragment() {
     }
 
     private fun navigateToCreateActivity(){
-//        val bundle = Bundle()
-//        bundle.putLong("person", viewModel.profile.value!!.profileId)
         findNavController().navigate(R.id.action_fragmentProfile_to_createActivityFragment)
     }
 }

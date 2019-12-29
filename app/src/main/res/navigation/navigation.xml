@@ -20,7 +20,11 @@
         android:id="@+id/activityFragment"
         android:name="com.example.fair2share.activity.ActivityFragment"
         android:label="fragment_activity"
-        tools:layout="@layout/fragment_activity" />
+        tools:layout="@layout/fragment_activity" >
+        <action
+            android:id="@+id/action_activityFragment_to_fragmentProfile"
+            app:destination="@id/fragmentProfile" />
+    </fragment>
     <fragment
         android:id="@+id/createActivityFragment"
         android:name="com.example.fair2share.activity.CreateActivityFragment"

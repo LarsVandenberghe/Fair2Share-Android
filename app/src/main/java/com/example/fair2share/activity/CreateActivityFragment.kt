@@ -49,7 +49,7 @@ class CreateActivityFragment : Fragment() {
             viewModel.create(act)
         }
         viewModel.errorMessage.observe(this, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_LONG)
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
         viewModel.navigate.observe(this, Observer {
             if (it){

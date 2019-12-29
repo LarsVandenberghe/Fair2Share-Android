@@ -28,6 +28,14 @@ class ActivityFragmentViewModel(var activity : ActivityProperty):ViewModel() {
     val summary: LiveData<List<Pair<ProfileProperty, Double>>>
         get() = _summary
 
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String>
+        get() = _errorMessage
+
+    private val _navigate = MutableLiveData<Boolean>()
+    val navigate: LiveData<Boolean>
+        get() = _navigate
+
     fun update(){
         coroutineScope.launch {
             activity = ActivityApi.retrofitService.getActivity(activity.activityId!!).await()
@@ -41,6 +49,18 @@ class ActivityFragmentViewModel(var activity : ActivityProperty):ViewModel() {
                     first = profile!!, second = it.value
                 )
                 out
+            }
+        }
+    }
+
+
+    fun removeActivity(activity: ActivityProperty){
+        coroutineScope.launch {
+            val a = ActivityApi.retrofitService.removeActivity(activity.activityId!!).await()
+            if (!a.isSuccessful){
+                _errorMessage.value = a.errorBody()!!.string()
+            } else {
+                _navigate.value = true
             }
         }
     }
