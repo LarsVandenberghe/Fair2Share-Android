@@ -14,7 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField 'String', 'BASE_URL', '\"http://78.20.29.170:5001/api/\"'
+        buildConfigField 'String', 'BASE_URL', '\"http://192.168.0.167:5000/api/\"'
     }
     buildTypes {
         release {
