@@ -10,6 +10,7 @@ import com.example.fair2share.BuildConfig
 import com.example.fair2share.data_models.ActivityProperty
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.network.AccountApi
+import com.example.fair2share.network.AccountApi.sharedPreferences
 import com.example.fair2share.network.ActivityApi
 import com.example.fair2share.network.ProfileApi
 import kotlinx.coroutines.CoroutineScope
@@ -37,15 +38,16 @@ class FragmentProfileViewModel : ViewModel() {
     }
 
     fun getProfilePicUrl(profile : ProfileProperty): GlideUrl{
+        val token = sharedPreferences?.getString("token", "") ?: ""
         return GlideUrl(String.format("%sProfile/image/%s", BuildConfig.BASE_URL, profile.profileId), LazyHeaders.Builder()
-            .addHeader("Authorization", String.format("Bearer %s", AccountApi.token)).build())
+            .addHeader("Authorization", String.format("Bearer %s", token)).build())
     }
 
     fun removeActivity(activity: ActivityProperty){
         _coroutineScope.launch {
             val a = ActivityApi.retrofitService.removeActivity(activity.activityId!!).await()
             if (!a.isSuccessful){
-                _errorMessage.value = a.errorBody()!!.string()
+                _errorMessage.value = a.errorBody()?.string()
             } else {
                 update()
             }

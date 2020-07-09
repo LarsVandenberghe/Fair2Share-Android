@@ -3,10 +3,7 @@ package com.example.fair2share
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -32,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         drawerLayout = binding.drawerLayout
-        val navController = this.findNavController(R.id.myNavHostFragment)
+        val navController = this.findNavController(R.id.mainNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
@@ -47,24 +44,24 @@ class MainActivity : AppCompatActivity() {
 
         NavigationUI.setupWithNavController(binding.navView, navController)
         (drawerLayout.navView as NavigationView).setNavigationItemSelectedListener {
-            if (  it.itemId == R.id.logoutActivity ){
-                startActivity(Intent(this, LoginActivity::class.java))
+            if (  it.itemId == R.id.btnMenuLogout ){
+                startActivity(Intent(this, StartUpActivity::class.java))
             }
 
-            if ( it.itemId == R.id.friendsActivity ){
-                startActivity(Intent(this, FriendsActivity::class.java))
+            if ( it.itemId == R.id.btnMenuFriends ){
+                navController.navigate(R.id.action_fragmentProfile_to_friendListFragment)
             }
             return@setNavigationItemSelectedListener false
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = this.findNavController(R.id.myNavHostFragment)
+        val navController = this.findNavController(R.id.mainNavHostFragment)
         return NavigationUI.navigateUp(navController, appBarConfiguration)
     }
 
     fun bindProfileToNavHeader(vm: FragmentProfileViewModel){
-        var bind: NavHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navView, true)
+        val bind: NavHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navView, true)
         vm.profile.observe(this, Observer { data ->
             bind.profile = data
 
@@ -78,7 +75,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.findItem(R.id.friendsActivity)?.title = String.format("(%d)", 1)
+        menu?.findItem(R.id.btnMenuFriends)?.title = String.format("(%d)", 1)
         return super.onPrepareOptionsMenu(menu)
     }
 }

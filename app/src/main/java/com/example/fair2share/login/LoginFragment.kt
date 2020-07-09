@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
 
     private lateinit var viewModel: LoginViewModel
+    private  lateinit var viewModelFactory: LoginViewModelFactory
     private lateinit var binding: FragmentLoginBinding
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,26 +40,32 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
+        val sharedPrefs = activity?.getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
+        sharedPrefs?.let {
+            viewModelFactory = LoginViewModelFactory(it)
+            viewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
 
-        binding.btnLogin.setOnClickListener{view: View ->
-            viewModel.login(binding.txtLoginEmail.text.toString(), binding.txtLoginPassword.text.toString())
-        }
-
-        viewModel.loggedIn.observe(this, Observer { bool ->
-            if (bool){
-                startActivity(Intent(context, MainActivity::class.java))
+            binding.btnLogin.setOnClickListener{view: View ->
+                viewModel.login(binding.txtLoginEmail.text.toString(), binding.txtLoginPassword.text.toString())
             }
-        })
 
-        viewModel.errorMessage.observe(this, Observer { message  ->
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        })
+            viewModel.loggedIn.observe(this, Observer { bool ->
+                if (bool){
+                    startActivity(Intent(context, MainActivity::class.java))
+                }
+            })
 
-        binding.loginPane.setOnClickListener{ view: View ->
+            viewModel.errorMessage.observe(this, Observer { message  ->
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            })
+
+            binding.loginPane.setOnClickListener{ view: View ->
                 val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+
         }
     }
 

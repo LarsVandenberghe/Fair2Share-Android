@@ -1,5 +1,6 @@
 package com.example.fair2share.network
 
+import android.content.SharedPreferences
 import com.example.fair2share.BuildConfig
 import com.example.fair2share.data_models.LoginProperty
 import com.example.fair2share.login.AuthInterceptor
@@ -41,5 +42,5 @@ object AccountApi {
     val retrofitService : AccountApiService by lazy {
         retrofitJsonMap.create(AccountApiService::class.java)
     }
-    var token : String = ""
+    var sharedPreferences : SharedPreferences? = null
 }

@@ -53,7 +53,7 @@ class FragmentProfile : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.profile_overflow_menu, menu)
+        inflater.inflate(R.menu.profile_overflow_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -72,13 +72,13 @@ class FragmentProfile : Fragment() {
     private fun addFriendRequests(amountOfFriendRequests: Int){
         val menu = requireActivity().findViewById<NavigationView>(R.id.navView).menu
         if (amountOfFriendRequests > 0){
-            menu.findItem(R.id.friendsActivity).title = String.format(
+            menu.findItem(R.id.btnMenuFriends).title = String.format(
                 "%s (%d)",
                 "Friends",
                 amountOfFriendRequests
             )
         } else {
-            menu.findItem(R.id.friendsActivity).title = String.format("%s", "Friends")
+            menu.findItem(R.id.btnMenuFriends).title = String.format("%s", "Friends")
         }
     }
 }
