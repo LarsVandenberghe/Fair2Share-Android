@@ -13,16 +13,5 @@ class StartUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start_up)
         setSupportActionBar(toolbar)
-
-        val handler = Handler()
-        handler.postDelayed({
-            this.handleLoginState()
-        }, 1000)
-    }
-
-    private fun handleLoginState(){
-        val navController = findNavController(R.id.startUpNavHostFragment)
-
-        navController.navigate(R.id.action_startUpFragment_to_loginFragment)
     }
 }
