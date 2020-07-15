@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.R
 import com.example.fair2share.databinding.FragmentActivityBinding
+import com.example.fair2share.network.AccountApi
 
 class FriendListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {

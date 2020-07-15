@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.data_models.LoginProperty
 import com.example.fair2share.data_models.ProfileProperty
+import com.example.fair2share.login.AuthInterceptor
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.ProfileApi
 import kotlinx.coroutines.CoroutineScope
@@ -45,15 +46,14 @@ class StartUpViewModel(var sharedPreferences: SharedPreferences?) : ViewModel() 
         _coroutineScope.launch {
             try {
                 _profile.value = ProfileApi.retrofitService.profile().await()
-            } catch (t: HttpException){
-                if (t.code() == 401){
+            } catch (t: Throwable){
+
+                if (AuthInterceptor.throwableIs401(t)){
                     _errorMessage.value = "Token expired, please relog."
                     _shouldRelog.value = true;
                 } else {
                     _errorMessage.value = t.message
                 }
-            } catch (t: Throwable){
-                _errorMessage.value = t.message
             }
         }
     }
