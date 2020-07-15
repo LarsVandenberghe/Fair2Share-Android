@@ -51,9 +51,10 @@ class StartUpFragment : Fragment() {
             })
 
             viewModel.profile.observe(this, Observer {
-                var intent = Intent(context, MainActivity::class.java)
+                val intent = Intent(context, MainActivity::class.java)
                 intent.putExtra("profile", it)
                 startActivity(intent)
+                activity?.finish()
             })
         } else {
             val handler = Handler()

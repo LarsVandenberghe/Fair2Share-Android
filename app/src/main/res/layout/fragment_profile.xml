@@ -4,21 +4,6 @@
     tools:context=".profile.FragmentProfile"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddFriend2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:focusable="auto"
-        android:foreground="@drawable/ic_baseline_add_24"
-        android:src="@drawable/ic_baseline_add_24"
-        android:visibility="gone"
-        app:backgroundTint="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <data>
         <import type="com.example.fair2share.data_models.ProfileProperty"/>
         <variable
@@ -60,15 +45,20 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddActivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/btn_add"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="auto"
+            android:foreground="@drawable/ic_baseline_add_24"
+            android:src="@drawable/ic_baseline_add_24"
+            android:visibility="visible"
+            app:backgroundTint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

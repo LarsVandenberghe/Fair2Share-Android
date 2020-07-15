@@ -54,6 +54,7 @@ class LoginFragment : Fragment() {
             viewModel.loggedIn.observe(this, Observer { bool ->
                 if (bool){
                     startActivity(Intent(context, MainActivity::class.java))
+                    activity?.finish()
                 }
             })
 

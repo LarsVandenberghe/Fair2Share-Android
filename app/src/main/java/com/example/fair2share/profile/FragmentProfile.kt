@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
+import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.databinding.FragmentProfileBinding
 import com.google.android.material.navigation.NavigationView
 
@@ -24,13 +25,7 @@ class FragmentProfile : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(FragmentProfileViewModel::class.java)
-        viewModel.profile.observe(this, Observer{ data ->
-            binding.profile = data
-            data.activities?.let{
-                adapter.data = it
-            }
-            addFriendRequests(data.amountOfFriendRequests ?: 0)
-        })
+
         (activity as MainActivity).bindProfileToNavHeader(viewModel)
 
         viewModel.errorMessage.observe(this, Observer { errorMsg ->
@@ -43,8 +38,10 @@ class FragmentProfile : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         adapter = ActivityBindingAdapter(viewModel)
         binding.activityList.adapter = adapter
-        viewModel.update()
-        binding.button.setOnClickListener{
+
+        receiveProfileData()
+
+        binding.fabAddActivity.setOnClickListener{
             navigateToCreateActivity()
         }
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.fragment_profile_title)
@@ -80,5 +77,21 @@ class FragmentProfile : Fragment() {
         } else {
             menu.findItem(R.id.btnMenuFriends).title = String.format("%s", "Friends")
         }
+    }
+
+    private fun receiveProfileData() {
+        val profile = requireActivity().intent.getParcelableExtra<ProfileProperty>("profile")
+        if (profile != null){
+            viewModel.update(profile)
+        } else {
+            viewModel.update()
+        }
+        viewModel.profile.observe(this, Observer{ data ->
+            binding.profile = data
+            data.activities?.let{
+                adapter.data = it
+            }
+            addFriendRequests(data.amountOfFriendRequests ?: 0)
+        })
     }
 }

@@ -30,10 +30,13 @@ class FragmentProfileViewModel : ViewModel() {
         get() = _errorMessage
 
 
-    fun update(){
-        _coroutineScope.launch {
-            _profile.value = ProfileApi.retrofitService.profile().await()
-//            Log.i("Lala", _profile.value.toString())
+    fun update(profile: ProfileProperty? = null){
+        if (profile != null) {
+            _profile.value = profile
+        } else {
+            _coroutineScope.launch {
+                _profile.value = ProfileApi.retrofitService.profile().await()
+            }
         }
     }
 
