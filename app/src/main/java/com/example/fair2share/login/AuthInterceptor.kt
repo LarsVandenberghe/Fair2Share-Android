@@ -1,6 +1,7 @@
 package com.example.fair2share.login
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import com.example.fair2share.MainActivity
 import com.example.fair2share.StartUpActivity
 import com.example.fair2share.network.AccountApi.sharedPreferences
@@ -43,6 +44,7 @@ class AuthInterceptor: Interceptor {
             mainActivity = null
 
             val intent = Intent(it.baseContext, StartUpActivity::class.java)
+            intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
             mainActTemp.startActivity(intent)
             mainActTemp.finish()
             Runtime.getRuntime().exit(0)

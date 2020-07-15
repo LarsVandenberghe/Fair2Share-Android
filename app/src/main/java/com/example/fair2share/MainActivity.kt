@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.fair2share.databinding.ActivityMainBinding
 import com.example.fair2share.databinding.NavHeaderBinding
 import com.example.fair2share.login.AuthInterceptor
+import com.example.fair2share.network.AccountApi.sharedPreferences
 import com.example.fair2share.profile.FragmentProfileViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(binding.navView, navController)
         (drawerLayout.navView as NavigationView).setNavigationItemSelectedListener {
             if (  it.itemId == R.id.btnMenuLogout ){
+                sharedPreferences?.edit()?.remove("token")?.apply()
                 startActivity(Intent(this, StartUpActivity::class.java))
             }
 
