@@ -1,6 +1,7 @@
 package com.example.fair2share.startup
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
@@ -10,8 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import com.example.fair2share.MainActivity
 import com.example.fair2share.R
+import com.example.fair2share.network.AccountApi
 
 class StartUpFragment : Fragment() {
 
@@ -28,12 +32,29 @@ class StartUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPrefs = requireActivity().getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
-        viewModelFactory = StartUpViewModelFactory(sharedPrefs)
+        AccountApi.sharedPreferences = requireActivity()
+            .getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
+
+        viewModelFactory = StartUpViewModelFactory(AccountApi.sharedPreferences)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(StartUpViewModel::class.java)
 
-        if (sharedPrefs != null){
-            Toast.makeText(requireContext(), "has resource", Toast.LENGTH_LONG).show()
+        if (viewModel.token.value != null){
+            viewModel.getProfile()
+            viewModel.errorMessage.observe(this, Observer {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            })
+
+            viewModel.shouldRelog.observe(this, Observer {
+                if (it){
+                    handleLoginState()
+                }
+            })
+
+            viewModel.profile.observe(this, Observer {
+                var intent = Intent(context, MainActivity::class.java)
+                intent.putExtra("profile", it)
+                startActivity(intent)
+            })
         } else {
             val handler = Handler()
             handler.postDelayed({
@@ -44,7 +65,6 @@ class StartUpFragment : Fragment() {
 
     private fun handleLoginState(){
         val navController = requireActivity().findNavController(R.id.startUpNavHostFragment)
-
         navController.navigate(R.id.action_startUpFragment_to_loginFragment)
     }
 }

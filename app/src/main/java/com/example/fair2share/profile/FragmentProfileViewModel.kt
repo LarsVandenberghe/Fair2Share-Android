@@ -33,7 +33,7 @@ class FragmentProfileViewModel : ViewModel() {
     fun update(){
         _coroutineScope.launch {
             _profile.value = ProfileApi.retrofitService.profile().await()
-            Log.i("Lala", _profile.value.toString())
+//            Log.i("Lala", _profile.value.toString())
         }
     }
 
