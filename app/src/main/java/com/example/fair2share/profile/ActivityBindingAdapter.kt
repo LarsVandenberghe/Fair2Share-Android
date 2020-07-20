@@ -5,33 +5,32 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fair2share.R
-import com.example.fair2share.RowItemViewHolder
+import com.example.fair2share.ConstraintRowItemViewHolder
 import com.example.fair2share.data_models.ActivityProperty
 
-class ActivityBindingAdapter(val viewModel: FragmentProfileViewModel) : RecyclerView.Adapter<RowItemViewHolder>() {
+class ActivityBindingAdapter(val viewModel: FragmentProfileViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
     var data =  listOf<ActivityProperty>()
         set(value) {
             field = value
             notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RowItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConstraintRowItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater
             .inflate(R.layout.recycler_profile_activity, parent, false) as ConstraintLayout
-        return RowItemViewHolder(view)
+        return ConstraintRowItemViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    override fun onBindViewHolder(holder: RowItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
         val item = data[position]
 
         val bundle = Bundle()

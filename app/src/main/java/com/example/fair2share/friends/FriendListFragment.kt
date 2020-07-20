@@ -19,14 +19,20 @@ class FriendListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // val binding = DataBindingUtil.inflate<Fragment>(inflater, R.layout.fragment_friend_list, container, false)
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friend_list, container, false)
+        val binding = DataBindingUtil.inflate<FragmentActivityBinding>(inflater, R.layout.fragment_friend_list, container, false)
+
+        //binding.
+        val friendBindingAdapter = FriendBindingAdapter()
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val fab: View = requireView().findViewById(R.id.fabAddFriend)
+
+
+
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_friendListFragment_to_addFriendFragment)
         }
