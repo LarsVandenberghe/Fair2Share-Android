@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/fragmentProfile"
         android:name="com.example.fair2share.profile.FragmentProfile"
-        tools:layout="@layout/fragment_profile" >
+        android:label="@string/fragment_profile_title"
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_fragmentProfile_to_activityFragment"
             app:destination="@id/activityFragment" />
@@ -31,8 +32,8 @@
     <fragment
         android:id="@+id/createActivityFragment"
         android:name="com.example.fair2share.activity.CreateActivityFragment"
-        android:label="fragment_create_activity"
-        tools:layout="@layout/fragment_create_activity" >
+        android:label="@string/fragment_create_activity_title"
+        tools:layout="@layout/fragment_create_activity">
         <action
             android:id="@+id/action_createActivityFragment_to_fragmentProfile"
             app:destination="@id/fragmentProfile" />
@@ -40,8 +41,8 @@
     <fragment
         android:id="@+id/friendListFragment"
         android:name="com.example.fair2share.friends.FriendListFragment"
-        android:label="fragment_friend_list"
-        tools:layout="@layout/fragment_friend_list" >
+        android:label="@string/friend_lst_title"
+        tools:layout="@layout/fragment_friend_list">
         <action
             android:id="@+id/action_friendListFragment_to_fragmentProfile"
             app:destination="@id/fragmentProfile" />
@@ -52,8 +53,8 @@
     <fragment
         android:id="@+id/addFriendFragment"
         android:name="com.example.fair2share.friends.AddFriendFragment"
-        android:label="fragment_add_friend"
-        tools:layout="@layout/fragment_add_friend" >
+        android:label="@string/fragment_add_friend_title"
+        tools:layout="@layout/fragment_add_friend">
         <action
             android:id="@+id/action_addFriendFragment_to_friendListFragment"
             app:destination="@id/friendListFragment" />

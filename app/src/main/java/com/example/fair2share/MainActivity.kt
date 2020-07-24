@@ -14,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.databinding.ActivityMainBinding
 import com.example.fair2share.databinding.NavHeaderBinding
 import com.example.fair2share.login.AuthInterceptor
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration : AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navHeaderBinding: NavHeaderBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +54,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             if ( it.itemId == R.id.btnMenuFriends ){
-                navController.navigate(R.id.action_fragmentProfile_to_friendListFragment)
+                val friends = Bundle()
+                friends.putParcelableArrayList("friends", navHeaderBinding.profile?.friends as ArrayList<ProfileProperty?>);
+                navController.navigate(R.id.action_fragmentProfile_to_friendListFragment, friends)
             }
             return@setNavigationItemSelectedListener false
         }
@@ -66,16 +70,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun bindProfileToNavHeader(vm: FragmentProfileViewModel){
-        val bind: NavHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navView, true)
+        navHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navView, true)
         vm.profile.observe(this, Observer { data ->
-            bind.profile = data
+            navHeaderBinding.profile = data
 
-            Glide.with(bind.navProfileImg.context)
+            Glide.with(navHeaderBinding.navProfileImg.context)
                 .load(vm.getProfilePicUrl(data))
                 .apply(
                     RequestOptions().placeholder(R.drawable.default_user)
                         .error(R.drawable.default_user)
-                ).into(bind.navProfileImg)
+                ).into(navHeaderBinding.navProfileImg)
         })
     }
 

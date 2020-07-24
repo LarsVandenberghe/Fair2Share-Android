@@ -44,7 +44,6 @@ class FragmentProfile : Fragment() {
         binding.fabAddActivity.setOnClickListener{
             navigateToCreateActivity()
         }
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.fragment_profile_title)
         return binding.root
     }
 
@@ -70,12 +69,11 @@ class FragmentProfile : Fragment() {
         val menu = requireActivity().findViewById<NavigationView>(R.id.navView).menu
         if (amountOfFriendRequests > 0){
             menu.findItem(R.id.btnMenuFriends).title = String.format(
-                "%s (%d)",
-                "Friends",
+                "Friends (%d)",
                 amountOfFriendRequests
             )
         } else {
-            menu.findItem(R.id.btnMenuFriends).title = String.format("%s", "Friends")
+            menu.findItem(R.id.btnMenuFriends).title = "Friends"
         }
     }
 

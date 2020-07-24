@@ -17,7 +17,7 @@ import com.example.fair2share.R
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.network.AccountApi
 
-class FriendBindingAdapter: RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
+class FriendRequestBindingAdapter() : RecyclerView.Adapter<ConstraintRowItemViewHolder>(){
     var data =  listOf<ProfileProperty>()
         set(value) {
             field = value
@@ -27,18 +27,18 @@ class FriendBindingAdapter: RecyclerView.Adapter<ConstraintRowItemViewHolder>() 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConstraintRowItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater
-            .inflate(R.layout.recycler_friend_profile, parent, false) as ConstraintLayout
+            .inflate(R.layout.recycler_friend_request_profile, parent, false) as ConstraintLayout
         return ConstraintRowItemViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-        return data.size
     }
 
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
         val item = data[position]
         bindClientImageOnId((holder.rowView.getChildAt(0) as ImageView), item.profileId)
         (holder.rowView.getChildAt(1) as TextView).text = String.format("%s %s", item.firstname, item.lastname)
+    }
+
+    override fun getItemCount(): Int {
+        return data.size
     }
 
     private fun bindClientImageOnId(imgView: ImageView, imageId:Long?){
