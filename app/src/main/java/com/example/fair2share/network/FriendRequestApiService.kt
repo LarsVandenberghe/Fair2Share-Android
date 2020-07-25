@@ -36,6 +36,10 @@ interface FriendRequestApiService {
     @GET("FriendRequest")
     fun getFriendRequest():
             Deferred<List<ProfileProperty>>
+
+    @POST("FriendRequest/email/{email}")
+    fun addFriendByEmail(@Path("email") email: String, @Body body: String = "{}"):
+            Deferred<Response<Unit>>
 }
 
 object FriendRequestApi {

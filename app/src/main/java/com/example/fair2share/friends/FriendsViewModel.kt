@@ -27,6 +27,16 @@ class FriendsViewModel(friendsArg: List<ProfileProperty>?) : ViewModel() {
     val friends: LiveData<List<ProfileProperty>>
         get() = _friends
 
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String>
+        get() = _errorMessage
+
+    private val _succes = MutableLiveData<Boolean>()
+    val succes: LiveData<Boolean>
+        get() = _succes
+
+    lateinit var myProfileEmailAddress: String
+
     init {
         if (friendsArg != null){
             _friends.value = friendsArg
@@ -44,7 +54,35 @@ class FriendsViewModel(friendsArg: List<ProfileProperty>?) : ViewModel() {
 
         _coroutineScope.launch {
             val getJWTDeffered = ProfileApi.retrofitService.profile()
-            _friends.value = getJWTDeffered.await().friends
+            val profile = getJWTDeffered.await()
+            _friends.value = profile.friends
+            myProfileEmailAddress = profile.email!!
+        }
+    }
+
+    //TODO: Implement stringify
+    fun addFriendByEmail(email: String){
+        _coroutineScope.launch {
+
+            if (myProfileEmailAddress.equals(email)){
+                _errorMessage.value = "You can't send yourself a friend request."
+            } else {
+                val getJWTDeffered = FriendRequestApi.retrofitService.addFriendByEmail(email)
+                val result = getJWTDeffered.await()
+                when (result.code()){
+                    500 -> _errorMessage.value = "Something went wrong. Maybe you have a pending friend request from this email?"
+                    404 -> _errorMessage.value = "Email does not exist."
+                    400 -> {
+                        if (result.errorBody() != null){
+                            _errorMessage.value = result.errorBody()!!.string()
+                        } else {
+                            _errorMessage.value = "Something went wrong"
+                        }
+                    }
+                    204 -> _succes.value = true
+                    else -> _errorMessage.value = String.format("(%d): %s", result.code(), result.message())
+                }
+            }
         }
     }
 }
