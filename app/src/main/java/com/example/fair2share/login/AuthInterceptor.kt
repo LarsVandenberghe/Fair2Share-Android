@@ -3,7 +3,7 @@ package com.example.fair2share.login
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import com.example.fair2share.MainActivity
-import com.example.fair2share.StartUpActivity
+import com.example.fair2share.LoginActivity
 import com.example.fair2share.network.AccountApi.sharedPreferences
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -43,7 +43,7 @@ class AuthInterceptor: Interceptor {
             val mainActTemp = it
             mainActivity = null
 
-            val intent = Intent(it.baseContext, StartUpActivity::class.java)
+            val intent = Intent(it.baseContext, LoginActivity::class.java)
             intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
             mainActTemp.startActivity(intent)
             mainActTemp.finish()

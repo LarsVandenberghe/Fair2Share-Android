@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import com.example.fair2share.LoginActivity
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.network.AccountApi
@@ -55,7 +56,7 @@ class StartUpFragment : Fragment() {
                 val intent = Intent(context, MainActivity::class.java)
                 intent.putExtra("profile", it)
                 startActivity(intent)
-                activity?.finish()
+                requireActivity().finish()
             })
         } else {
             val handler = Handler()
@@ -66,7 +67,10 @@ class StartUpFragment : Fragment() {
     }
 
     private fun handleLoginState(){
-        val navController = requireActivity().findNavController(R.id.startUpNavHostFragment)
-        navController.navigate(R.id.action_startUpFragment_to_loginFragment)
+        //val navController = requireActivity().findNavController(R.id.startUpNavHostFragment)
+        //navController.navigate(R.id.action_startUpFragment_to_loginFragment)
+        val intent = Intent(context, LoginActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 }

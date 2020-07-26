@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         (drawerLayout.navView as NavigationView).setNavigationItemSelectedListener {
             if (  it.itemId == R.id.btnMenuLogout ){
                 sharedPreferences?.edit()?.remove("token")?.apply()
-                startActivity(Intent(this, StartUpActivity::class.java))
+                startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
 

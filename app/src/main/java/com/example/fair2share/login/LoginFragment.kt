@@ -5,26 +5,17 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
-import com.example.fair2share.StartUpActivity
-import com.example.fair2share.data_models.LoginProperty
+import com.example.fair2share.LoginActivity
 import com.example.fair2share.databinding.FragmentLoginBinding
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 
 class LoginFragment : Fragment() {
@@ -67,7 +58,7 @@ class LoginFragment : Fragment() {
             }
         }
 
-        (requireActivity() as StartUpActivity).onLoginFragment = true
+        (requireActivity() as LoginActivity).setIsOnLoginFragment(true)
         return binding.root
     }
 
@@ -87,6 +78,6 @@ class LoginFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (requireActivity() as StartUpActivity).onLoginFragment = false
+        (requireActivity() as LoginActivity).setIsOnLoginFragment(false)
     }
 }
