@@ -50,7 +50,7 @@ class ActivityFragment : Fragment() {
         })
         viewModel.navigate.observe(this, Observer {
             if (it){
-                findNavController().navigate(R.id.action_activityFragment_to_fragmentProfile)
+                findNavController().navigateUp()
             }
         })
 

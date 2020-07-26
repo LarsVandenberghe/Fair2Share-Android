@@ -6,18 +6,18 @@ import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
+import com.example.fair2share.StartUpActivity
 import com.example.fair2share.data_models.LoginProperty
 import com.example.fair2share.databinding.FragmentLoginBinding
 import com.google.android.material.snackbar.Snackbar
@@ -31,17 +31,16 @@ class LoginFragment : Fragment() {
 
     private lateinit var viewModel: LoginViewModel
     private  lateinit var viewModelFactory: LoginViewModelFactory
-    private lateinit var binding: FragmentLoginBinding
 
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding =  DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
-        return binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding: FragmentLoginBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
 
-        val sharedPrefs = activity?.getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
+        val sharedPrefs = requireActivity().getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
         sharedPrefs?.let {
             viewModelFactory = LoginViewModelFactory(it)
             viewModel =
@@ -54,7 +53,7 @@ class LoginFragment : Fragment() {
             viewModel.loggedIn.observe(this, Observer { bool ->
                 if (bool){
                     startActivity(Intent(context, MainActivity::class.java))
-                    activity?.finish()
+                    requireActivity().finish()
                 }
             })
 
@@ -66,8 +65,28 @@ class LoginFragment : Fragment() {
                 val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
+        }
 
+        (requireActivity() as StartUpActivity).onLoginFragment = true
+        return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.login_overflow_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.register_btn -> {
+                requireActivity().findNavController(R.id.startUpNavHostFragment).navigate(R.id.action_loginFragment_to_registerFragment)
+                return true
+            } else -> super.onOptionsItemSelected(item)
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as StartUpActivity).onLoginFragment = false
+    }
 }

@@ -53,7 +53,7 @@ class CreateActivityFragment : Fragment() {
         })
         viewModel.navigate.observe(this, Observer {
             if (it){
-                findNavController().navigate(R.id.action_createActivityFragment_to_fragmentProfile)
+                findNavController().navigateUp()
             }
         })
 

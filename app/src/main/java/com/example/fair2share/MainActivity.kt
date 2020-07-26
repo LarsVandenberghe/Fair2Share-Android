@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
             if (  it.itemId == R.id.btnMenuLogout ){
                 sharedPreferences?.edit()?.remove("token")?.apply()
                 startActivity(Intent(this, StartUpActivity::class.java))
+                finish()
             }
 
             if ( it.itemId == R.id.btnMenuFriends ){
