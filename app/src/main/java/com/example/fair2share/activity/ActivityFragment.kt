@@ -19,8 +19,10 @@ class ActivityFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModelFactory = ActivityFragmentViewModelFactory(arguments?.getParcelable<ActivityProperty>("activity")!!)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActivityFragmentViewModel::class.java)
+        arguments?.let{
+            viewModelFactory = ActivityFragmentViewModelFactory(it.getParcelable("activity")!!)
+            viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActivityFragmentViewModel::class.java)
+        }
         setHasOptionsMenu(true)
     }
 

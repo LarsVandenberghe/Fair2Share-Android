@@ -16,17 +16,19 @@ import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.databinding.FragmentFriendListBinding
 
 class FriendListFragment : Fragment() {
-    private lateinit var viewModel: FriendsViewModel
-    private lateinit var viewModelFactory: FriendsViewModelFactory
+    private lateinit var viewModel: FriendListViewModel
+    private lateinit var viewModelFactory: FriendListViewModelFactory
     private lateinit var friendRequestAdapter: FriendRequestBindingAdapter
     private lateinit var friendsAdapter: FriendBindingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var friends : List<ProfileProperty>? = arguments?.getParcelableArrayList("friends")
-        viewModelFactory = FriendsViewModelFactory(friends)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendsViewModel::class.java)
+        arguments?.let{
+            var friends : List<ProfileProperty>? = it.getParcelableArrayList("friends")
+            viewModelFactory = FriendListViewModelFactory(friends)
+            viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
+        }
     }
 
     override fun onCreateView(
@@ -55,7 +57,9 @@ class FriendListFragment : Fragment() {
         val fab: View = requireView().findViewById(R.id.fabAddFriend)
 
         fab.setOnClickListener {
-            findNavController().navigate(R.id.action_friendListFragment_to_addFriendFragment)
+            val bundle = Bundle()
+            bundle.putString("email", viewModel.myProfileEmailAddress)
+            findNavController().navigate(R.id.action_friendListFragment_to_addFriendFragment, bundle)
         }
     }
 

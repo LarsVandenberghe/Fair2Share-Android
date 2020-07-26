@@ -33,4 +33,7 @@
     <string name="no_friend_requests">You have no pending friend requests.</string>
     <string name="no_friends">You currently don\'t have any friends.</string>
     <string name="fragment_add_friend_title">Add Friend</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

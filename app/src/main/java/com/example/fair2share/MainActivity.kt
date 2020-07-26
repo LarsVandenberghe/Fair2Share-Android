@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
             if ( it.itemId == R.id.btnMenuFriends ){
                 val friends = Bundle()
-                friends.putParcelableArrayList("friends", navHeaderBinding.profile?.friends as ArrayList<ProfileProperty?>);
+                friends.putParcelableArrayList("friends", navHeaderBinding.profile?.friends as ArrayList<ProfileProperty?>)
                 navController.navigate(R.id.action_fragmentProfile_to_friendListFragment, friends)
             }
             return@setNavigationItemSelectedListener false

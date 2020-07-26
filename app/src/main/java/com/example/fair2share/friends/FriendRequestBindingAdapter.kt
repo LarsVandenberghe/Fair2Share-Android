@@ -18,7 +18,7 @@ import com.example.fair2share.R
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.network.AccountApi
 
-class FriendRequestBindingAdapter(val viewModel: FriendsViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>(){
+class FriendRequestBindingAdapter(val viewModel: FriendListViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>(){
     var data =  listOf<ProfileProperty>()
         set(value) {
             field = value

@@ -16,16 +16,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.logging.Logger
 
-class FriendsViewModel(friendsArg: List<ProfileProperty>?) : ViewModel() {
+class AddFriendViewModel(val myProfileEmailAddress: String) : ViewModel() {
     private var _viewModelJob = Job()
     private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
-    private val _friendRequests = MutableLiveData<List<ProfileProperty>>()
-    val friendRequests: LiveData<List<ProfileProperty>>
-        get() = _friendRequests
-
-    private val _friends = MutableLiveData<List<ProfileProperty>>()
-    val friends: LiveData<List<ProfileProperty>>
-        get() = _friends
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String>
@@ -35,30 +28,8 @@ class FriendsViewModel(friendsArg: List<ProfileProperty>?) : ViewModel() {
     val succes: LiveData<Boolean>
         get() = _succes
 
-    lateinit var myProfileEmailAddress: String
 
-    init {
-        if (friendsArg != null){
-            _friends.value = friendsArg
-        }
-        update()
-    }
 
-    fun update(){
-        _coroutineScope.launch {
-            val getJWTDeffered = FriendRequestApi.retrofitService.getFriendRequest()
-            _friendRequests.value = getJWTDeffered.await().filter { potentialFriend ->
-                potentialFriend.friendRequestState == FriendRequestStates.PENDING.ordinal
-            }
-        }
-
-        _coroutineScope.launch {
-            val getJWTDeffered = ProfileApi.retrofitService.profile()
-            val profile = getJWTDeffered.await()
-            _friends.value = profile.friends
-            myProfileEmailAddress = profile.email!!
-        }
-    }
 
     //TODO: Implement stringify
     fun addFriendByEmail(email: String){
@@ -81,25 +52,6 @@ class FriendsViewModel(friendsArg: List<ProfileProperty>?) : ViewModel() {
                     204 -> _succes.value = true
                     else -> _errorMessage.value = String.format("(%d): %s", result.code(), result.message())
                 }
-            }
-        }
-    }
-
-    fun handleFriendRequest(userId: Long, accept: Boolean){
-        _coroutineScope.launch {
-            val getJWTDeffered = FriendRequestApi.retrofitService.handleFriendRequest(userId, accept)
-            val result = getJWTDeffered.await()
-            when (result.code()){
-                500 -> _errorMessage.value = "Something went wrong."
-                400 -> {
-                    if (result.errorBody() != null){
-                        _errorMessage.value = result.errorBody()!!.string()
-                    } else {
-                        _errorMessage.value = "Something went wrong"
-                    }
-                }
-                204 -> _succes.value = true
-                else -> _errorMessage.value = String.format("(%d): %s", result.code(), result.message())
             }
         }
     }
