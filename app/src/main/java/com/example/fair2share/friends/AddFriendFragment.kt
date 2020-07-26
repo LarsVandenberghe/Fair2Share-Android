@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.example.fair2share.R
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.databinding.FragmentAddFriendBinding
@@ -36,6 +38,14 @@ class AddFriendFragment : Fragment() {
 
         viewModel.errorMessage.observe(this, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.succes.observe(this, Observer {
+            if (it){
+                //TODO: Stringify
+                Toast.makeText(context, "FriendRequest has been sent.", Toast.LENGTH_LONG).show()
+                findNavController().navigateUp()
+            }
         })
 
         return binding.root

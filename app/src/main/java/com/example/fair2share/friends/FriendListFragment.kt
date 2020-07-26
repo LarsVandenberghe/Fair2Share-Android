@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -36,6 +37,16 @@ class FriendListFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentFriendListBinding>(inflater, R.layout.fragment_friend_list, container, false)
         configureAdapters(binding)
 
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.succes.observe(this, Observer {
+            if (it){
+                viewModel.update()
+            }
+        })
+
         return binding.root
     }
 
@@ -50,7 +61,7 @@ class FriendListFragment : Fragment() {
 
 
     private fun configureAdapters(binding: FragmentFriendListBinding) {
-        friendRequestAdapter = FriendRequestBindingAdapter()
+        friendRequestAdapter = FriendRequestBindingAdapter(viewModel)
         friendsAdapter = FriendBindingAdapter()
 
         viewModel.friendRequests.observe(this, Observer {

@@ -63,7 +63,6 @@ class FriendsViewModel(friendsArg: List<ProfileProperty>?) : ViewModel() {
     //TODO: Implement stringify
     fun addFriendByEmail(email: String){
         _coroutineScope.launch {
-
             if (myProfileEmailAddress.equals(email)){
                 _errorMessage.value = "You can't send yourself a friend request."
             } else {
@@ -82,6 +81,25 @@ class FriendsViewModel(friendsArg: List<ProfileProperty>?) : ViewModel() {
                     204 -> _succes.value = true
                     else -> _errorMessage.value = String.format("(%d): %s", result.code(), result.message())
                 }
+            }
+        }
+    }
+
+    fun handleFriendRequest(userId: Long, accept: Boolean){
+        _coroutineScope.launch {
+            val getJWTDeffered = FriendRequestApi.retrofitService.handleFriendRequest(userId, accept)
+            val result = getJWTDeffered.await()
+            when (result.code()){
+                500 -> _errorMessage.value = "Something went wrong."
+                400 -> {
+                    if (result.errorBody() != null){
+                        _errorMessage.value = result.errorBody()!!.string()
+                    } else {
+                        _errorMessage.value = "Something went wrong"
+                    }
+                }
+                204 -> _succes.value = true
+                else -> _errorMessage.value = String.format("(%d): %s", result.code(), result.message())
             }
         }
     }

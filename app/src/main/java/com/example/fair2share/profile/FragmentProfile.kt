@@ -21,6 +21,7 @@ class FragmentProfile : Fragment() {
     private lateinit var viewModel: FragmentProfileViewModel
     private lateinit var binding: FragmentProfileBinding
     private lateinit var adapter: ActivityBindingAdapter
+    var firstLoad : Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +32,7 @@ class FragmentProfile : Fragment() {
         viewModel.errorMessage.observe(this, Observer { errorMsg ->
             Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
         })
+
         setHasOptionsMenu(true)
     }
 
@@ -79,10 +81,11 @@ class FragmentProfile : Fragment() {
 
     private fun receiveProfileData() {
         val profile = requireActivity().intent.getParcelableExtra<ProfileProperty>("profile")
-        if (profile != null){
-            viewModel.update(profile)
-        } else {
+        if (!firstLoad || profile == null){
             viewModel.update()
+        } else {
+            viewModel.update(profile)
+            firstLoad = false
         }
         viewModel.profile.observe(this, Observer{ data ->
             binding.profile = data

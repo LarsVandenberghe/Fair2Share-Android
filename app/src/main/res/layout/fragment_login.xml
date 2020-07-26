@@ -38,7 +38,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/login_lbl1"
-                android:inputType="textPersonName"
+                android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lbl1" />

@@ -40,7 +40,12 @@ interface FriendRequestApiService {
     @POST("FriendRequest/email/{email}")
     fun addFriendByEmail(@Path("email") email: String, @Body body: String = "{}"):
             Deferred<Response<Unit>>
+
+    @POST("FriendRequest/{id}/{accept}")
+    fun handleFriendRequest(@Path("id") userId : Long, @Path("accept") accept : Boolean, @Body body: String = "{}"):
+            Deferred<Response<Unit>>
 }
+
 
 object FriendRequestApi {
     val retrofitService : FriendRequestApiService by lazy {

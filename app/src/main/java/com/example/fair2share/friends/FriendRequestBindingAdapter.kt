@@ -2,6 +2,7 @@ package com.example.fair2share.friends
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +18,7 @@ import com.example.fair2share.R
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.network.AccountApi
 
-class FriendRequestBindingAdapter() : RecyclerView.Adapter<ConstraintRowItemViewHolder>(){
+class FriendRequestBindingAdapter(val viewModel: FriendsViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>(){
     var data =  listOf<ProfileProperty>()
         set(value) {
             field = value
@@ -35,6 +36,12 @@ class FriendRequestBindingAdapter() : RecyclerView.Adapter<ConstraintRowItemView
         val item = data[position]
         bindClientImageOnId((holder.rowView.getChildAt(0) as ImageView), item.profileId)
         (holder.rowView.getChildAt(1) as TextView).text = String.format("%s %s", item.firstname, item.lastname)
+        (holder.rowView.getViewById(R.id.btnAddFriend) as ImageButton).setOnClickListener {
+            viewModel.handleFriendRequest(item.profileId, true)
+        }
+        (holder.rowView.getViewById(R.id.btnRemoveFriend) as ImageButton).setOnClickListener {
+            viewModel.handleFriendRequest(item.profileId, false)
+        }
     }
 
     override fun getItemCount(): Int {
