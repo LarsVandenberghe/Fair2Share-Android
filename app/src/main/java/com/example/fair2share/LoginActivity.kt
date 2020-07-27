@@ -4,11 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 
-import kotlinx.android.synthetic.main.activity_start_up.*
 import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -21,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         //setSupportActionBar(toolbar)
 
-        navController = this.findNavController(R.id.startUpNavHostFragment)
+        navController = this.findNavController(R.id.loginNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
         appBarConfiguration = AppBarConfiguration(navController.graph)
 

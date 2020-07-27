@@ -8,7 +8,7 @@
     tools:context=".LoginActivity">
 
     <fragment
-        android:id="@+id/startUpNavHostFragment"
+        android:id="@+id/loginNavHostFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"

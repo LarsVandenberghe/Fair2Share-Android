@@ -3,6 +3,7 @@ package com.example.fair2share.network
 import android.content.SharedPreferences
 import com.example.fair2share.BuildConfig
 import com.example.fair2share.data_models.LoginProperty
+import com.example.fair2share.data_models.RegisterProperty
 import com.example.fair2share.login.AuthInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
@@ -35,6 +36,10 @@ private val retrofitJsonMap =
 interface AccountApiService {
     @POST("Account")
     fun login(@Body loginProperty: LoginProperty):
+            Deferred<String>
+
+    @POST("Account/register")
+    fun register(@Body registerProperty: RegisterProperty):
             Deferred<String>
 }
 

@@ -21,7 +21,7 @@ import com.example.fair2share.databinding.FragmentLoginBinding
 class LoginFragment : Fragment() {
 
     private lateinit var viewModel: LoginViewModel
-    private  lateinit var viewModelFactory: LoginViewModelFactory
+    private  lateinit var viewModelFactory: LoginAndRegisterViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -33,7 +33,7 @@ class LoginFragment : Fragment() {
 
         val sharedPrefs = requireActivity().getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
         sharedPrefs?.let {
-            viewModelFactory = LoginViewModelFactory(it)
+            viewModelFactory = LoginAndRegisterViewModelFactory(it)
             viewModel =
                 ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
 
@@ -70,7 +70,7 @@ class LoginFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.register_btn -> {
-                requireActivity().findNavController(R.id.startUpNavHostFragment).navigate(R.id.action_loginFragment_to_registerFragment)
+                requireActivity().findNavController(R.id.loginNavHostFragment).navigate(R.id.action_loginFragment_to_registerFragment)
                 return true
             } else -> super.onOptionsItemSelected(item)
         }

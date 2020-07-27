@@ -1,14 +1,12 @@
 package com.example.fair2share.login
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
-import com.example.fair2share.data_models.LoginProperty
+import com.example.fair2share.data_models.RegisterProperty
 import com.example.fair2share.network.AccountApi
-import com.example.fair2share.network.AccountApi.sharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,7 +15,9 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import java.lang.StringBuilder
 
-class LoginViewModel(var sharedPreferences: SharedPreferences) : ViewModel() {
+class RegisterViewModel(var sharedPreferences: SharedPreferences): ViewModel() {
+    private var _viewModelJob = Job()
+    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
 
     private val _loggedIn = MutableLiveData<Boolean>()
     val loggedIn: LiveData<Boolean>
@@ -27,17 +27,28 @@ class LoginViewModel(var sharedPreferences: SharedPreferences) : ViewModel() {
     val errorMessage: LiveData<String>
         get() = _errorMessage
 
-    private var _viewModelJob = Job()
-    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
-
     init {
         AccountApi.sharedPreferences = sharedPreferences
     }
 
-    fun login(email: String, password : String) {
+    fun register(
+        email: String,
+        password: String,
+        firstName: String,
+        lastName: String,
+        passwordConfirmation: String
+    ){
         _coroutineScope.launch {
             try {
-                val getJWTDeffered = AccountApi.retrofitService.login(LoginProperty(email, password))
+                val getJWTDeffered = AccountApi.retrofitService.register(
+                    RegisterProperty(
+                        email,
+                        password,
+                        firstName,
+                        lastName,
+                        passwordConfirmation
+                    )
+                )
                 val token = getJWTDeffered.await()
                 val edit = sharedPreferences.edit()
                 edit.putString("token", token)
@@ -45,7 +56,7 @@ class LoginViewModel(var sharedPreferences: SharedPreferences) : ViewModel() {
                 _loggedIn.value = true
             } catch (e: HttpException){
                 _errorMessage.value = Utils.formExceptionsToString(e)
-            } catch (t: Throwable){
+            }catch (t: Throwable){
                 _errorMessage.value = t.message
             }
         }
