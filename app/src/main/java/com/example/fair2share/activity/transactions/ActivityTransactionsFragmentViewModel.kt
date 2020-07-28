@@ -1,4 +1,4 @@
-package com.example.fair2share.activity
+package com.example.fair2share.activity.transactions
 
 import android.app.Activity
 import android.util.Log
@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ActivityFragmentViewModel(var activity : ActivityProperty):ViewModel() {
+class ActivityTransactionsFragmentViewModel(var activity : ActivityProperty):ViewModel() {
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     private val _transactions = MutableLiveData<List<TransactionProperty>>()
@@ -24,9 +24,7 @@ class ActivityFragmentViewModel(var activity : ActivityProperty):ViewModel() {
 
     private val _participants = MutableLiveData<List<ProfileProperty>>()
 
-    private val _summary = MutableLiveData<List<Pair<ProfileProperty, Double>>>()
-    val summary: LiveData<List<Pair<ProfileProperty, Double>>>
-        get() = _summary
+
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String>
@@ -41,15 +39,6 @@ class ActivityFragmentViewModel(var activity : ActivityProperty):ViewModel() {
             activity = ActivityApi.retrofitService.getActivity(activity.activityId!!).await()
             _transactions.value = ActivityApi.retrofitService.getActivityTransactions(activity.activityId!!).await()
             _participants.value = ActivityApi.retrofitService.getActivityParticipants(activity.activityId!!).await().participants
-            _summary.value = ActivityApi.retrofitService.getActivitySummary(activity.activityId!!).await().map {
-                var profile = (_participants.value as List).find {participant ->
-                    participant.profileId == it.key.toLong()
-                }
-                var out : Pair<ProfileProperty, Double> = Pair(
-                    first = profile!!, second = it.value
-                )
-                out
-            }
         }
     }
 

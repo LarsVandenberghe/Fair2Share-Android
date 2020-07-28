@@ -11,20 +11,15 @@
         android:label="@string/fragment_profile_title"
         tools:layout="@layout/fragment_profile">
         <action
-            android:id="@+id/action_fragmentProfile_to_activityFragment"
-            app:destination="@id/activityFragment" />
-        <action
             android:id="@+id/action_fragmentProfile_to_createActivityFragment"
             app:destination="@id/createActivityFragment" />
         <action
             android:id="@+id/action_fragmentProfile_to_friendListFragment"
             app:destination="@id/friendListFragment" />
+        <action
+            android:id="@+id/action_fragmentProfile_to_activityTransactionsFragment"
+            app:destination="@id/activityTransactionsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/activityFragment"
-        android:name="com.example.fair2share.activity.ActivityFragment"
-        android:label="fragment_activity"
-        tools:layout="@layout/fragment_activity" />
     <fragment
         android:id="@+id/createActivityFragment"
         android:name="com.example.fair2share.activity.CreateActivityFragment"
@@ -44,4 +39,17 @@
         android:name="com.example.fair2share.friends.AddFriendFragment"
         android:label="@string/fragment_add_friend_title"
         tools:layout="@layout/fragment_add_friend"/>
+    <fragment
+        android:id="@+id/activityTransactionsFragment"
+        android:name="com.example.fair2share.activity.transactions.ActivityTransactionsFragment"
+        android:label="fragment_activity_transactions"
+        tools:layout="@layout/fragment_activity_transactions" >
+        <action
+            android:id="@+id/action_activityTransactionsFragment_to_activitySummaryFragment"
+            app:destination="@id/activitySummaryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/activitySummaryFragment"
+        android:name="com.example.fair2share.activity.summary.ActivitySummaryFragment"
+        android:label="ActivitySummaryFragment" />
 </navigation>

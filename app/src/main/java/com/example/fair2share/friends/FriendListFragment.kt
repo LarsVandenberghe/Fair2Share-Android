@@ -17,7 +17,6 @@ import com.example.fair2share.databinding.FragmentFriendListBinding
 
 class FriendListFragment : Fragment() {
     private lateinit var viewModel: FriendListViewModel
-    private lateinit var viewModelFactory: FriendListViewModelFactory
     private lateinit var friendRequestAdapter: FriendRequestBindingAdapter
     private lateinit var friendsAdapter: FriendBindingAdapter
 
@@ -26,7 +25,7 @@ class FriendListFragment : Fragment() {
 
         arguments?.let{
             var friends : List<ProfileProperty>? = it.getParcelableArrayList("friends")
-            viewModelFactory = FriendListViewModelFactory(friends)
+            val viewModelFactory = FriendListViewModelFactory(friends)
             viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
         }
     }

@@ -5,6 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="50dp">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="49dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?android:attr/colorButtonNormal" />
+
     <TextView
         android:id="@+id/recycler_profile_activity_lbl"
         android:layout_width="wrap_content"
@@ -23,9 +34,10 @@
         android:layout_height="0dp"
         android:layout_marginEnd="15dp"
         android:padding="10dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons_trash_can_48"
-        android:scaleType="fitCenter"/>
+        app:srcCompat="@drawable/icons_trash_can_48" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

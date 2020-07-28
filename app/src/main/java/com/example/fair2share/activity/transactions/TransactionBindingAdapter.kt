@@ -1,4 +1,4 @@
-package com.example.fair2share.activity
+package com.example.fair2share.activity.transactions
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,11 +7,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fair2share.R
 import com.example.fair2share.ConstraintRowItemViewHolder
-import com.example.fair2share.data_models.ProfileProperty
+import com.example.fair2share.data_models.TransactionProperty
 import com.example.fair2share.data_models.Valutas
 
-class SummaryBindingAdapter(val viewModel: ActivityFragmentViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
-    var data =  listOf<Pair<ProfileProperty, Double>>()
+class TransactionBindingAdapter(val viewModel: ActivityTransactionsFragmentViewModel)  : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
+    var data =  listOf<TransactionProperty>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -29,7 +29,7 @@ class SummaryBindingAdapter(val viewModel: ActivityFragmentViewModel) : Recycler
     }
 
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
-        holder.rowView.findViewById<TextView>(R.id.recycler_transaction_name).text = String.format("%s %s", data[position].first.firstname, data[position].first.lastname)
-        holder.rowView.findViewById<TextView>(R.id.recycler_transaction_price).text = String.format("%s %.2f", Valutas.values()[viewModel.activity.currencyType].getSymbol(),data[position].second)
+        holder.rowView.findViewById<TextView>(R.id.recycler_transaction_name).text = data[position].name
+        holder.rowView.findViewById<TextView>(R.id.recycler_transaction_price).text = String.format("%s %.2f", Valutas.values()[viewModel.activity.currencyType].getSymbol(),data[position].payment)
     }
 }

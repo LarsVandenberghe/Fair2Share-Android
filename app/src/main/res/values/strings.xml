@@ -44,4 +44,7 @@
     <string name="txt_email">Email*</string>
     <string name="hint_password">password</string>
     <string name="hint_confirm_password">confirm password</string>
+    <string name="btn_summary" >Summary</string>
+    <string name="edit_activity_btn" >Edit Activity</string>
+    <string name="btn_add_friends">Add Friends</string>
 </resources>

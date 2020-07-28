@@ -18,7 +18,6 @@ import com.example.fair2share.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment() {
     private lateinit var viewModel: RegisterViewModel
-    private  lateinit var viewModelFactory: LoginAndRegisterViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +26,7 @@ class RegisterFragment : Fragment() {
         val binding: FragmentRegisterBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
         val sharedPrefs = requireActivity().getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
         sharedPrefs?.let {
-            viewModelFactory = LoginAndRegisterViewModelFactory(it)
+            val viewModelFactory = LoginAndRegisterViewModelFactory(it)
             viewModel =
                 ViewModelProviders.of(this, viewModelFactory).get(RegisterViewModel::class.java)
 

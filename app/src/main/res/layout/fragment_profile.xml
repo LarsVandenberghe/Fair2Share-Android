@@ -14,14 +14,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/bottom_margin">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddActivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:clickable="true"
             android:focusable="auto"
             android:foreground="@drawable/ic_baseline_add_24"
@@ -35,9 +36,6 @@
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,10 +45,9 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#2196F3"
-                android:padding="15dp"
+                android:layout_marginBottom="@dimen/bottom_margin"
                 android:text="@string/profile_lbl_activities"
-                android:textColor="@android:color/white" />
+                android:textSize="@dimen/title" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/activity_list"

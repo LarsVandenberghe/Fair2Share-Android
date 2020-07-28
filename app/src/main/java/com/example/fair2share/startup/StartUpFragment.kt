@@ -22,7 +22,6 @@ import com.example.fair2share.network.AccountApi
 class StartUpFragment : Fragment() {
 
     private lateinit var viewModel: StartUpViewModel
-    private lateinit var viewModelFactory: StartUpViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +36,7 @@ class StartUpFragment : Fragment() {
         AccountApi.sharedPreferences = requireActivity()
             .getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
 
-        viewModelFactory = StartUpViewModelFactory(AccountApi.sharedPreferences)
+        val viewModelFactory = StartUpViewModelFactory(AccountApi.sharedPreferences)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(StartUpViewModel::class.java)
 
         if (viewModel.token.value != null){
