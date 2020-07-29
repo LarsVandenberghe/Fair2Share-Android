@@ -30,8 +30,8 @@ class AddFriendFragment : Fragment() {
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentAddFriendBinding>(inflater, R.layout.fragment_add_friend, container, false)
 
-        binding.btnAddFriend.setOnClickListener {
-            viewModel.addFriendByEmail(binding.editAddEmailAddress.text.toString())
+        binding.btnRecyclerFriendRequestAddFriend.setOnClickListener {
+            viewModel.addFriendByEmail(binding.editAddFriendEmail.text.toString())
         }
 
         viewModel.errorMessage.observe(this, Observer {

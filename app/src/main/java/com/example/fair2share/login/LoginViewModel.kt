@@ -44,7 +44,8 @@ class LoginViewModel(var sharedPreferences: SharedPreferences) : ViewModel() {
                 edit.apply()
                 _loggedIn.value = true
             } catch (e: HttpException){
-                _errorMessage.value = Utils.formExceptionsToString(e)
+                //TODO: Stringify
+                _errorMessage.value = Utils.formExceptionsToString(e, "Password or email not correct!")
             } catch (t: Throwable){
                 _errorMessage.value = t.message
             }

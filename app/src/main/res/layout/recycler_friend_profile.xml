@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imgFriendRvLstFriends"
+        android:id="@+id/img_recycler_friend_profile"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="10dp"
@@ -19,12 +19,12 @@
         android:contentDescription="@string/img_nav_profile_description" />
 
     <TextView
-        android:id="@+id/txtFriendNameRvLstFriends"
+        android:id="@+id/txt_recycler_friend_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgFriendRvLstFriends"
+        app:layout_constraintStart_toEndOf="@+id/img_recycler_friend_profile"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.516" />
 

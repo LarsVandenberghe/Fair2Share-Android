@@ -32,14 +32,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        drawerLayout = binding.drawerLayout
-        val navController = this.findNavController(R.id.mainNavHostFragment)
+        drawerLayout = binding.drawerLayoutActivityMain
+        val navController = this.findNavController(R.id.nav_host_fragment_main)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
         preventGestureIfNotOnStartDestination(navController)
 
-        NavigationUI.setupWithNavController(binding.navView, navController)
+        NavigationUI.setupWithNavController(binding.navViewActivityMain, navController)
         setupNavigationListener(navController)
 
         setupOnTokenExpiredRestartApp()
@@ -48,26 +48,26 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = this.findNavController(R.id.mainNavHostFragment)
+        val navController = this.findNavController(R.id.nav_host_fragment_main)
         return NavigationUI.navigateUp(navController, appBarConfiguration)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.findItem(R.id.btnMenuFriends)?.title = String.format("(%d)", 1)
+        menu?.findItem(R.id.btn_navdrawer_friends)?.title = String.format("(%d)", 1)
         return super.onPrepareOptionsMenu(menu)
     }
 
     fun bindProfileToNavHeader(vm: ProfileFragmentViewModel){
-        navHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navView, true)
+        navHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navViewActivityMain, true)
         vm.profile.observe(this, Observer { data ->
             navHeaderBinding.profile = data
 
-            Glide.with(navHeaderBinding.imgNavProfile.context)
+            Glide.with(navHeaderBinding.imgNavHeaderProfile.context)
                 .load(vm.getProfilePicUrl(data))
                 .apply(
                     RequestOptions().placeholder(R.drawable.default_user)
                         .error(R.drawable.default_user)
-                ).into(navHeaderBinding.imgNavProfile)
+                ).into(navHeaderBinding.imgNavHeaderProfile)
         })
     }
 
@@ -82,14 +82,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNavigationListener(navController: NavController){
-        (drawerLayout.navView as NavigationView).setNavigationItemSelectedListener {
-            if (  it.itemId == R.id.btnMenuLogout ){
+        (drawerLayout.nav_view_activity_main as NavigationView).setNavigationItemSelectedListener {
+            if (  it.itemId == R.id.btn_navdrawer_logout ){
                 sharedPreferences?.edit()?.remove("token")?.apply()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
 
-            if ( it.itemId == R.id.btnMenuFriends ){
+            if ( it.itemId == R.id.btn_navdrawer_friends ){
                 val friends = Bundle()
                 friends.putParcelableArrayList("friends", navHeaderBinding.profile?.friends as ArrayList<ProfileProperty>)
                 navController.navigate(R.id.action_fragmentProfile_to_friendListFragment, friends)

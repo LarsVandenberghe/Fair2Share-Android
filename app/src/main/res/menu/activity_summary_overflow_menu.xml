@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/btnSummaryOverflowTransactions"
+        android:id="@+id/btn_summary_overflow_transactions"
         android:icon="@drawable/transactions"
         android:title="@string/fragment_activity_transactions_title"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/btnSummaryOverflowAddFriends"
+        android:id="@+id/btn_summary_overflow_add_friends"
         android:icon="@drawable/add_friends"
         android:title="@string/btn_add_friends"
         app:showAsAction="ifRoom" />

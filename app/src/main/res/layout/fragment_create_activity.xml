@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/txtLabelActivityName"
+            android:id="@+id/txt_create_activity_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/editFragmentCreateActivityName"
+            android:id="@+id/edit_create_activity_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -29,21 +29,21 @@
             android:hint="@string/fragment_create_activity_name_placeholder"
             android:inputType="textPersonName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtLabelActivityName"
+            app:layout_constraintTop_toBottomOf="@+id/txt_create_activity_name"
             android:importantForAutofill="no" />
 
         <TextView
-            android:id="@+id/txtLabelActivityDescription"
+            android:id="@+id/txt_create_activity_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"
             android:text="@string/fragment_create_activity_description_lbl"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editFragmentCreateActivityName" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_create_activity_name" />
 
         <EditText
-            android:id="@+id/editFragmentCreateActivityDescription"
+            android:id="@+id/edit_create_activity_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -54,21 +54,21 @@
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtLabelActivityDescription"
+            app:layout_constraintTop_toBottomOf="@+id/txt_create_activity_description"
             android:importantForAutofill="no" />
 
         <TextView
-            android:id="@+id/txtLabelValuta"
+            android:id="@+id/txt_create_activity_valuta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"
             android:text="@string/fragment_create_activity_valuta_lbl"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editFragmentCreateActivityDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_create_activity_description" />
 
         <Spinner
-            android:id="@+id/cboFragmentCreateActivityValuta"
+            android:id="@+id/cbo_create_activity_valuta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -77,17 +77,17 @@
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtLabelValuta" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_create_activity_valuta" />
 
         <Button
-            android:id="@+id/btnFragmentCreateActivityAdd"
+            android:id="@+id/btn_create_activity_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:text="@string/btn_add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cboFragmentCreateActivityValuta" />
+            app:layout_constraintTop_toBottomOf="@+id/cbo_create_activity_valuta" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -10,7 +10,7 @@
         android:layout_margin="@dimen/bottom_margin">
 
         <TextView
-            android:id="@+id/txtTitleTransactions"
+            android:id="@+id/txt_activity_transactions_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/fragment_activity_transactions_title"
@@ -20,19 +20,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTransactionList"
+            android:id="@+id/rv_activity_transaction_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtTitleTransactions">
+            app:layout_constraintTop_toBottomOf="@+id/txt_activity_transactions_title">
 
         </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabAddActivity2"
+            android:id="@+id/fab_activity_add_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"

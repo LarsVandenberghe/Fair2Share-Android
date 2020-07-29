@@ -51,7 +51,7 @@ class LoginFragment : Fragment() {
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             })
 
-            binding.loginPane.setOnClickListener{ view: View ->
+            binding.constraintLayoutLogin.setOnClickListener{ view: View ->
                 val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
@@ -68,8 +68,8 @@ class LoginFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.btnRegister -> {
-                requireActivity().findNavController(R.id.loginNavHostFragment).navigate(R.id.action_loginFragment_to_registerFragment)
+            R.id.btn_login_overflow_register -> {
+                requireActivity().findNavController(R.id.nav_host_fragment_login).navigate(R.id.action_loginFragment_to_registerFragment)
                 return true
             } else -> super.onOptionsItemSelected(item)
         }

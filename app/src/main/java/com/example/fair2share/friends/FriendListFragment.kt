@@ -70,9 +70,9 @@ class FriendListFragment : Fragment() {
         viewModel.friendRequests.observe(this, Observer {
             friendRequestAdapter.data = it
             if (it.size == 0){
-                requireView().findViewById<TextView>(R.id.txtNoFriendRequests).visibility = View.VISIBLE
+                requireView().findViewById<TextView>(R.id.txt_friend_lst_no_friend_requests).visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txtNoFriendRequests).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_friend_lst_no_friend_requests).visibility = View.GONE
             }
 
         })
@@ -80,13 +80,13 @@ class FriendListFragment : Fragment() {
         viewModel.friends.observe(this, Observer {
             friendsAdapter.data = it
             if (it.size == 0){
-                requireView().findViewById<TextView>(R.id.txtNoFriends).visibility = View.VISIBLE
+                requireView().findViewById<TextView>(R.id.txt_friend_lst_no_friends).visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txtNoFriends).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_friend_lst_no_friends).visibility = View.GONE
             }
         })
 
-        binding.rvLstFriendsRequests.adapter = friendRequestAdapter
-        binding.rvLstFriends.adapter = friendsAdapter
+        binding.rvFriendLstFriendsRequests.adapter = friendRequestAdapter
+        binding.rvFriendLstFriends.adapter = friendsAdapter
     }
 }

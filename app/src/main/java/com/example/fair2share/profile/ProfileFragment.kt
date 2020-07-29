@@ -41,11 +41,11 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         adapter = ActivityBindingAdapter(viewModel)
-        binding.rvActivityList.adapter = adapter
+        binding.rvProfileActivityList.adapter = adapter
 
         receiveProfileData()
 
-        binding.fabAddActivity.setOnClickListener{
+        binding.fabProfileAddActivity.setOnClickListener{
             navigateToCreateActivity()
         }
         return binding.root
@@ -58,7 +58,7 @@ class ProfileFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.btnAddActivity -> {
+            R.id.btn_profile_overflow_add_activity -> {
                 navigateToCreateActivity()
                 return true
             } else -> super.onOptionsItemSelected(item)
@@ -70,14 +70,14 @@ class ProfileFragment : Fragment() {
     }
 
     private fun addFriendRequests(amountOfFriendRequests: Int){
-        val menu = requireActivity().findViewById<NavigationView>(R.id.navView).menu
+        val menu = requireActivity().findViewById<NavigationView>(R.id.nav_view_activity_main).menu
         if (amountOfFriendRequests > 0){
-            menu.findItem(R.id.btnMenuFriends).title = String.format(
+            menu.findItem(R.id.btn_navdrawer_friends).title = String.format(
                 "Friends (%d)",
                 amountOfFriendRequests
             )
         } else {
-            menu.findItem(R.id.btnMenuFriends).title = "Friends"
+            menu.findItem(R.id.btn_navdrawer_friends).title = "Friends"
         }
     }
 

@@ -18,6 +18,10 @@ class AuthInterceptor: Interceptor {
         val shouldRestart: LiveData<Boolean>
             get() = _shouldRestart
 
+        private val _isOffline = MutableLiveData<Boolean>()
+        val isOffline: LiveData<Boolean>
+            get() = _isOffline
+
         fun throwableIs401(throwable: Throwable) : Boolean {
             if (throwable is HttpException && throwable.code() == 401){
                 return true
@@ -35,6 +39,7 @@ class AuthInterceptor: Interceptor {
                 .addHeader("Authorization", String.format("Bearer %s", token))
                 .build()
         }
+
         val response = chain.proceed(request)
         if (response.code() == 401) {
             _shouldRestart.postValue(true)

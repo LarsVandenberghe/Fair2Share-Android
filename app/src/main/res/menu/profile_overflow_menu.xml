@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/btnAddActivity"
+        android:id="@+id/btn_profile_overflow_add_activity"
         android:title="@string/fragment_create_activity_title" />
 </menu>
