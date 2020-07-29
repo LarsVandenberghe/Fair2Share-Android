@@ -12,7 +12,7 @@ import com.example.fair2share.R
 import com.example.fair2share.ConstraintRowItemViewHolder
 import com.example.fair2share.data_models.ActivityProperty
 
-class ActivityBindingAdapter(val viewModel: FragmentProfileViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
+class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
     var data =  listOf<ActivityProperty>()
         set(value) {
             field = value

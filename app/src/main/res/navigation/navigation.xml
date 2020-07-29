@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentProfile"
-        android:name="com.example.fair2share.profile.FragmentProfile"
+        android:name="com.example.fair2share.profile.ProfileFragment"
         android:label="@string/fragment_profile_title"
         tools:layout="@layout/fragment_profile">
         <action

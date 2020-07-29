@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -16,24 +15,27 @@ import com.example.fair2share.databinding.FragmentProfileBinding
 import com.google.android.material.navigation.NavigationView
 
 
-class FragmentProfile : Fragment() {
+class ProfileFragment : Fragment() {
 
-    private lateinit var viewModel: FragmentProfileViewModel
+    private lateinit var viewModel: ProfileFragmentViewModel
     private lateinit var binding: FragmentProfileBinding
     private lateinit var adapter: ActivityBindingAdapter
     var firstLoad : Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(FragmentProfileViewModel::class.java)
-
-        (activity as MainActivity).bindProfileToNavHeader(viewModel)
+        viewModel = ViewModelProviders.of(this).get(ProfileFragmentViewModel::class.java)
 
         viewModel.errorMessage.observe(this, Observer { errorMsg ->
             Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
         })
 
         setHasOptionsMenu(true)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).bindProfileToNavHeader(viewModel)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

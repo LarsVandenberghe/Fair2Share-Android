@@ -23,19 +23,19 @@ class LoginFragment : Fragment() {
     private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentLoginBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
 
         val sharedPrefs = requireActivity().getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
         sharedPrefs?.let {
             val viewModelFactory = LoginAndRegisterViewModelFactory(it)
             viewModel =
                 ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
+        }
+        setHasOptionsMenu(true)
+    }
 
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding: FragmentLoginBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
             binding.btnLogin.setOnClickListener{view: View ->
                 viewModel.login(binding.txtLoginEmail.text.toString(), binding.txtLoginPassword.text.toString())
             }
@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
                 val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
-        }
+
 
         (requireActivity() as LoginActivity).setIsOnLoginFragment(true)
         return binding.root

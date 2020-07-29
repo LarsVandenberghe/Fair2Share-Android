@@ -17,30 +17,30 @@ import androidx.navigation.findNavController
 import com.example.fair2share.LoginActivity
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
+import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.network.AccountApi
 
 class StartUpFragment : Fragment() {
 
     private lateinit var viewModel: StartUpViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_start_up, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         AccountApi.sharedPreferences = requireActivity()
             .getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
 
         val viewModelFactory = StartUpViewModelFactory(AccountApi.sharedPreferences)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(StartUpViewModel::class.java)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         if (viewModel.token.value != null){
             viewModel.getProfile()
+
             viewModel.errorMessage.observe(this, Observer {
                 Toast.makeText(context, it, Toast.LENGTH_LONG).show()
             })
@@ -52,23 +52,27 @@ class StartUpFragment : Fragment() {
             })
 
             viewModel.profile.observe(this, Observer {
-                val intent = Intent(context, MainActivity::class.java)
-                intent.putExtra("profile", it)
-                startActivity(intent)
-                requireActivity().finish()
+                navigateToMainActivity(it)
             })
         } else {
-            val handler = Handler()
-            handler.postDelayed({
-                this.handleLoginState()
-            }, 1000)
+            handleLoginState()
         }
+
+        return inflater.inflate(R.layout.fragment_start_up, container, false)
     }
 
     private fun handleLoginState(){
-        //val navController = requireActivity().findNavController(R.id.startUpNavHostFragment)
-        //navController.navigate(R.id.action_startUpFragment_to_loginFragment)
-        val intent = Intent(context, LoginActivity::class.java)
+        val handler = Handler()
+        handler.postDelayed({
+            val intent = Intent(context, LoginActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }, 1000)
+    }
+
+    private fun navigateToMainActivity(profile: ProfileProperty){
+        val intent = Intent(context, MainActivity::class.java)
+        intent.putExtra("profile", profile)
         startActivity(intent)
         requireActivity().finish()
     }

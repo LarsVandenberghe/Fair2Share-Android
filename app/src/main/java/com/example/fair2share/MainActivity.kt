@@ -19,7 +19,7 @@ import com.example.fair2share.databinding.ActivityMainBinding
 import com.example.fair2share.databinding.NavHeaderBinding
 import com.example.fair2share.login.AuthInterceptor
 import com.example.fair2share.network.AccountApi.sharedPreferences
-import com.example.fair2share.profile.FragmentProfileViewModel
+import com.example.fair2share.profile.ProfileFragmentViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.view.*
 
@@ -37,40 +37,27 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
-        // prevent nav gesture if not on start destination
-        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, bundle: Bundle? ->
-            if (nd.id == nc.graph.startDestination) {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-            } else {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-            }
-        }
+        preventGestureIfNotOnStartDestination(navController)
 
         NavigationUI.setupWithNavController(binding.navView, navController)
-        (drawerLayout.navView as NavigationView).setNavigationItemSelectedListener {
-            if (  it.itemId == R.id.btnMenuLogout ){
-                sharedPreferences?.edit()?.remove("token")?.apply()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
-
-            if ( it.itemId == R.id.btnMenuFriends ){
-                val friends = Bundle()
-                friends.putParcelableArrayList("friends", navHeaderBinding.profile?.friends as ArrayList<ProfileProperty?>)
-                navController.navigate(R.id.action_fragmentProfile_to_friendListFragment, friends)
-            }
-            return@setNavigationItemSelectedListener false
-        }
+        setupNavigationListener(navController)
 
         AuthInterceptor.mainActivity = this
     }
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = this.findNavController(R.id.mainNavHostFragment)
         return NavigationUI.navigateUp(navController, appBarConfiguration)
     }
 
-    fun bindProfileToNavHeader(vm: FragmentProfileViewModel){
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.btnMenuFriends)?.title = String.format("(%d)", 1)
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    fun bindProfileToNavHeader(vm: ProfileFragmentViewModel){
         navHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navView, true)
         vm.profile.observe(this, Observer { data ->
             navHeaderBinding.profile = data
@@ -84,8 +71,30 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.findItem(R.id.btnMenuFriends)?.title = String.format("(%d)", 1)
-        return super.onPrepareOptionsMenu(menu)
+    private fun preventGestureIfNotOnStartDestination(navController: NavController){
+        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, bundle: Bundle? ->
+            if (nd.id == nc.graph.startDestination) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+        }
+    }
+
+    private fun setupNavigationListener(navController: NavController){
+        (drawerLayout.navView as NavigationView).setNavigationItemSelectedListener {
+            if (  it.itemId == R.id.btnMenuLogout ){
+                sharedPreferences?.edit()?.remove("token")?.apply()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
+
+            if ( it.itemId == R.id.btnMenuFriends ){
+                val friends = Bundle()
+                friends.putParcelableArrayList("friends", navHeaderBinding.profile?.friends as ArrayList<ProfileProperty>)
+                navController.navigate(R.id.action_fragmentProfile_to_friendListFragment, friends)
+            }
+            return@setNavigationItemSelectedListener false
+        }
     }
 }

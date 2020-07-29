@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.example.fair2share.BuildConfig
+import com.example.fair2share.Utils
 import com.example.fair2share.data_models.ActivityProperty
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.network.AccountApi
@@ -17,8 +18,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.StringBuilder
 
-class FragmentProfileViewModel : ViewModel() {
+class ProfileFragmentViewModel : ViewModel() {
 
     private var _viewModelJob = Job()
     private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
@@ -50,7 +52,12 @@ class FragmentProfileViewModel : ViewModel() {
         _coroutineScope.launch {
             val a = ActivityApi.retrofitService.removeActivity(activity.activityId!!).await()
             if (!a.isSuccessful){
-                _errorMessage.value = a.errorBody()?.string()
+                val sb = StringBuilder()
+                val charStream = a.errorBody()?.charStream()
+                if (charStream != null){
+                    sb.append(charStream.readText())
+                }
+                _errorMessage.value = sb.toString()
             } else {
                 update()
             }
