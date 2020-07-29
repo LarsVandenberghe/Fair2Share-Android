@@ -32,18 +32,18 @@ class CreateActivityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentCreateActivityBinding>(inflater, R.layout.fragment_create_activity, container, false)
-        binding.cboCreateActivityValuta.adapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Valutas.values())
+        binding.cboCreateactivityValuta.adapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Valutas.values())
         binding.createActivityPane.setOnClickListener {
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
         }
 
-        binding.btnCreateActivityAdd.setOnClickListener {
+        binding.btnCreateactivityAdd.setOnClickListener {
             val act = ActivityProperty(
                 null,
-                binding.txtCreateActivityName.text.toString(),
-                binding.txtCreateActivityDescription.text.toString(),
-                binding.cboCreateActivityValuta.selectedItemPosition, null, null
+                binding.txtCreateactivityName.text.toString(),
+                binding.txtCreateactivityDescription.text.toString(),
+                binding.cboCreateactivityValuta.selectedItemPosition, null, null
             )
             viewModel.create(act)
         }

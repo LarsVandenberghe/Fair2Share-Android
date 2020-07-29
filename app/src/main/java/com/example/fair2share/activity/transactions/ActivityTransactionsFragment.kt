@@ -35,7 +35,7 @@ class ActivityTransactionsFragment : Fragment() {
         val transactionAdapter =
             TransactionBindingAdapter(viewModel)
 
-        binding.rvActivityTransactionList.adapter = transactionAdapter
+        binding.rvActivitytransactionsList.adapter = transactionAdapter
 
         viewModel.transactions.observe(this, Observer { transactions ->
             transactionAdapter.data = transactions.reversed()
@@ -63,11 +63,11 @@ class ActivityTransactionsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.btn_transactions_overflow_remove_activity -> {
+            R.id.btn_transactionsoverflow_removeactivity -> {
                 viewModel.removeActivity(viewModel.activity)
                 return true
             }
-            R.id.btn_transactions_overflow_summary -> {
+            R.id.btn_transactionsoverflow_summary -> {
                 val bundle = Bundle()
                 bundle.putParcelable("activity", viewModel.activity)
                 findNavController().navigate(R.id.action_activityTransactionsFragment_to_activitySummaryFragment, bundle)

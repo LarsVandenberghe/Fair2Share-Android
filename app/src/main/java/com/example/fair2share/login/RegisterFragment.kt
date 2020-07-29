@@ -41,13 +41,13 @@ class RegisterFragment : Fragment() {
                 }
             })
 
-            binding.btnLoginOverflowRegister.setOnClickListener {
+            binding.btnRegisterRegister.setOnClickListener {
                 viewModel.register(
                     binding.editRegisterEmail.text.toString(),
                     binding.editRegisterPassword.text.toString(),
-                    binding.editRegisterFirstName.text.toString(),
-                    binding.editRegisterLastName.text.toString(),
-                    binding.editRegisterConfirmPassword.text.toString()
+                    binding.editRegisterFirstname.text.toString(),
+                    binding.editRegisterLastname.text.toString(),
+                    binding.editRegisterConfirmpassword.text.toString()
                 )
             }
         }

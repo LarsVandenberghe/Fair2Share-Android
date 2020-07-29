@@ -32,14 +32,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        drawerLayout = binding.drawerLayoutActivityMain
-        val navController = this.findNavController(R.id.nav_host_fragment_main)
+        drawerLayout = binding.drawerlayoutActivityMain
+        val navController = this.findNavController(R.id.navhostfragment_main)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
         preventGestureIfNotOnStartDestination(navController)
 
-        NavigationUI.setupWithNavController(binding.navViewActivityMain, navController)
+        NavigationUI.setupWithNavController(binding.navviewActivityMain, navController)
         setupNavigationListener(navController)
 
         setupOnTokenExpiredRestartApp()
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = this.findNavController(R.id.nav_host_fragment_main)
+        val navController = this.findNavController(R.id.navhostfragment_main)
         return NavigationUI.navigateUp(navController, appBarConfiguration)
     }
 
@@ -58,16 +58,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun bindProfileToNavHeader(vm: ProfileFragmentViewModel){
-        navHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navViewActivityMain, true)
+        navHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navviewActivityMain, true)
         vm.profile.observe(this, Observer { data ->
             navHeaderBinding.profile = data
 
-            Glide.with(navHeaderBinding.imgNavHeaderProfile.context)
+            Glide.with(navHeaderBinding.imgNavheaderProfile.context)
                 .load(vm.getProfilePicUrl(data))
                 .apply(
                     RequestOptions().placeholder(R.drawable.default_user)
                         .error(R.drawable.default_user)
-                ).into(navHeaderBinding.imgNavHeaderProfile)
+                ).into(navHeaderBinding.imgNavheaderProfile)
         })
     }
 
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNavigationListener(navController: NavController){
-        (drawerLayout.nav_view_activity_main as NavigationView).setNavigationItemSelectedListener {
+        (drawerLayout.navview_activity_main as NavigationView).setNavigationItemSelectedListener {
             if (  it.itemId == R.id.btn_navdrawer_logout ){
                 sharedPreferences?.edit()?.remove("token")?.apply()
                 startActivity(Intent(this, LoginActivity::class.java))

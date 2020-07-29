@@ -53,7 +53,7 @@ class FriendListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val fab: View = requireView().findViewById(R.id.fabAddFriend)
+        val fab: View = requireView().findViewById(R.id.fab_friendlst_addfriend)
 
         fab.setOnClickListener {
             val bundle = Bundle()
@@ -70,9 +70,9 @@ class FriendListFragment : Fragment() {
         viewModel.friendRequests.observe(this, Observer {
             friendRequestAdapter.data = it
             if (it.size == 0){
-                requireView().findViewById<TextView>(R.id.txt_friend_lst_no_friend_requests).visibility = View.VISIBLE
+                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriendrequests).visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_friend_lst_no_friend_requests).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriendrequests).visibility = View.GONE
             }
 
         })
@@ -80,13 +80,13 @@ class FriendListFragment : Fragment() {
         viewModel.friends.observe(this, Observer {
             friendsAdapter.data = it
             if (it.size == 0){
-                requireView().findViewById<TextView>(R.id.txt_friend_lst_no_friends).visibility = View.VISIBLE
+                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriends).visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_friend_lst_no_friends).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriends).visibility = View.GONE
             }
         })
 
-        binding.rvFriendLstFriendsRequests.adapter = friendRequestAdapter
-        binding.rvFriendLstFriends.adapter = friendsAdapter
+        binding.rvFriendlstFriendsrequests.adapter = friendRequestAdapter
+        binding.rvFriendlstFriends.adapter = friendsAdapter
     }
 }

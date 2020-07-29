@@ -36,8 +36,8 @@ class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) : Recycler
         val bundle = Bundle()
         bundle.putParcelable("activity", item)
         holder.rowView.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_fragmentProfile_to_activityTransactionsFragment, bundle))
-        holder.rowView.findViewById<TextView>(R.id.txt_recycler_activity).text = String.format("%s", item.name)
-        holder.rowView.findViewById<ImageButton>(R.id.btn_recycler_remove_activity).setOnClickListener{
+        holder.rowView.findViewById<TextView>(R.id.txt_recycleractivity_name).text = String.format("%s", item.name)
+        holder.rowView.findViewById<ImageButton>(R.id.btn_recycleractivity_remove).setOnClickListener{
             viewModel.removeActivity(item)
         }
     }

@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/txt_start_up"
+            android:id="@+id/txt_startup_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -28,7 +28,7 @@
             android:textSize="36sp" />
 
         <ProgressBar
-            android:id="@+id/progress_bar_start_up"
+            android:id="@+id/progressbar_startup_progress"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

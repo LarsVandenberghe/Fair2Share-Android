@@ -29,7 +29,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txt_friend_lst_fiend_request"
+                    android:id="@+id/txt_friendlst_fiendrequest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/bottom_margin"
@@ -37,14 +37,14 @@
                     android:textSize="@dimen/title" />
 
                 <TextView
-                    android:id="@+id/txt_friend_lst_no_friend_requests"
+                    android:id="@+id/txt_friendlst_nofriendrequests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/no_friend_requests"
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_friend_lst_friends_requests"
+                    android:id="@+id/rv_friendlst_friendsrequests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/bottom_margin"
@@ -53,7 +53,7 @@
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
-                    android:id="@+id/txt_friend_lst_friends"
+                    android:id="@+id/txt_friendlst_friends"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/bottom_margin"
@@ -62,14 +62,14 @@
                     android:textSize="@dimen/title" />
 
                 <TextView
-                    android:id="@+id/txt_friend_lst_no_friends"
+                    android:id="@+id/txt_friendlst_nofriends"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/no_friends"
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_friend_lst_friends"
+                    android:id="@+id/rv_friendlst_friends"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -78,7 +78,7 @@
         </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabAddFriend"
+            android:id="@+id/fab_friendlst_addfriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
