@@ -2,6 +2,8 @@ package com.example.fair2share.login
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.fair2share.MainActivity
 import com.example.fair2share.LoginActivity
 import com.example.fair2share.network.AccountApi.sharedPreferences
@@ -12,14 +14,16 @@ import retrofit2.HttpException
 
 class AuthInterceptor: Interceptor {
     companion object {
+        private val _shouldRestart = MutableLiveData<Boolean>()
+        val shouldRestart: LiveData<Boolean>
+            get() = _shouldRestart
+
         fun throwableIs401(throwable: Throwable) : Boolean {
             if (throwable is HttpException && throwable.code() == 401){
                 return true
             }
             return false
         }
-
-        var mainActivity: MainActivity? = null
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -33,21 +37,8 @@ class AuthInterceptor: Interceptor {
         }
         val response = chain.proceed(request)
         if (response.code() == 401) {
-            handleIf401()
+            _shouldRestart.postValue(true)
         }
         return response
-    }
-
-    private fun handleIf401() {
-        mainActivity?.let {
-            val mainActTemp = it
-            mainActivity = null
-
-            val intent = Intent(it.baseContext, LoginActivity::class.java)
-            intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
-            mainActTemp.startActivity(intent)
-            mainActTemp.finish()
-            Runtime.getRuntime().exit(0)
-        }
     }
 }

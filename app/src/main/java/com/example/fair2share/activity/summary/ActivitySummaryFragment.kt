@@ -35,7 +35,7 @@ class ActivitySummaryFragment : Fragment() {
 
         val summaryAdapter =
             SummaryBindingAdapter(viewModel)
-        binding.summaryList.adapter = summaryAdapter
+        binding.rvSummaryList.adapter = summaryAdapter
 
         viewModel.summary.observe(this, Observer { summaryItem ->
             summaryAdapter.data = summaryItem
@@ -49,17 +49,20 @@ class ActivitySummaryFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.activity_summary_overflow_menu, menu)
+        inflater.inflate(R.menu.activity_summary_overflow_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.btn_transactions -> {
+            R.id.btnSummaryOverflowTransactions -> {
                 findNavController().navigateUp()
+                return true
+            }
+            R.id.btnSummaryOverflowAddFriends -> {
+                findNavController().navigate(R.id.action_activitySummaryFragment_to_managePeopleInActivityFragment)
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 }

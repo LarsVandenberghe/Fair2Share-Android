@@ -35,7 +35,7 @@ class ActivityTransactionsFragment : Fragment() {
         val transactionAdapter =
             TransactionBindingAdapter(viewModel)
 
-        binding.transactionList.adapter = transactionAdapter
+        binding.rvTransactionList.adapter = transactionAdapter
 
         viewModel.transactions.observe(this, Observer { transactions ->
             transactionAdapter.data = transactions.reversed()
@@ -58,16 +58,16 @@ class ActivityTransactionsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.activity_transactions_overflow_menu, menu)
+        inflater.inflate(R.menu.activity_transactions_overflow_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.remove_activity_btn -> {
+            R.id.btnRemoveActivity -> {
                 viewModel.removeActivity(viewModel.activity)
                 return true
             }
-            R.id.btn_summary -> {
+            R.id.btnSummary -> {
                 val bundle = Bundle()
                 bundle.putParcelable("activity", viewModel.activity)
                 findNavController().navigate(R.id.action_activityTransactionsFragment_to_activitySummaryFragment, bundle)
@@ -75,7 +75,6 @@ class ActivityTransactionsFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
 }

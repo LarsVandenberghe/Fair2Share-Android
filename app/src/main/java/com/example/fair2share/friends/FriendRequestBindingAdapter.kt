@@ -39,7 +39,7 @@ class FriendRequestBindingAdapter(val viewModel: FriendListViewModel) : Recycler
         (holder.rowView.getViewById(R.id.btnAddFriend) as ImageButton).setOnClickListener {
             viewModel.handleFriendRequest(item.profileId, true)
         }
-        (holder.rowView.getViewById(R.id.btnRemoveFriend) as ImageButton).setOnClickListener {
+        (holder.rowView.getViewById(R.id.btnRemoveFriendRvLstFriendsRequests) as ImageButton).setOnClickListener {
             viewModel.handleFriendRequest(item.profileId, false)
         }
     }

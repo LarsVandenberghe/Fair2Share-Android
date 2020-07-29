@@ -41,7 +41,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/txtTitleActivities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/bottom_margin"
@@ -49,7 +49,7 @@
                 android:textSize="@dimen/title" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/activity_list"
+                android:id="@+id/rvActivityList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

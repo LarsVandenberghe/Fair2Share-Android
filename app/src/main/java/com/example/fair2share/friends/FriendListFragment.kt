@@ -24,7 +24,7 @@ class FriendListFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let{
-            var friends : List<ProfileProperty>? = it.getParcelableArrayList("friends")
+            val friends : List<ProfileProperty>? = it.getParcelableArrayList("friends")
             val viewModelFactory = FriendListViewModelFactory(friends)
             viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
         }
@@ -86,7 +86,7 @@ class FriendListFragment : Fragment() {
             }
         })
 
-        binding.lstFriendsRequests.adapter = friendRequestAdapter
-        binding.lstFriends.adapter = friendsAdapter
+        binding.rvLstFriendsRequests.adapter = friendRequestAdapter
+        binding.rvLstFriends.adapter = friendsAdapter
     }
 }

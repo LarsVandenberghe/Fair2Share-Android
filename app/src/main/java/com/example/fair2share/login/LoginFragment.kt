@@ -37,7 +37,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentLoginBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
             binding.btnLogin.setOnClickListener{view: View ->
-                viewModel.login(binding.txtLoginEmail.text.toString(), binding.txtLoginPassword.text.toString())
+                viewModel.login(binding.editLoginEmail.text.toString(), binding.editLoginPassword.text.toString())
             }
 
             viewModel.loggedIn.observe(this, Observer { bool ->
@@ -68,7 +68,7 @@ class LoginFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.register_btn -> {
+            R.id.btnRegister -> {
                 requireActivity().findNavController(R.id.loginNavHostFragment).navigate(R.id.action_loginFragment_to_registerFragment)
                 return true
             } else -> super.onOptionsItemSelected(item)

@@ -41,7 +41,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         adapter = ActivityBindingAdapter(viewModel)
-        binding.activityList.adapter = adapter
+        binding.rvActivityList.adapter = adapter
 
         receiveProfileData()
 
@@ -58,7 +58,7 @@ class ProfileFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.add_activity_btn -> {
+            R.id.btnAddActivity -> {
                 navigateToCreateActivity()
                 return true
             } else -> super.onOptionsItemSelected(item)

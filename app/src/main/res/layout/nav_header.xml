@@ -15,9 +15,10 @@
         android:padding="5pt">
 
         <ImageView
-            android:id="@+id/nav_profile_img"
+            android:id="@+id/imgNavProfile"
             android:layout_width="50pt"
             android:layout_height="50pt"
+            android:contentDescription="@string/img_nav_profile_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,6 +29,6 @@
             android:text="@{profile.firstname + ' ' + profile.lastname}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nav_profile_img" />
+            app:layout_constraintTop_toBottomOf="@+id/imgNavProfile" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

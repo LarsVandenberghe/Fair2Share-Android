@@ -19,6 +19,7 @@
     <string name="fragment_create_activity_description_placeholder">description</string>
     <string name="fragment_create_activity_valuta_lbl">Valuta*</string>
     <string name="fragment_create_transaction_title">Add Transaction</string>
+    <string name="fragment_manage_people_in_activity">Activity Participants</string>
     <string name="title_activity_friends">FriendsActivity</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
@@ -40,4 +41,8 @@
     <string name="btn_summary" >Summary</string>
     <string name="btn_edit_activity" >Edit Activity</string>
     <string name="btn_add_friends">Add Friends</string>
+    <string name="img_nav_profile_description">Profile Image</string>
+    <string name="rv_profile_activity_delete_button">Delete Button</string>
+    <string name="btn_add_friend">Add Friend</string>
+    <string name="btn_remove_friend">Remove Friend</string>
 </resources>

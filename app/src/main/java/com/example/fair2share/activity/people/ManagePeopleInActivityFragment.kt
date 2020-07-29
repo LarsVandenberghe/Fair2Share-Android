@@ -9,13 +9,12 @@ import android.view.ViewGroup
 import com.example.fair2share.R
 
 class ManagePeopleInActivityFragment : Fragment() {
-
-    companion object {
-        fun newInstance() =
-            ManagePeopleInActivityFragment()
-    }
-
     private lateinit var viewModel: ManagePeopleInActivityViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(ManagePeopleInActivityViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,11 +22,4 @@ class ManagePeopleInActivityFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_manage_people_in_activity, container, false)
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ManagePeopleInActivityViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
 }

@@ -24,7 +24,7 @@
         android:id="@+id/createActivityFragment"
         android:name="com.example.fair2share.activity.CreateActivityFragment"
         android:label="@string/fragment_create_activity_title"
-        tools:layout="@layout/fragment_create_activity"/>
+        tools:layout="@layout/fragment_create_activity" />
     <fragment
         android:id="@+id/friendListFragment"
         android:name="com.example.fair2share.friends.FriendListFragment"
@@ -38,12 +38,12 @@
         android:id="@+id/addFriendFragment"
         android:name="com.example.fair2share.friends.AddFriendFragment"
         android:label="@string/fragment_add_friend_title"
-        tools:layout="@layout/fragment_add_friend"/>
+        tools:layout="@layout/fragment_add_friend" />
     <fragment
         android:id="@+id/activityTransactionsFragment"
         android:name="com.example.fair2share.activity.transactions.ActivityTransactionsFragment"
         android:label="fragment_activity_transactions"
-        tools:layout="@layout/fragment_activity_transactions" >
+        tools:layout="@layout/fragment_activity_transactions">
         <action
             android:id="@+id/action_activityTransactionsFragment_to_activitySummaryFragment"
             app:destination="@id/activitySummaryFragment" />
@@ -51,5 +51,14 @@
     <fragment
         android:id="@+id/activitySummaryFragment"
         android:name="com.example.fair2share.activity.summary.ActivitySummaryFragment"
-        android:label="ActivitySummaryFragment" />
+        android:label="ActivitySummaryFragment">
+        <action
+            android:id="@+id/action_activitySummaryFragment_to_managePeopleInActivityFragment"
+            app:destination="@id/managePeopleInActivityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/managePeopleInActivityFragment"
+        android:name="com.example.fair2share.activity.people.ManagePeopleInActivityFragment"
+        android:label="@string/fragment_manage_people_in_activity"
+        tools:layout="@layout/fragment_manage_people_in_activity" />
 </navigation>

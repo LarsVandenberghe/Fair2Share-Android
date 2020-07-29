@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/frameLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/bottom_margin"
         tools:context=".activity.summary.ActivitySummaryFragment">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/txtTitleSummary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/fragment_activity_summary_title"
@@ -20,14 +20,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/summary_list"
+            android:id="@+id/rvSummaryList"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
+            app:layout_constraintTop_toBottomOf="@+id/txtTitleSummary">
 
         </androidx.recyclerview.widget.RecyclerView>
 

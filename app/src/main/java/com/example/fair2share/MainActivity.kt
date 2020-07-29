@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(binding.navView, navController)
         setupNavigationListener(navController)
 
-        AuthInterceptor.mainActivity = this
+        setupOnTokenExpiredRestartApp()
     }
 
 
@@ -62,12 +62,12 @@ class MainActivity : AppCompatActivity() {
         vm.profile.observe(this, Observer { data ->
             navHeaderBinding.profile = data
 
-            Glide.with(navHeaderBinding.navProfileImg.context)
+            Glide.with(navHeaderBinding.imgNavProfile.context)
                 .load(vm.getProfilePicUrl(data))
                 .apply(
                     RequestOptions().placeholder(R.drawable.default_user)
                         .error(R.drawable.default_user)
-                ).into(navHeaderBinding.navProfileImg)
+                ).into(navHeaderBinding.imgNavProfile)
         })
     }
 
@@ -96,5 +96,17 @@ class MainActivity : AppCompatActivity() {
             }
             return@setNavigationItemSelectedListener false
         }
+    }
+
+    private fun setupOnTokenExpiredRestartApp() {
+        AuthInterceptor.shouldRestart.observe(this, Observer {
+            if(it){
+                val intent = Intent(this.baseContext, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                this.startActivity(intent)
+                this.finish()
+                Runtime.getRuntime().exit(0)
+            }
+        })
     }
 }

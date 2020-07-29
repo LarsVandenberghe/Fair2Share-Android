@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imgFriendR"
+        android:id="@+id/imgFriendRvLstFriendsRequests"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="10dp"
@@ -16,15 +16,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:contentDescription="@string/img_nav_profile_description" />
 
     <TextView
-        android:id="@+id/txtFriendRName"
+        android:id="@+id/txtFriendRNameRvLstFriendsRequests"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgFriendR"
+        app:layout_constraintStart_toEndOf="@+id/imgFriendRvLstFriendsRequests"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
@@ -33,19 +34,21 @@
         android:layout_height="40dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnRemoveFriend"
+        app:layout_constraintEnd_toStartOf="@+id/btnRemoveFriendRvLstFriendsRequests"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:contentDescription="@string/btn_add_friend" />
 
     <ImageButton
-        android:id="@+id/btnRemoveFriend"
+        android:id="@+id/btnRemoveFriendRvLstFriendsRequests"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_delete" />
+        app:srcCompat="@android:drawable/ic_delete"
+        android:contentDescription="@string/btn_remove_friend" />
 
     <ImageView
         android:layout_width="0dp"
@@ -55,6 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?android:attr/colorButtonNormal" />
+        app:srcCompat="?android:attr/colorButtonNormal"
+        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/btn_summary"
+        android:id="@+id/btnSummary"
         android:icon="@drawable/summary"
         android:title="@string/btn_summary"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/edit_activity_btn"
+        android:id="@+id/btnEditActivity"
         android:title="@string/btn_edit_activity" />
     <item
-        android:id="@+id/remove_activity_btn"
+        android:id="@+id/btnRemoveActivity"
         android:title="@string/remove_activity" />
 </menu>

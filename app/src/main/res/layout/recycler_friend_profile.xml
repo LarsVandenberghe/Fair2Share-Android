@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imgFriend"
+        android:id="@+id/imgFriendRvLstFriends"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="10dp"
@@ -15,15 +15,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:contentDescription="@string/img_nav_profile_description" />
 
     <TextView
-        android:id="@+id/txtFriendName"
+        android:id="@+id/txtFriendNameRvLstFriends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgFriend"
+        app:layout_constraintStart_toEndOf="@+id/imgFriendRvLstFriends"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.516" />
 
@@ -35,5 +36,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?android:attr/colorButtonNormal" />
+        app:srcCompat="?android:attr/colorButtonNormal"
+        tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>
