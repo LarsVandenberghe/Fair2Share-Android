@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.fair2share.BuildConfig
 import com.example.fair2share.ConstraintRowItemViewHolder
 import com.example.fair2share.R
+import com.example.fair2share.Utils
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.network.AccountApi
 
@@ -27,7 +28,7 @@ class FriendBindingAdapter: RecyclerView.Adapter<ConstraintRowItemViewHolder>() 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConstraintRowItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater
-            .inflate(R.layout.recycler_friend_profile, parent, false) as ConstraintLayout
+            .inflate(R.layout.recycler_friendprofile, parent, false) as ConstraintLayout
         return ConstraintRowItemViewHolder(view)
     }
 
@@ -37,26 +38,7 @@ class FriendBindingAdapter: RecyclerView.Adapter<ConstraintRowItemViewHolder>() 
 
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
         val item = data[position]
-        bindClientImageOnId((holder.rowView.getChildAt(0) as ImageView), item.profileId)
-        (holder.rowView.getChildAt(1) as TextView).text = String.format("%s %s", item.firstname, item.lastname)
-    }
-
-    private fun bindClientImageOnId(imgView: ImageView, imageId:Long?){
-        imageId?.let {
-            Glide.with(imgView.context)
-                .load(getProfilePicUrl(it))
-                .apply(
-                    RequestOptions().placeholder(R.drawable.default_user)
-                        .error(R.drawable.default_user).diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                )
-                .into(imgView)
-        }
-    }
-
-
-    fun getProfilePicUrl(imageId:Long): GlideUrl {
-        val token = AccountApi.sharedPreferences?.getString("token", "") ?: ""
-        return GlideUrl(String.format("%sProfile/image/%s", BuildConfig.BASE_URL, imageId), LazyHeaders.Builder()
-            .addHeader("Authorization", String.format("Bearer %s", token)).build())
+        Utils.bindClientImageOnId((holder.rowView.getViewById(R.id.img_recyclerfriend_profile) as ImageView), item.profileId)
+        (holder.rowView.getViewById(R.id.txt_recyclerfriend_name) as TextView).text = String.format("%s %s", item.firstname, item.lastname)
     }
 }

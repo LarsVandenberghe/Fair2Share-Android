@@ -1,6 +1,13 @@
 package com.example.fair2share
 
+import android.widget.ImageView
 import android.widget.TableRow
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
+import com.bumptech.glide.request.RequestOptions
+import com.example.fair2share.network.AccountApi
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
@@ -32,6 +39,25 @@ class Utils {
             }
 
             return sb.toString()
+        }
+
+        fun bindClientImageOnId(imgView: ImageView, imageId:Long?){
+            imageId?.let {
+                Glide.with(imgView.context)
+                    .load(getProfilePicUrl(it))
+                    .apply(
+                        RequestOptions().placeholder(R.drawable.default_user)
+                            .error(R.drawable.default_user).diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    )
+                    .into(imgView)
+            }
+        }
+
+
+        fun getProfilePicUrl(imageId:Long): GlideUrl {
+            val token = AccountApi.sharedPreferences?.getString("token", "") ?: ""
+            return GlideUrl(String.format("%sProfile/image/%s", BuildConfig.BASE_URL, imageId), LazyHeaders.Builder()
+                .addHeader("Authorization", String.format("Bearer %s", token)).build())
         }
     }
 }

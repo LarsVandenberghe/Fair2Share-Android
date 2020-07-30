@@ -54,17 +54,20 @@ data class ProfileProperty (
 data class ActivityProperty (
     val activityId: Long?,
     val name: String,
-    val description: String?,
+    var description: String?,
     val currencyType: Int,
-    val participants: List<ProfileProperty>?,
-    val transactions: List<TransactionProperty>?
+    var participants: List<ProfileProperty>?,
+    var transactions: List<TransactionProperty>?
 ):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString()!!,
         parcel.readString(),
         parcel.readInt(),
-        null,
+        parcel.createTypedArrayList(ProfileProperty),
+//        listOf<ProfileProperty>().apply {
+//            parcel.readList(this, ProfileProperty::class.java.classLoader)
+//        },
         null
     )
 
@@ -73,6 +76,7 @@ data class ActivityProperty (
         parcel.writeString(name)
         parcel.writeString(description)
         parcel.writeInt(currencyType)
+        parcel.writeTypedList(participants)
     }
 
     override fun describeContents(): Int {
@@ -100,7 +104,7 @@ data class TransactionProperty(
     val paidBy: ProfileProperty
 )
 
-data class KeyValueProperty(
-    val key: Long,
-    val value: Any
-)
+//data class KeyValueProperty(
+//    val key: Long,
+//    val value: Any
+//)

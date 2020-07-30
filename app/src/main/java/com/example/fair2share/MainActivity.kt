@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             navHeaderBinding.profile = data
 
             Glide.with(navHeaderBinding.imgNavheaderProfile.context)
-                .load(vm.getProfilePicUrl(data))
+                .load(Utils.getProfilePicUrl(data.profileId))
                 .apply(
                     RequestOptions().placeholder(R.drawable.default_user)
                         .error(R.drawable.default_user)

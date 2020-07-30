@@ -13,18 +13,16 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.R
 import com.example.fair2share.data_models.ProfileProperty
-import com.example.fair2share.databinding.FragmentFriendListBinding
+import com.example.fair2share.databinding.FragmentFriendlistBinding
 
 class FriendListFragment : Fragment() {
     private lateinit var viewModel: FriendListViewModel
-    private lateinit var friendRequestAdapter: FriendRequestBindingAdapter
-    private lateinit var friendsAdapter: FriendBindingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let{
-            val friends : List<ProfileProperty>? = it.getParcelableArrayList("friends")
+        arguments?.getParcelableArrayList<ProfileProperty>("friends")?.let{
+            val friends : List<ProfileProperty> = it
             val viewModelFactory = FriendListViewModelFactory(friends)
             viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
         }
@@ -35,7 +33,7 @@ class FriendListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = DataBindingUtil.inflate<FragmentFriendListBinding>(inflater, R.layout.fragment_friend_list, container, false)
+        val binding = DataBindingUtil.inflate<FragmentFriendlistBinding>(inflater, R.layout.fragment_friendlist, container, false)
         configureAdapters(binding)
 
         viewModel.errorMessage.observe(this, Observer {
@@ -63,9 +61,9 @@ class FriendListFragment : Fragment() {
     }
 
 
-    private fun configureAdapters(binding: FragmentFriendListBinding) {
-        friendRequestAdapter = FriendRequestBindingAdapter(viewModel)
-        friendsAdapter = FriendBindingAdapter()
+    private fun configureAdapters(binding: FragmentFriendlistBinding) {
+        val friendRequestAdapter = FriendRequestBindingAdapter(viewModel)
+        val friendsAdapter = FriendBindingAdapter()
 
         viewModel.friendRequests.observe(this, Observer {
             friendRequestAdapter.data = it

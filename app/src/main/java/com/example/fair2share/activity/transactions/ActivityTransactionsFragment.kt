@@ -11,18 +11,19 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
-import com.example.fair2share.databinding.FragmentActivityTransactionsBinding
+import com.example.fair2share.data_models.ActivityProperty
+import com.example.fair2share.databinding.FragmentActivitytransactionsBinding
 
 class ActivityTransactionsFragment : Fragment() {
     private lateinit var viewModel: ActivityTransactionsFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let{
-            val viewModelFactory =
-                ActivityFragmentViewModelFactory(it.getParcelable("activity")!!)
+        arguments?.getParcelable<ActivityProperty>("activity")?.let{
+            val viewModelFactory = ActivityFragmentViewModelFactory(it)
             viewModel = ViewModelProviders.of(this, viewModelFactory).get(
-                ActivityTransactionsFragmentViewModel::class.java)
+                ActivityTransactionsFragmentViewModel::class.java
+            )
         }
         setHasOptionsMenu(true)
     }
@@ -31,9 +32,15 @@ class ActivityTransactionsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentActivityTransactionsBinding>(inflater, R.layout.fragment_activity_transactions, container, false)
-        val transactionAdapter =
-            TransactionBindingAdapter(viewModel)
+        val binding =
+            DataBindingUtil.inflate<FragmentActivitytransactionsBinding>(
+                inflater,
+                R.layout.fragment_activitytransactions,
+                container,
+                false
+            )
+
+        val transactionAdapter = TransactionBindingAdapter(viewModel)
 
         binding.rvActivitytransactionsList.adapter = transactionAdapter
 
@@ -58,7 +65,7 @@ class ActivityTransactionsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.activity_transactions_overflow_menu, menu)
+        inflater.inflate(R.menu.menu_activitytransactionsoverflow, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -70,7 +77,10 @@ class ActivityTransactionsFragment : Fragment() {
             R.id.btn_transactionsoverflow_summary -> {
                 val bundle = Bundle()
                 bundle.putParcelable("activity", viewModel.activity)
-                findNavController().navigate(R.id.action_activityTransactionsFragment_to_activitySummaryFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_activityTransactionsFragment_to_activitySummaryFragment,
+                    bundle
+                )
                 return true
             }
             else -> super.onOptionsItemSelected(item)

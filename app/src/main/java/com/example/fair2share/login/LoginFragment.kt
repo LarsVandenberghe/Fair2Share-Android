@@ -63,7 +63,7 @@ class LoginFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.login_overflow_menu, menu)
+        inflater.inflate(R.menu.menu_loginoverflow, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

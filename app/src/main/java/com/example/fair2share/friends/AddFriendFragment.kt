@@ -11,15 +11,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.R
-import com.example.fair2share.databinding.FragmentAddFriendBinding
+import com.example.fair2share.databinding.FragmentAddfriendBinding
+
 
 class AddFriendFragment : Fragment() {
     private lateinit var viewModel: AddFriendViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            val viewModelFactory = AddFriendViewModelFactory(it.getString("email")!!)
+        arguments?.getString("email")?.let {
+            val viewModelFactory = AddFriendViewModelFactory(it)
             viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddFriendViewModel::class.java)
         }
     }
@@ -28,9 +29,9 @@ class AddFriendFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentAddFriendBinding>(inflater, R.layout.fragment_add_friend, container, false)
+        val binding = DataBindingUtil.inflate<FragmentAddfriendBinding>(inflater, R.layout.fragment_addfriend, container, false)
 
-        binding.btnRecyclerfriendrequestAddfriend.setOnClickListener {
+        binding.btnRecycleraddandremovefriendAddfriend.setOnClickListener {
             viewModel.addFriendByEmail(binding.editAddfriendEmail.text.toString())
         }
 

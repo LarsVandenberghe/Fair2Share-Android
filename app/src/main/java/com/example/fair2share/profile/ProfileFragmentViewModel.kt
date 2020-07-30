@@ -42,12 +42,6 @@ class ProfileFragmentViewModel : ViewModel() {
         }
     }
 
-    fun getProfilePicUrl(profile : ProfileProperty): GlideUrl{
-        val token = sharedPreferences?.getString("token", "") ?: ""
-        return GlideUrl(String.format("%sProfile/image/%s", BuildConfig.BASE_URL, profile.profileId), LazyHeaders.Builder()
-            .addHeader("Authorization", String.format("Bearer %s", token)).build())
-    }
-
     fun removeActivity(activity: ActivityProperty){
         _coroutineScope.launch {
             val a = ActivityApi.retrofitService.removeActivity(activity.activityId!!).await()

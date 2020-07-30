@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:defaultNavHost="true"
-                app:navGraph="@navigation/navigation" />
+                app:navGraph="@navigation/navigation_main" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
@@ -27,6 +27,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             app:headerLayout="@layout/nav_header"
-            app:menu="@menu/navdrawer_menu" />
+            app:menu="@menu/menu_navdrawer" />
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

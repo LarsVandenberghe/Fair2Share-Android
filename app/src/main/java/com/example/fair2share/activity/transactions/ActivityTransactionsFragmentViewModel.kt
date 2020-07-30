@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.data_models.ActivityProperty
-import com.example.fair2share.data_models.KeyValueProperty
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.data_models.TransactionProperty
 import com.example.fair2share.network.ActivityApi
@@ -39,6 +38,7 @@ class ActivityTransactionsFragmentViewModel(var activity : ActivityProperty):Vie
             activity = ActivityApi.retrofitService.getActivity(activity.activityId!!).await()
             _transactions.value = ActivityApi.retrofitService.getActivityTransactions(activity.activityId!!).await()
             _participants.value = ActivityApi.retrofitService.getActivityParticipants(activity.activityId!!).await().participants
+            activity.participants
         }
     }
 
@@ -47,7 +47,7 @@ class ActivityTransactionsFragmentViewModel(var activity : ActivityProperty):Vie
         coroutineScope.launch {
             val a = ActivityApi.retrofitService.removeActivity(activity.activityId!!).await()
             if (!a.isSuccessful){
-                _errorMessage.value = a.errorBody()!!.string()
+                _errorMessage.value = a.errorBody()!!.charStream().toString()
             } else {
                 _navigate.value = true
             }

@@ -22,7 +22,7 @@ class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) : Recycler
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConstraintRowItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater
-            .inflate(R.layout.recycler_profile_activity, parent, false) as ConstraintLayout
+            .inflate(R.layout.recycler_profileactivity, parent, false) as ConstraintLayout
         return ConstraintRowItemViewHolder(view)
     }
 

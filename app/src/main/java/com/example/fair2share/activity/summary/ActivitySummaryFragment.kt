@@ -10,7 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
-import com.example.fair2share.databinding.FragmentActivitySummaryBinding
+import com.example.fair2share.data_models.ActivityProperty
+import com.example.fair2share.databinding.FragmentActivitysummaryBinding
 
 
 class ActivitySummaryFragment : Fragment() {
@@ -19,9 +20,9 @@ class ActivitySummaryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let{
+        arguments?.getParcelable<ActivityProperty>("activity")?.let{
             val viewModelFactory =
-                ActivityFragmentViewModelFactory(it.getParcelable("activity")!!)
+                ActivityFragmentViewModelFactory(it)
             viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActivitySummaryViewModel::class.java)
         }
         setHasOptionsMenu(true)
@@ -31,7 +32,7 @@ class ActivitySummaryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentActivitySummaryBinding>(inflater, R.layout.fragment_activity_summary, container, false)
+        val binding = DataBindingUtil.inflate<FragmentActivitysummaryBinding>(inflater, R.layout.fragment_activitysummary, container, false)
 
         val summaryAdapter =
             SummaryBindingAdapter(viewModel)
@@ -49,7 +50,7 @@ class ActivitySummaryFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.activity_summary_overflow_menu, menu)
+        inflater.inflate(R.menu.menu_activitysummaryoverflow, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -59,7 +60,9 @@ class ActivitySummaryFragment : Fragment() {
                 return true
             }
             R.id.btn_summaryoverflow_addfriends -> {
-                findNavController().navigate(R.id.action_activitySummaryFragment_to_managePeopleInActivityFragment)
+                val bundle = Bundle()
+                bundle.putParcelable("activity", viewModel.activity)
+                findNavController().navigate(R.id.action_activitySummaryFragment_to_managePeopleInActivityFragment, bundle)
                 return true
             }
             else -> super.onOptionsItemSelected(item)

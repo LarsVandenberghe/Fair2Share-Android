@@ -53,7 +53,7 @@ class ProfileFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.profile_overflow_menu, menu)
+        inflater.inflate(R.menu.menu_profileoverflow, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -92,6 +92,11 @@ class ProfileFragment : Fragment() {
         viewModel.profile.observe(this, Observer{ data ->
             binding.profile = data
             data.activities?.let{
+                if (it.size == 0){
+                    binding.txtProfileNoactivities.visibility = View.VISIBLE
+                } else {
+                    binding.txtProfileNoactivities.visibility = View.GONE
+                }
                 adapter.data = it
             }
             addFriendRequests(data.amountOfFriendRequests ?: 0)

@@ -20,7 +20,7 @@ class SummaryBindingAdapter(val viewModel: ActivitySummaryViewModel) : RecyclerV
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConstraintRowItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater
-            .inflate(R.layout.recycler_activity_transaction, parent, false) as ConstraintLayout
+            .inflate(R.layout.recycler_activitytransaction, parent, false) as ConstraintLayout
         return ConstraintRowItemViewHolder(view)
     }
 

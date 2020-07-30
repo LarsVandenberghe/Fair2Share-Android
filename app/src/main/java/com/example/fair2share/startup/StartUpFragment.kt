@@ -58,7 +58,7 @@ class StartUpFragment : Fragment() {
             handleLoginState()
         }
 
-        return inflater.inflate(R.layout.fragment_start_up, container, false)
+        return inflater.inflate(R.layout.fragment_startup, container, false)
     }
 
     private fun handleLoginState(){

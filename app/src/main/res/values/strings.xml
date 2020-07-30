@@ -46,4 +46,10 @@
     <string name="btn_add_friend">Add Friend</string>
     <string name="btn_remove_friend">Remove Friend</string>
     <string name="btn_logout">Logout</string>
+    <string name="title_participants">Participants</string>
+    <string name="title_candidates">Candidates</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="no_participants">There are currently no participating members.</string>
+    <string name="no_candidates">There are currently no candidates available.</string>
+    <string name="txt_profile_noactivities">There are no available activities.</string>
 </resources>

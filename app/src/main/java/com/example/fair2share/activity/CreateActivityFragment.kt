@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.fair2share.R
 import com.example.fair2share.data_models.ActivityProperty
 import com.example.fair2share.data_models.Valutas
-import com.example.fair2share.databinding.FragmentCreateActivityBinding
+import com.example.fair2share.databinding.FragmentCreateactivityBinding
 
 class CreateActivityFragment : Fragment() {
     private lateinit var viewModel : CreateActivityFragmentViewModel
@@ -31,7 +31,7 @@ class CreateActivityFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentCreateActivityBinding>(inflater, R.layout.fragment_create_activity, container, false)
+        val binding = DataBindingUtil.inflate<FragmentCreateactivityBinding>(inflater, R.layout.fragment_createactivity, container, false)
         binding.cboCreateactivityValuta.adapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Valutas.values())
         binding.createActivityPane.setOnClickListener {
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -41,8 +41,8 @@ class CreateActivityFragment : Fragment() {
         binding.btnCreateactivityAdd.setOnClickListener {
             val act = ActivityProperty(
                 null,
-                binding.txtCreateactivityName.text.toString(),
-                binding.txtCreateactivityDescription.text.toString(),
+                binding.editCreateactivityName.text.toString(),
+                binding.editCreateactivityDescription.text.toString(),
                 binding.cboCreateactivityValuta.selectedItemPosition, null, null
             )
             viewModel.create(act)
