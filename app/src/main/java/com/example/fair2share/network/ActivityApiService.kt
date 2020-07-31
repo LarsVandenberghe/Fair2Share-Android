@@ -58,6 +58,14 @@ interface ActvityApiService {
     @POST("Activity")
     fun addActivity(@Body activityProperty: ActivityProperty):
             Deferred<Response<Unit>>
+
+    @POST("Activity/{id}/participants")
+    fun addActivityParticipants(@Path("id") id: Long, @Body idList: List<Long>):
+            Deferred<Response<Unit>>
+
+    @DELETE("Activity/{id}/participants")
+    fun removeActivityParticipants(@Path("id") id: Long, @Query("friend_ids") idList: List<Long>):
+            Deferred<Response<Unit>>
 }
 
 object ActivityApi {

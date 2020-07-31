@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
 import com.example.fair2share.data_models.ActivityProperty
@@ -37,6 +39,19 @@ class ManagePeopleInActivityFragment : Fragment() {
             false
         )
         configureAdapters(binding)
+
+        binding.btnManagepeopleinactivityConfirm.setOnClickListener {
+            viewModel.confirm()
+        }
+
+        viewModel.success.observe(this, Observer {
+            findNavController().navigateUp()
+        })
+
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
+
         return binding.root
     }
 

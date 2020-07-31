@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import com.example.fair2share.Utils
 import com.example.fair2share.data_models.ActivityProperty
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.network.ActivityApi
@@ -12,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class ManagePeopleInActivityViewModel(private val activity: ActivityProperty) : ViewModel() {
     private var viewModelJob = Job()
@@ -30,6 +32,13 @@ class ManagePeopleInActivityViewModel(private val activity: ActivityProperty) : 
     val candidates: LiveData<List<ProfileProperty>>
         get() = _candidates
 
+    private val _success = MutableLiveData<Boolean>()
+    val success: LiveData<Boolean>
+        get() = _success
+
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String>
+        get() = _errorMessage
 
     init {
         candidatesAndParticipantsListenToUpdates()
@@ -61,7 +70,26 @@ class ManagePeopleInActivityViewModel(private val activity: ActivityProperty) : 
     }
 
     fun confirm(){
-
+        coroutineScope.launch {
+            try {
+                val toBeAdded = _toBeAdded.value!!
+                val toBeRemoved = _toBeRemoved.value!!
+                if (toBeRemoved.size > 0) {
+                    val result = ActivityApi.retrofitService.removeActivityParticipants(activity.activityId!!, toBeRemoved).await()
+                    Utils.throwExceptionIfHttpNotSuccessful(result)
+                }
+                if (toBeAdded.size > 0) {
+                    val result = ActivityApi.retrofitService.addActivityParticipants(activity.activityId!!, toBeAdded).await()
+                    Utils.throwExceptionIfHttpNotSuccessful(result)
+                }
+                _success.value = true
+            } catch (e: HttpException){
+                _errorMessage.value = Utils.formExceptionsToString(e)
+                resetSelected()
+            } catch (t: Throwable){
+                _errorMessage.value = t.message
+            }
+        }
     }
 
 

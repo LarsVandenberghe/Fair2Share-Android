@@ -11,16 +11,17 @@ import com.example.fair2share.network.AccountApi
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
+import retrofit2.Response
 import java.lang.StringBuilder
 
 class Utils {
     companion object {
         fun formExceptionsToString(exception: HttpException, customMessage: String? = null): String{
             val sb = StringBuilder()
-            val charStream = exception.response().errorBody()?.charStream()
-            if (charStream != null){
-                var json = JSONObject(charStream.readText())
-                try {
+            val text = exception.response().errorBody()?.charStream()?.readText()
+            try {
+                if (text != null){
+                    var json = JSONObject(text)
                     json = json.getJSONObject("errors")
                     json.keys().forEach {
                         val array = json.getJSONArray(it)
@@ -29,16 +30,24 @@ class Utils {
                             sb.append("\n")
                         }
                     }
-                } catch (e: JSONException){
+                } else {
                     if (customMessage != null){
                         sb.append(customMessage)
                     } else {
                         sb.append(exception.message())
                     }
                 }
+            } catch (e: JSONException){
+                sb.append(text)
             }
 
             return sb.toString()
+        }
+
+        fun throwExceptionIfHttpNotSuccessful(response: Response<Unit>){
+            if (!response.isSuccessful){
+                throw HttpException(response)
+            }
         }
 
         fun bindClientImageOnId(imgView: ImageView, imageId:Long?){
