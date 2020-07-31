@@ -45,6 +45,11 @@ class ActivityTransactionsFragment : Fragment() {
         binding.rvActivitytransactionsList.adapter = transactionAdapter
 
         viewModel.transactions.observe(this, Observer { transactions ->
+            if(transactions.size == 0){
+                binding.txtActivitytransactionsNotransactions.visibility = View.VISIBLE
+            } else {
+                binding.txtActivitytransactionsNotransactions.visibility = View.GONE
+            }
             transactionAdapter.data = transactions.reversed()
         })
 

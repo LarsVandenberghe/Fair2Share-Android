@@ -52,4 +52,5 @@
     <string name="no_participants">There are currently no participating members.</string>
     <string name="no_candidates">There are currently no candidates available.</string>
     <string name="txt_profile_noactivities">There are no available activities.</string>
+    <string name="txt_activitytransactions_notransactions">There are no transactions yet.</string>
 </resources>
