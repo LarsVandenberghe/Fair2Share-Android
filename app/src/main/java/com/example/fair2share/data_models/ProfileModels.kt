@@ -53,9 +53,9 @@ data class ProfileProperty (
 
 data class ActivityProperty (
     val activityId: Long?,
-    val name: String,
+    var name: String,
     var description: String?,
-    val currencyType: Int,
+    var currencyType: Int,
     var participants: List<ProfileProperty>?,
     var transactions: List<TransactionProperty>?
 ):Parcelable {
@@ -88,6 +88,10 @@ data class ActivityProperty (
 
         override fun newArray(size: Int): Array<ActivityProperty?> {
             return arrayOfNulls(size)
+        }
+
+        fun makeEmptyActivity() : ActivityProperty{
+            return ActivityProperty(null, "", null, 0, null, null)
         }
     }
 }

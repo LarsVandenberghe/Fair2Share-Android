@@ -59,6 +59,10 @@ interface ActvityApiService {
     fun addActivity(@Body activityProperty: ActivityProperty):
             Deferred<Response<Unit>>
 
+    @PUT("Activity/{id}")
+    fun updateActivity(@Path("id") activityId: Long, @Body activity: ActivityProperty):
+            Deferred<Response<Unit>>
+
     @POST("Activity/{id}/participants")
     fun addActivityParticipants(@Path("id") id: Long, @Body idList: List<Long>):
             Deferred<Response<Unit>>

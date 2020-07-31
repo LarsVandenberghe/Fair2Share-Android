@@ -86,7 +86,14 @@ class ActivityTransactionsFragment : Fragment() {
                 return true
             }
             R.id.btn_transactionsoverflow_summary -> {
-                val action = ActivityTransactionsFragmentDirections.actionActivityTransactionsFragmentToActivitySummaryFragment(viewModel.activity)
+                val action = ActivityTransactionsFragmentDirections
+                    .actionActivityTransactionsFragmentToActivitySummaryFragment(viewModel.activity)
+                findNavController().navigate(action)
+                return true
+            }
+            R.id.btn_transactionsoverflow_editactivity -> {
+                val action = ActivityTransactionsFragmentDirections
+                    .actionActivityTransactionsFragmentToAddEditActivityFragment(viewModel.activity)
                 findNavController().navigate(action)
                 return true
             }

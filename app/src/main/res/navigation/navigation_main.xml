@@ -11,8 +11,8 @@
         android:label="@string/fragment_profile_title"
         tools:layout="@layout/fragment_profile">
         <action
-            android:id="@+id/action_fragmentProfile_to_createActivityFragment"
-            app:destination="@id/createActivityFragment" />
+            android:id="@+id/action_fragmentProfile_to_addEditActivityFragment"
+            app:destination="@id/addEditActivityFragment" />
         <action
             android:id="@+id/action_fragmentProfile_to_friendListFragment"
             app:destination="@id/friendListFragment" />
@@ -21,10 +21,16 @@
             app:destination="@id/activityTransactionsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/createActivityFragment"
-        android:name="com.example.fair2share.activity.CreateActivityFragment"
-        android:label="@string/fragment_create_activity_title"
-        tools:layout="@layout/fragment_createactivity" />
+        android:id="@+id/addEditActivityFragment"
+        android:name="com.example.fair2share.activity.AddEditActivityFragment"
+        android:label="@string/fragment_add_edit_activity_title"
+        tools:layout="@layout/fragment_addeditactivity">
+        <argument
+            android:name="activity"
+            android:defaultValue="@null"
+            app:argType="com.example.fair2share.data_models.ActivityProperty"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/friendListFragment"
         android:name="com.example.fair2share.friends.FriendListFragment"
@@ -60,11 +66,15 @@
         <argument
             android:name="activity"
             app:argType="com.example.fair2share.data_models.ActivityProperty" />
+        <action
+            android:id="@+id/action_activityTransactionsFragment_to_addEditActivityFragment"
+            app:destination="@id/addEditActivityFragment" />
     </fragment>
     <fragment
         android:id="@+id/activitySummaryFragment"
         android:name="com.example.fair2share.activity.summary.ActivitySummaryFragment"
-        android:label="ActivitySummaryFragment">
+        android:label="ActivitySummaryFragment"
+        tools:layout="@layout/fragment_activitysummary">
         <action
             android:id="@+id/action_activitySummaryFragment_to_managePeopleInActivityFragment"
             app:destination="@id/managePeopleInActivityFragment" />

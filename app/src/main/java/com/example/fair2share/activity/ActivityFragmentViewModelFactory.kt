@@ -12,15 +12,16 @@ class ActivityFragmentViewModelFactory(private val activity : ActivityProperty) 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(ActivityTransactionsFragmentViewModel::class.java) -> {
-                ActivityTransactionsFragmentViewModel(
-                    activity
-                ) as T
+                ActivityTransactionsFragmentViewModel(activity) as T
             }
             modelClass.isAssignableFrom(ActivitySummaryViewModel::class.java) -> {
                 ActivitySummaryViewModel(activity) as T
             }
             modelClass.isAssignableFrom(ManagePeopleInActivityViewModel::class.java) -> {
                 ManagePeopleInActivityViewModel(activity) as T
+            }
+            modelClass.isAssignableFrom(AddEditActivityFragmentViewModel::class.java) -> {
+                AddEditActivityFragmentViewModel(activity) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

@@ -2,5 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/btn_profileoverflow_addactivity"
-        android:title="@string/fragment_create_activity_title" />
+        android:title="@string/fragment_add_edit_activity_title" />
 </menu>

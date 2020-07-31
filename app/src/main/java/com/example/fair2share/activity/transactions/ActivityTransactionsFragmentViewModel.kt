@@ -23,8 +23,6 @@ class ActivityTransactionsFragmentViewModel(var activity : ActivityProperty):Vie
 
     private val _participants = MutableLiveData<List<ProfileProperty>>()
 
-
-
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String>
         get() = _errorMessage

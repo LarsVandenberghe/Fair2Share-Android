@@ -11,7 +11,7 @@
     <string name="fragment_activity_summary_title">Summary</string>
     <string name="fragment_activity_transactions_title">Transactions</string>
     <string name="fragment_profile_title">Profile</string>
-    <string name="fragment_create_activity_title">Add Activity</string>
+    <string name="fragment_add_edit_activity_title">Activity</string>
     <string name="remove_activity">Remove Activity</string>
     <string name="fragment_create_activity_name_lbl">Name*</string>
     <string name="fragment_create_activity_name_placeholder">name</string>
@@ -53,4 +53,5 @@
     <string name="no_candidates">There are currently no candidates available.</string>
     <string name="txt_profile_noactivities">There are no available activities.</string>
     <string name="txt_activitytransactions_notransactions">There are no transactions yet.</string>
+    <string name="btn_edit">Edit</string>
 </resources>

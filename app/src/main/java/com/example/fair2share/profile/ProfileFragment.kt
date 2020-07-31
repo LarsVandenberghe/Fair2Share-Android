@@ -18,12 +18,11 @@ import com.google.android.material.navigation.NavigationView
 class ProfileFragment : Fragment() {
 
     private lateinit var viewModel: ProfileFragmentViewModel
-    private lateinit var binding: FragmentProfileBinding
-    private lateinit var adapter: ActivityBindingAdapter
     var firstLoad : Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel = ViewModelProviders.of(this).get(ProfileFragmentViewModel::class.java)
 
         setHasOptionsMenu(true)
@@ -35,14 +34,14 @@ class ProfileFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-        adapter = ActivityBindingAdapter(viewModel)
+        val binding = DataBindingUtil.inflate<FragmentProfileBinding>(inflater, R.layout.fragment_profile, container, false)
+        val adapter = ActivityBindingAdapter(viewModel)
         binding.rvProfileActivitylist.adapter = adapter
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMsg ->
             Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
         })
 
-        receiveProfileData()
+        receiveProfileData(binding, adapter)
 
         binding.fabProfileAddactivity.setOnClickListener{
             navigateToCreateActivity()
@@ -65,7 +64,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun navigateToCreateActivity(){
-        val action = ProfileFragmentDirections.actionFragmentProfileToCreateActivityFragment()
+        val action = ProfileFragmentDirections.actionFragmentProfileToAddEditActivityFragment()
         findNavController().navigate(action)
     }
 
@@ -81,14 +80,16 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun receiveProfileData() {
+    private fun receiveProfileData(binding: FragmentProfileBinding, adapter: ActivityBindingAdapter) {
         val profile = requireActivity().intent.getParcelableExtra<ProfileProperty>("profile")
+
         if (!firstLoad || profile == null){
             viewModel.update()
         } else {
             viewModel.update(profile)
             firstLoad = false
         }
+
         viewModel.profile.observe(viewLifecycleOwner, Observer{ data ->
             binding.profile = data
             data.activities?.let{

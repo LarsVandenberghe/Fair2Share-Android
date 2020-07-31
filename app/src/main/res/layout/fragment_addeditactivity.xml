@@ -2,15 +2,24 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.CreateActivityFragment">
-
+    tools:context=".activity.AddEditActivityFragment">
+    <data>
+        <import type="com.example.fair2share.data_models.ActivityProperty"/>
+        <import type="com.example.fair2share.activity.AddEditActivityFragmentViewModel"/>
+        <variable
+            name="activity"
+            type="ActivityProperty" />
+        <variable
+            name="viewModel"
+            type="AddEditActivityFragmentViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/createActivityPane"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/txt_createactivity_name"
+            android:id="@+id/txt_addeditactivity_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -20,30 +29,31 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/edit_createactivity_name"
+            android:id="@+id/edit_addeditactivity_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:ems="10"
             android:hint="@string/fragment_create_activity_name_placeholder"
+            android:text="@={activity.name}"
             android:inputType="textPersonName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_createactivity_name"
+            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_name"
             android:importantForAutofill="no" />
 
         <TextView
-            android:id="@+id/txt_createactivity_description"
+            android:id="@+id/txt_addeditactivity_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"
             android:text="@string/fragment_create_activity_description_lbl"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_createactivity_name" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_addeditactivity_name" />
 
         <EditText
-            android:id="@+id/edit_createactivity_description"
+            android:id="@+id/edit_addeditactivity_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -51,43 +61,44 @@
             android:layout_marginEnd="10dp"
             android:ems="10"
             android:hint="@string/fragment_create_activity_description_placeholder"
+            android:text="@={activity.description}"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_createactivity_description"
+            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_description"
             android:importantForAutofill="no" />
 
         <TextView
-            android:id="@+id/txt_createactivity_valuta"
+            android:id="@+id/txt_addeditactivity_valuta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"
             android:text="@string/fragment_create_activity_valuta_lbl"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_createactivity_description" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_addeditactivity_description" />
 
         <Spinner
-            android:id="@+id/cbo_createactivity_valuta"
+            android:id="@+id/cbo_addeditactivity_valuta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:spinnerMode="dropdown"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_createactivity_valuta" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_valuta" />
 
         <Button
-            android:id="@+id/btn_createactivity_add"
+            android:id="@+id/btn_addeditactivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:text="@string/btn_add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cbo_createactivity_valuta" />
+            app:layout_constraintTop_toBottomOf="@+id/cbo_addeditactivity_valuta" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
