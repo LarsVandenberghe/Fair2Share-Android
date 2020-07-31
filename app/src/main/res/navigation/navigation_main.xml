@@ -33,12 +33,19 @@
         <action
             android:id="@+id/action_friendListFragment_to_addFriendFragment"
             app:destination="@id/addFriendFragment" />
+        <argument
+            android:name="friends"
+            app:argType="com.example.fair2share.data_models.ProfileProperty[]" />
     </fragment>
     <fragment
         android:id="@+id/addFriendFragment"
         android:name="com.example.fair2share.friends.AddFriendFragment"
         android:label="@string/fragment_add_friend_title"
-        tools:layout="@layout/fragment_addfriend" />
+        tools:layout="@layout/fragment_addfriend" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/activityTransactionsFragment"
         android:name="com.example.fair2share.activity.transactions.ActivityTransactionsFragment"
@@ -47,6 +54,12 @@
         <action
             android:id="@+id/action_activityTransactionsFragment_to_activitySummaryFragment"
             app:destination="@id/activitySummaryFragment" />
+        <action
+            android:id="@+id/action_activityTransactionsFragment_to_addEditTransactionFragment"
+            app:destination="@id/addEditTransactionFragment" />
+        <argument
+            android:name="activity"
+            app:argType="com.example.fair2share.data_models.ActivityProperty" />
     </fragment>
     <fragment
         android:id="@+id/activitySummaryFragment"
@@ -55,10 +68,28 @@
         <action
             android:id="@+id/action_activitySummaryFragment_to_managePeopleInActivityFragment"
             app:destination="@id/managePeopleInActivityFragment" />
+        <argument
+            android:name="activity"
+            app:argType="com.example.fair2share.data_models.ActivityProperty" />
     </fragment>
     <fragment
         android:id="@+id/managePeopleInActivityFragment"
         android:name="com.example.fair2share.activity.people.ManagePeopleInActivityFragment"
         android:label="@string/fragment_manage_people_in_activity"
-        tools:layout="@layout/fragment_managepeopleinactivity" />
+        tools:layout="@layout/fragment_managepeopleinactivity" >
+        <argument
+            android:name="activity"
+            app:argType="com.example.fair2share.data_models.ActivityProperty" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditTransactionFragment"
+        android:name="com.example.fair2share.activity.transactions.AddEditTransactionFragment"
+        android:label="fragment_addedittransaction"
+        tools:layout="@layout/fragment_addedittransaction" >
+        <argument
+            android:name="transaction"
+            app:argType="com.example.fair2share.data_models.TransactionProperty"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>

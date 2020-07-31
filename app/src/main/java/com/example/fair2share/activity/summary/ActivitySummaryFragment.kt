@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
 import com.example.fair2share.data_models.ActivityProperty
@@ -17,14 +18,15 @@ import com.example.fair2share.databinding.FragmentActivitysummaryBinding
 class ActivitySummaryFragment : Fragment() {
 
     private lateinit var viewModel: ActivitySummaryViewModel
+    private val safeArgs: ActivitySummaryFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.getParcelable<ActivityProperty>("activity")?.let{
-            val viewModelFactory =
-                ActivityFragmentViewModelFactory(it)
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActivitySummaryViewModel::class.java)
-        }
+
+        val viewModelFactory =
+            ActivityFragmentViewModelFactory(safeArgs.activity)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActivitySummaryViewModel::class.java)
+
         setHasOptionsMenu(true)
     }
 
@@ -38,7 +40,7 @@ class ActivitySummaryFragment : Fragment() {
             SummaryBindingAdapter(viewModel)
         binding.rvActivitySummarylist.adapter = summaryAdapter
 
-        viewModel.summary.observe(this, Observer { summaryItem ->
+        viewModel.summary.observe(viewLifecycleOwner, Observer { summaryItem ->
             summaryAdapter.data = summaryItem
         })
         viewModel.update()
@@ -60,9 +62,8 @@ class ActivitySummaryFragment : Fragment() {
                 return true
             }
             R.id.btn_summaryoverflow_addfriends -> {
-                val bundle = Bundle()
-                bundle.putParcelable("activity", viewModel.activity)
-                findNavController().navigate(R.id.action_activitySummaryFragment_to_managePeopleInActivityFragment, bundle)
+                val action = ActivitySummaryFragmentDirections.actionActivitySummaryFragmentToManagePeopleInActivityFragment(viewModel.activity)
+                findNavController().navigate(action)
                 return true
             }
             else -> super.onOptionsItemSelected(item)

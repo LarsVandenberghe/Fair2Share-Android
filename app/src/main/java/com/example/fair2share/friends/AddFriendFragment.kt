@@ -35,11 +35,11 @@ class AddFriendFragment : Fragment() {
             viewModel.addFriendByEmail(binding.editAddfriendEmail.text.toString())
         }
 
-        viewModel.errorMessage.observe(this, Observer {
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
 
-        viewModel.succes.observe(this, Observer {
+        viewModel.succes.observe(viewLifecycleOwner, Observer {
             if (it){
                 //TODO: Stringify
                 Toast.makeText(context, "FriendRequest has been sent.", Toast.LENGTH_LONG).show()

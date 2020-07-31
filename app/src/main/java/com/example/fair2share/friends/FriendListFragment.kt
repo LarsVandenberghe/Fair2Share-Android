@@ -11,21 +11,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.databinding.FragmentFriendlistBinding
 
 class FriendListFragment : Fragment() {
     private lateinit var viewModel: FriendListViewModel
+    private val safeArgs: FriendListFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.getParcelableArrayList<ProfileProperty>("friends")?.let{
-            val friends : List<ProfileProperty> = it
+            val friends : List<ProfileProperty> = safeArgs.friends.toList()
             val viewModelFactory = FriendListViewModelFactory(friends)
             viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
-        }
     }
 
     override fun onCreateView(
@@ -36,11 +36,11 @@ class FriendListFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentFriendlistBinding>(inflater, R.layout.fragment_friendlist, container, false)
         configureAdapters(binding)
 
-        viewModel.errorMessage.observe(this, Observer {
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
 
-        viewModel.succes.observe(this, Observer {
+        viewModel.succes.observe(viewLifecycleOwner, Observer {
             if (it){
                 viewModel.update()
             }
@@ -54,9 +54,8 @@ class FriendListFragment : Fragment() {
         val fab: View = requireView().findViewById(R.id.fab_friendlst_addfriend)
 
         fab.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("email", viewModel.myProfileEmailAddress)
-            findNavController().navigate(R.id.action_friendListFragment_to_addFriendFragment, bundle)
+            val action = FriendListFragmentDirections.actionFriendListFragmentToAddFriendFragment(viewModel.myProfileEmailAddress)
+            findNavController().navigate(action)
         }
     }
 
@@ -65,7 +64,7 @@ class FriendListFragment : Fragment() {
         val friendRequestAdapter = FriendRequestBindingAdapter(viewModel)
         val friendsAdapter = FriendBindingAdapter()
 
-        viewModel.friendRequests.observe(this, Observer {
+        viewModel.friendRequests.observe(viewLifecycleOwner, Observer {
             friendRequestAdapter.data = it
             if (it.size == 0){
                 requireView().findViewById<TextView>(R.id.txt_friendlst_nofriendrequests).visibility = View.VISIBLE
@@ -75,7 +74,7 @@ class FriendListFragment : Fragment() {
 
         })
 
-        viewModel.friends.observe(this, Observer {
+        viewModel.friends.observe(viewLifecycleOwner, Observer {
             friendsAdapter.data = it
             if (it.size == 0){
                 requireView().findViewById<TextView>(R.id.txt_friendlst_nofriends).visibility = View.VISIBLE

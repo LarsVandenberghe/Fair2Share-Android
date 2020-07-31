@@ -40,14 +40,14 @@ class LoginFragment : Fragment() {
                 viewModel.login(binding.editLoginEmail.text.toString(), binding.editLoginPassword.text.toString())
             }
 
-            viewModel.loggedIn.observe(this, Observer { bool ->
+            viewModel.loggedIn.observe(viewLifecycleOwner, Observer { bool ->
                 if (bool){
                     startActivity(Intent(context, MainActivity::class.java))
                     requireActivity().finish()
                 }
             })
 
-            viewModel.errorMessage.observe(this, Observer { message  ->
+            viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message  ->
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             })
 
@@ -69,7 +69,8 @@ class LoginFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.btn_register_register -> {
-                requireActivity().findNavController(R.id.navhostfragment_login).navigate(R.id.action_loginFragment_to_registerFragment)
+                val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                requireActivity().findNavController(R.id.navhostfragment_login).navigate(action)
                 return true
             } else -> super.onOptionsItemSelected(item)
         }

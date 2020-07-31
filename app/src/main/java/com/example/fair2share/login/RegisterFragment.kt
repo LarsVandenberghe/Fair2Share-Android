@@ -30,11 +30,11 @@ class RegisterFragment : Fragment() {
             viewModel =
                 ViewModelProviders.of(this, viewModelFactory).get(RegisterViewModel::class.java)
 
-            viewModel.errorMessage.observe(this, Observer { message ->
+            viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message ->
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             })
 
-            viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
+            viewModel.loggedIn.observe(viewLifecycleOwner, Observer { isLoggedIn ->
                 if (isLoggedIn){
                     startActivity(Intent(context, MainActivity::class.java))
                     requireActivity().finish()

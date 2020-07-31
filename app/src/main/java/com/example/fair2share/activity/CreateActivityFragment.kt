@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -32,7 +31,7 @@ class CreateActivityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentCreateactivityBinding>(inflater, R.layout.fragment_createactivity, container, false)
-        binding.cboCreateactivityValuta.adapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Valutas.values())
+        binding.cboCreateactivityValuta.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, Valutas.values())
         binding.createActivityPane.setOnClickListener {
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
@@ -47,10 +46,10 @@ class CreateActivityFragment : Fragment() {
             )
             viewModel.create(act)
         }
-        viewModel.errorMessage.observe(this, Observer {
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
-        viewModel.navigate.observe(this, Observer {
+        viewModel.navigate.observe(viewLifecycleOwner, Observer {
             if (it){
                 findNavController().navigateUp()
             }

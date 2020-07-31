@@ -19,6 +19,7 @@ import com.example.fair2share.databinding.ActivityMainBinding
 import com.example.fair2share.databinding.NavHeaderBinding
 import com.example.fair2share.login.AuthInterceptor
 import com.example.fair2share.network.AccountApi.sharedPreferences
+import com.example.fair2share.profile.ProfileFragmentDirections
 import com.example.fair2share.profile.ProfileFragmentViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -90,9 +91,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             if ( it.itemId == R.id.btn_navdrawer_friends ){
-                val friends = Bundle()
-                friends.putParcelableArrayList("friends", navHeaderBinding.profile?.friends as ArrayList<ProfileProperty>)
-                navController.navigate(R.id.action_fragmentProfile_to_friendListFragment, friends)
+                val action = ProfileFragmentDirections
+                    .actionFragmentProfileToFriendListFragment(
+                        navHeaderBinding.profile?.friends?.toTypedArray() ?: emptyArray()
+                    )
+
+                navController.navigate(action)
             }
             return@setNavigationItemSelectedListener false
         }

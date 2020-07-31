@@ -65,10 +65,7 @@ data class ActivityProperty (
         parcel.readString(),
         parcel.readInt(),
         parcel.createTypedArrayList(ProfileProperty),
-//        listOf<ProfileProperty>().apply {
-//            parcel.readList(this, ProfileProperty::class.java.classLoader)
-//        },
-        null
+        parcel.createTypedArrayList(TransactionProperty)
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -77,6 +74,7 @@ data class ActivityProperty (
         parcel.writeString(description)
         parcel.writeInt(currencyType)
         parcel.writeTypedList(participants)
+        parcel.writeTypedList(transactions)
     }
 
     override fun describeContents(): Int {
@@ -98,13 +96,42 @@ data class TransactionProperty(
     val transactionId: Long,
     val name: String,
     val description: String?,
-    val timeStamp: String,
+    val timeStamp: String?,
     val payment: Double,
-    val profilesInTransaction: List<ProfileProperty>,
-    val paidBy: ProfileProperty
-)
+    var profilesInTransaction: List<ProfileProperty>?,
+    val paidBy: ProfileProperty?
+):Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readString()!!,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readDouble(),
+        parcel.createTypedArrayList(ProfileProperty),
+        parcel.readParcelable(ProfileProperty::class.java.classLoader)
+    )
 
-//data class KeyValueProperty(
-//    val key: Long,
-//    val value: Any
-//)
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(transactionId)
+        parcel.writeString(name)
+        parcel.writeString(description)
+        parcel.writeString(timeStamp)
+        parcel.writeDouble(payment)
+        parcel.writeTypedList(profilesInTransaction)
+        parcel.writeParcelable(paidBy, flags)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<TransactionProperty> {
+        override fun createFromParcel(parcel: Parcel): TransactionProperty {
+            return TransactionProperty(parcel)
+        }
+
+        override fun newArray(size: Int): Array<TransactionProperty?> {
+            return arrayOfNulls(size)
+        }
+    }
+}

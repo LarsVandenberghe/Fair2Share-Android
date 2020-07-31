@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
 import com.example.fair2share.data_models.ActivityProperty
@@ -18,13 +19,13 @@ import com.example.fair2share.databinding.FragmentManagepeopleinactivityBinding
 
 class ManagePeopleInActivityFragment : Fragment() {
     private lateinit var viewModel: ManagePeopleInActivityViewModel
+    private val safeArgs: ManagePeopleInActivityFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.getParcelable<ActivityProperty>("activity")?.let{
-            val viewModelFactory = ActivityFragmentViewModelFactory(it)
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(ManagePeopleInActivityViewModel::class.java)
-        }
+
+        val viewModelFactory = ActivityFragmentViewModelFactory(safeArgs.activity)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ManagePeopleInActivityViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -44,11 +45,11 @@ class ManagePeopleInActivityFragment : Fragment() {
             viewModel.confirm()
         }
 
-        viewModel.success.observe(this, Observer {
+        viewModel.success.observe(viewLifecycleOwner, Observer {
             findNavController().navigateUp()
         })
 
-        viewModel.errorMessage.observe(this, Observer {
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
 
@@ -59,7 +60,7 @@ class ManagePeopleInActivityFragment : Fragment() {
         val candidateAdapter = ActivityCandidatesAdapter(viewModel)
         val participantAdapter = ActivityParticipantsAdapter(viewModel)
 
-        viewModel.candidates.observe(this, Observer {
+        viewModel.candidates.observe(viewLifecycleOwner, Observer {
             candidateAdapter.data = it
             if (it.size == 0){
                 requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_nocandidates).visibility = View.VISIBLE
@@ -69,7 +70,7 @@ class ManagePeopleInActivityFragment : Fragment() {
 
         })
 
-        viewModel.participants.observe(this, Observer {
+        viewModel.participants.observe(viewLifecycleOwner, Observer {
             participantAdapter.data = it
             if (it.size == 0){
                 requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_noparticipants).visibility = View.VISIBLE

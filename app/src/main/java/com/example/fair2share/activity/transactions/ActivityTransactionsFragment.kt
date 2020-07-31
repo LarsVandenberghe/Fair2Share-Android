@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
 import com.example.fair2share.data_models.ActivityProperty
@@ -16,15 +17,16 @@ import com.example.fair2share.databinding.FragmentActivitytransactionsBinding
 
 class ActivityTransactionsFragment : Fragment() {
     private lateinit var viewModel: ActivityTransactionsFragmentViewModel
+    private val safeArgs: ActivityTransactionsFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.getParcelable<ActivityProperty>("activity")?.let{
-            val viewModelFactory = ActivityFragmentViewModelFactory(it)
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(
-                ActivityTransactionsFragmentViewModel::class.java
-            )
-        }
+
+        val viewModelFactory = ActivityFragmentViewModelFactory(safeArgs.activity)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(
+            ActivityTransactionsFragmentViewModel::class.java
+        )
+
         setHasOptionsMenu(true)
     }
 
@@ -44,7 +46,7 @@ class ActivityTransactionsFragment : Fragment() {
 
         binding.rvActivitytransactionsList.adapter = transactionAdapter
 
-        viewModel.transactions.observe(this, Observer { transactions ->
+        viewModel.transactions.observe(viewLifecycleOwner, Observer { transactions ->
             if(transactions.size == 0){
                 binding.txtActivitytransactionsNotransactions.visibility = View.VISIBLE
             } else {
@@ -53,14 +55,18 @@ class ActivityTransactionsFragment : Fragment() {
             transactionAdapter.data = transactions.reversed()
         })
 
-        viewModel.errorMessage.observe(this, Observer {
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
-        viewModel.navigate.observe(this, Observer {
+        viewModel.navigate.observe(viewLifecycleOwner, Observer {
             if (it){
                 findNavController().navigateUp()
             }
         })
+
+        binding.fabActivitytransactionsAddactivity.setOnClickListener {
+            findNavController()
+        }
 
         viewModel.update()
 
@@ -80,12 +86,8 @@ class ActivityTransactionsFragment : Fragment() {
                 return true
             }
             R.id.btn_transactionsoverflow_summary -> {
-                val bundle = Bundle()
-                bundle.putParcelable("activity", viewModel.activity)
-                findNavController().navigate(
-                    R.id.action_activityTransactionsFragment_to_activitySummaryFragment,
-                    bundle
-                )
+                val action = ActivityTransactionsFragmentDirections.actionActivityTransactionsFragmentToActivitySummaryFragment(viewModel.activity)
+                findNavController().navigate(action)
                 return true
             }
             else -> super.onOptionsItemSelected(item)

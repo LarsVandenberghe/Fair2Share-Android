@@ -26,10 +26,6 @@ class ProfileFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ProfileFragmentViewModel::class.java)
 
-        viewModel.errorMessage.observe(this, Observer { errorMsg ->
-            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
-        })
-
         setHasOptionsMenu(true)
     }
 
@@ -42,6 +38,9 @@ class ProfileFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         adapter = ActivityBindingAdapter(viewModel)
         binding.rvProfileActivitylist.adapter = adapter
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMsg ->
+            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+        })
 
         receiveProfileData()
 
@@ -66,7 +65,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun navigateToCreateActivity(){
-        findNavController().navigate(R.id.action_fragmentProfile_to_createActivityFragment)
+        val action = ProfileFragmentDirections.actionFragmentProfileToCreateActivityFragment()
+        findNavController().navigate(action)
     }
 
     private fun addFriendRequests(amountOfFriendRequests: Int){
@@ -89,7 +89,7 @@ class ProfileFragment : Fragment() {
             viewModel.update(profile)
             firstLoad = false
         }
-        viewModel.profile.observe(this, Observer{ data ->
+        viewModel.profile.observe(viewLifecycleOwner, Observer{ data ->
             binding.profile = data
             data.activities?.let{
                 if (it.size == 0){
