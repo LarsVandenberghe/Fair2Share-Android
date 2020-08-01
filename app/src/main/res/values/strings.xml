@@ -54,4 +54,10 @@
     <string name="txt_profile_noactivities">There are no available activities.</string>
     <string name="txt_activitytransactions_notransactions">There are no transactions yet.</string>
     <string name="btn_edit">Edit</string>
+    <string name="add_edit_transaction_fragment_title">Transaction</string>
+    <string name="txt_addedittransaction_payment">Payment*</string>
+    <string name="hint_name">name</string>
+    <string name="hint_payment">payment</string>
+    <string name="txt_addedittransaction_paidby">Paid By*</string>
+    <string name="remove_transaction">Remove Transaction</string>
 </resources>

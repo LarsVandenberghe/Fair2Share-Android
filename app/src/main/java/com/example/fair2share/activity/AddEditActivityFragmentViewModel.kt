@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fair2share.R
 import com.example.fair2share.Utils
 import com.example.fair2share.data_models.ActivityProperty
 import com.example.fair2share.network.ActivityApi
@@ -33,14 +34,12 @@ class AddEditActivityFragmentViewModel(val activity: ActivityProperty): ViewMode
     fun createOrUpdate(){
         _coroutineScope.launch {
             try {
-                val response: Response<Unit>
-                if (isNewActivity){
-                    response = ActivityApi.retrofitService.addActivity(activity).await()
+                val response = if (isNewActivity){
+                    ActivityApi.retrofitService.addActivity(activity).await()
                 } else {
-                    response = ActivityApi.retrofitService.updateActivity(activity.activityId!!, activity).await()
+                    ActivityApi.retrofitService.updateActivity(activity.activityId!!, activity).await()
                 }
                 Utils.throwExceptionIfHttpNotSuccessful(response)
-                Log.i("AddEditActFragmentVM", response.message())
                 _navigate.value = true
             } catch (e:HttpException){
                 _errorMessage.value = Utils.formExceptionsToString(e)

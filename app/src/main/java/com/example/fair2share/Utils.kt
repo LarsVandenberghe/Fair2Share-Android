@@ -1,12 +1,14 @@
 package com.example.fair2share
 
+import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TableRow
+import androidx.databinding.InverseMethod
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.request.RequestOptions
+import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.network.AccountApi
 import org.json.JSONException
 import org.json.JSONObject
@@ -44,7 +46,7 @@ class Utils {
             return sb.toString()
         }
 
-        fun throwExceptionIfHttpNotSuccessful(response: Response<Unit>){
+        fun throwExceptionIfHttpNotSuccessful(response: Response<out Any>){
             if (!response.isSuccessful){
                 throw HttpException(response)
             }
@@ -68,5 +70,25 @@ class Utils {
             return GlideUrl(String.format("%sProfile/image/%s", BuildConfig.BASE_URL, imageId), LazyHeaders.Builder()
                 .addHeader("Authorization", String.format("Bearer %s", token)).build())
         }
+    }
+}
+
+object Converter {
+    @InverseMethod("stringToDouble")
+    @JvmStatic fun doubleToString(value: Double): String {
+        return String.format("%.2f", value)
+    }
+
+    @JvmStatic fun stringToDouble(value: String): Double {
+        return value.toDouble()
+    }
+
+    @InverseMethod("listIndexToFriend")
+    @JvmStatic fun friendToListIndex(people: List<ProfileProperty>, selected:ProfileProperty?): Int {
+        return people.map { person -> person.profileId }.indexOf(selected?.profileId ?: 0)
+    }
+
+    @JvmStatic fun listIndexToFriend(people: List<ProfileProperty>, selected:Int): ProfileProperty? {
+        return people[selected]
     }
 }

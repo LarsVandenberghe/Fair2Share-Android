@@ -65,7 +65,11 @@ class ActivityTransactionsFragment : Fragment() {
         })
 
         binding.fabActivitytransactionsAddactivity.setOnClickListener {
-            findNavController()
+            val action = ActivityTransactionsFragmentDirections.actionActivityTransactionsFragmentToAddEditTransactionFragment(
+                null,
+                viewModel.activity
+            )
+            findNavController().navigate(action)
         }
 
         viewModel.update()
@@ -82,7 +86,7 @@ class ActivityTransactionsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.btn_transactionsoverflow_removeactivity -> {
-                viewModel.removeActivity(viewModel.activity)
+                viewModel.removeActivity()
                 return true
             }
             R.id.btn_transactionsoverflow_summary -> {

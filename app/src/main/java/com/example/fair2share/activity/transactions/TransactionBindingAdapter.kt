@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fair2share.R
 import com.example.fair2share.ConstraintRowItemViewHolder
@@ -29,7 +30,13 @@ class TransactionBindingAdapter(val viewModel: ActivityTransactionsFragmentViewM
     }
 
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
+        val item = data[position]
+
         holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_name).text = data[position].name
         holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_price).text = String.format("%s %.2f", Valutas.values()[viewModel.activity.currencyType].getSymbol(),data[position].payment)
+        holder.rowView.setOnClickListener {
+            val action = ActivityTransactionsFragmentDirections.actionActivityTransactionsFragmentToAddEditTransactionFragment(item, viewModel.activity)
+            findNavController(holder.rowView).navigate(action)
+        }
     }
 }

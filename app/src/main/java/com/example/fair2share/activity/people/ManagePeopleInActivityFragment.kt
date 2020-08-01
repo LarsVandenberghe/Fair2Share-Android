@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
-import com.example.fair2share.data_models.ActivityProperty
 import com.example.fair2share.databinding.FragmentManagepeopleinactivityBinding
 
 class ManagePeopleInActivityFragment : Fragment() {
@@ -63,9 +62,9 @@ class ManagePeopleInActivityFragment : Fragment() {
         viewModel.candidates.observe(viewLifecycleOwner, Observer {
             candidateAdapter.data = it
             if (it.size == 0){
-                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_nocandidates).visibility = View.VISIBLE
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates).visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_nocandidates).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates).visibility = View.GONE
             }
 
         })
@@ -73,9 +72,9 @@ class ManagePeopleInActivityFragment : Fragment() {
         viewModel.participants.observe(viewLifecycleOwner, Observer {
             participantAdapter.data = it
             if (it.size == 0){
-                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_noparticipants).visibility = View.VISIBLE
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants).visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_noparticipants).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants).visibility = View.GONE
             }
         })
 

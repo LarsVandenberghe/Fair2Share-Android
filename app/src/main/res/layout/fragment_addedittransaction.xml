@@ -1,10 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.transactions.AddEditTransactionFragment"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.example.fair2share.data_models.TransactionProperty"/>
+        <import type="com.example.fair2share.data_models.ProfileProperty"/>
+        <import type="com.example.fair2share.Converter"/>
+        <variable
+            name="transaction"
+            type="TransactionProperty" />
+        <variable
+            name="activityParticipants"
+            type="java.util.List&lt;ProfileProperty&gt;" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/txt_addedittransaction_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/fragment_create_activity_name_lbl"
+            app:layout_constraintStart_toStartOf="@+id/edit_addedittransaction_name"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_addedittransaction_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:ems="10"
+            android:text="@={transaction.name}"
+            android:hint="@string/hint_name"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_name"
+            android:importantForAutofill="no" />
+
+        <TextView
+            android:id="@+id/txt_addedittransaction_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/txt_addedittransaction_payment"
+            app:layout_constraintStart_toStartOf="@+id/edit_addedittransaction_payment"
+            app:layout_constraintTop_toBottomOf="@+id/edit_addedittransaction_name" />
+
+        <EditText
+            android:id="@+id/edit_addedittransaction_payment"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:hint="@string/hint_payment"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:text="@={Converter.doubleToString(transaction.payment)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_payment" />
+
+        <TextView
+            android:id="@+id/txt_addedittransaction_paidby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/txt_addedittransaction_paidby"
+            app:layout_constraintStart_toStartOf="@+id/cbo_addedittransaction_paidby"
+            app:layout_constraintTop_toBottomOf="@+id/edit_addedittransaction_name" />
+
+        <Spinner
+            android:id="@+id/cbo_addedittransaction_paidby"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:selectedItemPosition="@={Converter.friendToListIndex(activityParticipants, transaction.paidBy)}"
+            app:layout_constraintStart_toEndOf="@+id/edit_addedittransaction_payment"
+            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_paidby" />
+
+        <TextView
+            android:id="@+id/txt_addedittransaction_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:text="@string/fragment_create_activity_description_lbl"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_addedittransaction_payment" />
+
+        <EditText
+            android:id="@+id/edit_addedittransaction_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:ems="10"
+            android:hint="@string/fragment_create_activity_description_placeholder"
+            android:inputType="textMultiLine"
+            android:text="@={transaction.description}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_description"
+            android:importantForAutofill="no" />
+
+        <Button
+            android:id="@+id/btn_addedittransaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_addedittransaction_description" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,16 +2,16 @@ package com.example.fair2share.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fair2share.R
 import com.example.fair2share.ConstraintRowItemViewHolder
 import com.example.fair2share.data_models.ActivityProperty
+import androidx.navigation.Navigation.findNavController
 
 class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
     var data =  listOf<ActivityProperty>()
@@ -35,9 +35,10 @@ class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) : Recycler
         val item = data[position]
         val action = ProfileFragmentDirections.actionFragmentProfileToActivityTransactionsFragment(item)
 
-        holder.rowView.setOnClickListener(
-            Navigation.createNavigateOnClickListener(action)
-        )
+        holder.rowView.setOnClickListener {
+            findNavController(holder.rowView).navigate(action)
+        }
+
         holder.rowView.findViewById<TextView>(R.id.txt_recycleractivity_name).text = String.format("%s", item.name)
         holder.rowView.findViewById<ImageButton>(R.id.btn_recycleractivity_remove).setOnClickListener{
             viewModel.removeActivity(item)

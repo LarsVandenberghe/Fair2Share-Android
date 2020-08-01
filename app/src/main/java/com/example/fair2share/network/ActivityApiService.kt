@@ -70,6 +70,18 @@ interface ActvityApiService {
     @DELETE("Activity/{id}/participants")
     fun removeActivityParticipants(@Path("id") id: Long, @Query("friend_ids") idList: List<Long>):
             Deferred<Response<Unit>>
+
+    @POST("Activity/{id}/transactions")
+    fun addTransaction(@Path("id") activityId: Long, @Body transaction: TransactionProperty):
+            Deferred<Response<Long>>
+
+    @PUT("Activity/{id}/transactions/{transactionId}")
+    fun updateTransaction(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long, @Body transaction: TransactionProperty):
+            Deferred<Response<Unit>>
+
+    @DELETE("Activity/{id}/transactions/{transactionId}")
+    fun removeTransaction(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long):
+            Deferred<Response<Unit>>
 }
 
 object ActivityApi {

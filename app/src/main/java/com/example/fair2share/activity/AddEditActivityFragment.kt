@@ -25,11 +25,10 @@ class AddEditActivityFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModelFactory: ActivityFragmentViewModelFactory
-        if (safeArgs.activity != null){
-            viewModelFactory = ActivityFragmentViewModelFactory(safeArgs.activity as ActivityProperty)
+        val viewModelFactory = if (safeArgs.activity != null){
+             ActivityFragmentViewModelFactory(safeArgs.activity as ActivityProperty)
         } else {
-            viewModelFactory = ActivityFragmentViewModelFactory(ActivityProperty.makeEmptyActivity())
+            ActivityFragmentViewModelFactory(ActivityProperty.makeEmpty())
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddEditActivityFragmentViewModel::class.java)
@@ -44,15 +43,15 @@ class AddEditActivityFragment : Fragment() {
         binding.activity = viewModel.activity
 
         binding.cboAddeditactivityValuta.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, Valutas.values())
+
         binding.createActivityPane.setOnClickListener {
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
         }
-        binding.cboAddeditactivityValuta.setSelection(viewModel.activity.currencyType)
 
         binding.btnAddeditactivity.text = getButtonName()
+
         binding.btnAddeditactivity.setOnClickListener {
-            viewModel.activity.currencyType = binding.cboAddeditactivityValuta.selectedItemPosition
             viewModel.createOrUpdate()
         }
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
@@ -68,10 +67,10 @@ class AddEditActivityFragment : Fragment() {
     }
 
     private fun getButtonName() : String{
-        if (viewModel.isNewActivity){
-            return getString(R.string.btn_add)
+        return if (viewModel.isNewActivity){
+            getString(R.string.btn_add)
         } else {
-            return getString(R.string.btn_edit)
+            getString(R.string.btn_edit)
         }
     }
 }

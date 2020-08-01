@@ -5,13 +5,9 @@
     tools:context=".activity.AddEditActivityFragment">
     <data>
         <import type="com.example.fair2share.data_models.ActivityProperty"/>
-        <import type="com.example.fair2share.activity.AddEditActivityFragmentViewModel"/>
         <variable
             name="activity"
             type="ActivityProperty" />
-        <variable
-            name="viewModel"
-            type="AddEditActivityFragmentViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/createActivityPane"
@@ -86,7 +82,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:spinnerMode="dropdown"
-
+            android:selectedItemPosition="@={activity.currencyType}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_valuta" />

@@ -94,12 +94,30 @@
     <fragment
         android:id="@+id/addEditTransactionFragment"
         android:name="com.example.fair2share.activity.transactions.AddEditTransactionFragment"
-        android:label="fragment_addedittransaction"
-        tools:layout="@layout/fragment_addedittransaction" >
+        android:label="@string/add_edit_transaction_fragment_title"
+        tools:layout="@layout/fragment_addedittransaction">
         <argument
             android:name="transaction"
+            android:defaultValue="@null"
             app:argType="com.example.fair2share.data_models.TransactionProperty"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
+        <argument
+            android:name="activity"
+            app:argType="com.example.fair2share.data_models.ActivityProperty" />
+        <action
+            android:id="@+id/action_addEditTransactionFragment_to_managePeopleInTransactionFragment"
+            app:destination="@id/managePeopleInTransactionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/managePeopleInTransactionFragment"
+        android:name="com.example.fair2share.activity.transactions.people.ManagePeopleInTransactionFragment"
+        android:label="ManagePeopleInTransactionFragment"
+        tools:layout="@layout/fragment_managepeopleintransaction">
+        <argument
+            android:name="activity"
+            app:argType="com.example.fair2share.data_models.ActivityProperty" />
+        <argument
+            android:name="transaction"
+            app:argType="com.example.fair2share.data_models.TransactionProperty" />
     </fragment>
 </navigation>

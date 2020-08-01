@@ -41,7 +41,7 @@ class ActivityTransactionsFragmentViewModel(var activity : ActivityProperty):Vie
     }
 
 
-    fun removeActivity(activity: ActivityProperty){
+    fun removeActivity(){
         coroutineScope.launch {
             val a = ActivityApi.retrofitService.removeActivity(activity.activityId!!).await()
             if (!a.isSuccessful){
