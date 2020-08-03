@@ -47,17 +47,17 @@ class ManagePeopleInTransactionFragment : Fragment() {
         )
         configureAdapters(binding)
 
-//        binding.btnManagepeopleintransactionConfirm.setOnClickListener {
-//            //viewModel.confirm()
-//        }
-//
-//        viewModel.success.observe(viewLifecycleOwner, Observer {
-//            findNavController().navigateUp()
-//        })
-//
-//        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
-//            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-//        })
+        binding.btnManagepeopleintransactionConfirm.setOnClickListener {
+            viewModel.confirm()
+        }
+
+        viewModel.success.observe(viewLifecycleOwner, Observer {
+            findNavController().navigateUp()
+        })
+
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
 
         return binding.root
     }
@@ -66,31 +66,31 @@ class ManagePeopleInTransactionFragment : Fragment() {
         val candidateAdapter = TransactionCandidatesAdapter(viewModel)
         val participantAdapter = TransactionParticipantsAdapter(viewModel)
 
-//        viewModel.candidates.observe(viewLifecycleOwner, Observer {
-//            candidateAdapter.data = it
-//            if (it.size == 0){
-//                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates).visibility = View.VISIBLE
-//            } else {
-//                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates).visibility = View.GONE
-//            }
-//
-//        })
-//
-//        viewModel.participants.observe(viewLifecycleOwner, Observer {
-//            participantAdapter.data = it
-//            if (it.size == 0){
-//                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants).visibility = View.VISIBLE
-//            } else {
-//                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants).visibility = View.GONE
-//            }
-//        })
+        viewModel.candidates.observe(viewLifecycleOwner, Observer {
+            candidateAdapter.data = it
+            if (it.isEmpty()){
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates).visibility = View.VISIBLE
+            } else {
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates).visibility = View.GONE
+            }
+
+        })
+
+        viewModel.participants.observe(viewLifecycleOwner, Observer {
+            participantAdapter.data = it
+            if (it.isEmpty()){
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants).visibility = View.VISIBLE
+            } else {
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants).visibility = View.GONE
+            }
+        })
 
         binding.rvMmanagepeopleintransactionCandidates.adapter = candidateAdapter
         binding.rvManagepeopleintransactionParticipants.adapter = participantAdapter
     }
 
     override fun onDestroyView() {
-        //viewModel.resetSelected()
+        viewModel.resetSelected()
         super.onDestroyView()
     }
 }

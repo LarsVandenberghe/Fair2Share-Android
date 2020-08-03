@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.Response
 
-class AddEditTransactionViewModel(val activity: ActivityProperty, val transaction: TransactionProperty, val isNewTransaction: Boolean) : ViewModel() {
+class AddEditTransactionViewModel(val activity: ActivityProperty, val transaction: TransactionProperty, var isNewTransaction: Boolean) : ViewModel() {
     private var viewModelJob = Job()
     private val _coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 

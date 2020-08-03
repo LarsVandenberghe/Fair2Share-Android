@@ -62,6 +62,7 @@ class AddEditTransactionFragment : Fragment() {
                 if (viewModel.isNewTransaction){
                     val action = AddEditTransactionFragmentDirections
                         .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(viewModel.activity, viewModel.transaction)
+                    viewModel.isNewTransaction = false
                     findNavController().navigate(action)
                 } else {
                     findNavController().navigateUp()

@@ -42,7 +42,7 @@ class AuthInterceptor: Interceptor {
 
         val response = chain.proceed(request)
         if (response.code() == 401) {
-            _shouldRestart.postValue(true)
+            _shouldRestart.value = true
         }
         return response
     }

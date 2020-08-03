@@ -61,20 +61,20 @@ class ManagePeopleInActivityFragment : Fragment() {
 
         viewModel.candidates.observe(viewLifecycleOwner, Observer {
             candidateAdapter.data = it
-            if (it.size == 0){
-                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates).visibility = View.VISIBLE
+            if (it.isEmpty()){
+                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_nocandidates).visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_nocandidates).visibility = View.GONE
             }
 
         })
 
         viewModel.participants.observe(viewLifecycleOwner, Observer {
             participantAdapter.data = it
-            if (it.size == 0){
-                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants).visibility = View.VISIBLE
+            if (it.isEmpty()){
+                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_noparticipants).visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_noparticipants).visibility = View.GONE
             }
         })
 

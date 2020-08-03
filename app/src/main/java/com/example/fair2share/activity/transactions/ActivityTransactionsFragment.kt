@@ -47,7 +47,7 @@ class ActivityTransactionsFragment : Fragment() {
         binding.rvActivitytransactionsList.adapter = transactionAdapter
 
         viewModel.transactions.observe(viewLifecycleOwner, Observer { transactions ->
-            if(transactions.size == 0){
+            if(transactions.isEmpty()){
                 binding.txtActivitytransactionsNotransactions.visibility = View.VISIBLE
             } else {
                 binding.txtActivitytransactionsNotransactions.visibility = View.GONE

@@ -42,7 +42,7 @@ class TransactionParticipantsAdapter(val viewModel: ManagePeopleInTransactionVie
         addFriend.visibility = View.GONE
 
         removeFriend.setOnClickListener {
-            //viewModel.removeFromParticipants(item.profileId)
+            viewModel.removeFromParticipants(item.profileId)
         }
     }
 }

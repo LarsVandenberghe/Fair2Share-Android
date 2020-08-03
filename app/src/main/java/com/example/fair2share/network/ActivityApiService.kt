@@ -79,8 +79,20 @@ interface ActvityApiService {
     fun updateTransaction(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long, @Body transaction: TransactionProperty):
             Deferred<Response<Unit>>
 
+    @GET("Activity/{id}/transactions/{transactionId}")
+    fun getActivityTransactionById(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long):
+            Deferred<TransactionProperty>
+
     @DELETE("Activity/{id}/transactions/{transactionId}")
     fun removeTransaction(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long):
+            Deferred<Response<Unit>>
+
+    @POST("Activity/{id}/transactions/{transactionId}/participants")
+    fun addTransactionParticipants(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long, @Body idList: List<Long>):
+            Deferred<Response<Unit>>
+
+    @DELETE("Activity/{id}/transactions/{transactionId}/participants")
+    fun removeTransactionParticipants(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long, @Query("friend_ids") idList: List<Long>):
             Deferred<Response<Unit>>
 }
 
