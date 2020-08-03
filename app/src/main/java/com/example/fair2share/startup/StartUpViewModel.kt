@@ -10,6 +10,7 @@ import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.login.AuthInterceptor
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.ProfileApi
+import com.example.fair2share.network.StartUpApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -45,12 +46,12 @@ class StartUpViewModel(var sharedPreferences: SharedPreferences?) : ViewModel() 
     fun getProfile() {
         _coroutineScope.launch {
             try {
-                _profile.value = ProfileApi.retrofitService.profile().await()
+                _profile.value = StartUpApi.retrofitService.profile().await()
             } catch (t: Throwable){
 
                 if (AuthInterceptor.throwableIs401(t)){
                     _errorMessage.value = "Token expired, please relog."
-                    _shouldRelog.value = true;
+                    _shouldRelog.value = true
                 } else {
                     _errorMessage.value = t.message
                 }

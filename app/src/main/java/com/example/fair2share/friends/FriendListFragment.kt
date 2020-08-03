@@ -23,9 +23,19 @@ class FriendListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-            val friends : List<ProfileProperty> = safeArgs.friends.toList()
-            val viewModelFactory = FriendListViewModelFactory(friends)
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
+        val friends : List<ProfileProperty> = safeArgs.friends.toList()
+        val viewModelFactory = FriendListViewModelFactory(friends)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
+
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.succes.observe(this, Observer {
+            if (it){
+                viewModel.update()
+            }
+        })
     }
 
     override fun onCreateView(
@@ -35,17 +45,6 @@ class FriendListFragment : Fragment() {
 
         val binding = DataBindingUtil.inflate<FragmentFriendlistBinding>(inflater, R.layout.fragment_friendlist, container, false)
         configureAdapters(binding)
-
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        })
-
-        viewModel.succes.observe(viewLifecycleOwner, Observer {
-            if (it){
-                viewModel.update()
-            }
-        })
-
         return binding.root
     }
 

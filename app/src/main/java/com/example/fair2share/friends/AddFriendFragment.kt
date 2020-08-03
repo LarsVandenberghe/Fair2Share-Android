@@ -10,19 +10,33 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.databinding.FragmentAddfriendBinding
 
 
 class AddFriendFragment : Fragment() {
     private lateinit var viewModel: AddFriendViewModel
+    private val safeArgs : AddFriendFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.getString("email")?.let {
-            val viewModelFactory = AddFriendViewModelFactory(it)
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddFriendViewModel::class.java)
-        }
+
+        val viewModelFactory = AddFriendViewModelFactory(safeArgs.email)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddFriendViewModel::class.java)
+
+        viewModel.errorMessage.observe(this, Observer {message ->
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.succes.observe(this, Observer {
+            if (it){
+                //TODO: Stringify
+                Toast.makeText(context, "FriendRequest has been sent.", Toast.LENGTH_LONG).show()
+                findNavController().navigateUp()
+            }
+        })
+
     }
 
     override fun onCreateView(
@@ -34,18 +48,6 @@ class AddFriendFragment : Fragment() {
         binding.btnRecycleraddandremovefriendAddfriend.setOnClickListener {
             viewModel.addFriendByEmail(binding.editAddfriendEmail.text.toString())
         }
-
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        })
-
-        viewModel.succes.observe(viewLifecycleOwner, Observer {
-            if (it){
-                //TODO: Stringify
-                Toast.makeText(context, "FriendRequest has been sent.", Toast.LENGTH_LONG).show()
-                findNavController().navigateUp()
-            }
-        })
 
         return binding.root
     }

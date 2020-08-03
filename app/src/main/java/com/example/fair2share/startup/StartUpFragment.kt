@@ -31,19 +31,13 @@ class StartUpFragment : Fragment() {
 
         val viewModelFactory = StartUpViewModelFactory(AccountApi.sharedPreferences)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(StartUpViewModel::class.java)
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
 
         if (viewModel.token.value != null){
             viewModel.getProfile()
-
-            viewModel.errorMessage.observe(this, Observer {
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-            })
 
             viewModel.shouldRelog.observe(this, Observer {
                 if (it){
@@ -57,7 +51,13 @@ class StartUpFragment : Fragment() {
         } else {
             handleLoginState()
         }
+    }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_startup, container, false)
     }
 

@@ -25,6 +25,10 @@ class ProfileFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(ProfileFragmentViewModel::class.java)
 
+        viewModel.errorMessage.observe(this, Observer { errorMsg ->
+            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+
+        })
         setHasOptionsMenu(true)
     }
 
@@ -37,9 +41,7 @@ class ProfileFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentProfileBinding>(inflater, R.layout.fragment_profile, container, false)
         val adapter = ActivityBindingAdapter(viewModel)
         binding.rvProfileActivitylist.adapter = adapter
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMsg ->
-            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
-        })
+
 
         receiveProfileData(binding, adapter)
 

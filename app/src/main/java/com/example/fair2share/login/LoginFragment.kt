@@ -30,15 +30,10 @@ class LoginFragment : Fragment() {
             val viewModelFactory = LoginAndRegisterViewModelFactory(it)
             viewModel =
                 ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
-        }
-        setHasOptionsMenu(true)
-    }
 
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentLoginBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
-            binding.btnLoginLogin.setOnClickListener{view: View ->
-                viewModel.login(binding.editLoginEmail.text.toString(), binding.editLoginPassword.text.toString())
-            }
+            viewModel.errorMessage.observe(this, Observer { message  ->
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            })
 
             viewModel.loggedIn.observe(viewLifecycleOwner, Observer { bool ->
                 if (bool){
@@ -50,11 +45,21 @@ class LoginFragment : Fragment() {
             viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message  ->
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             })
+        }
+        setHasOptionsMenu(true)
+    }
 
-            binding.constraintLayoutLogin.setOnClickListener{ view: View ->
-                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
-            }
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding: FragmentLoginBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+
+        binding.btnLoginLogin.setOnClickListener{view: View ->
+            viewModel.login(binding.editLoginEmail.text.toString(), binding.editLoginPassword.text.toString())
+        }
+
+        binding.constraintLayoutLogin.setOnClickListener{ view: View ->
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
 
 
         (requireActivity() as LoginActivity).setIsOnLoginFragment(true)

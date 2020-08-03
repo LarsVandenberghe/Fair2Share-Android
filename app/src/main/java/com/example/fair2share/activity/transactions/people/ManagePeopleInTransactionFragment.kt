@@ -32,6 +32,14 @@ class ManagePeopleInTransactionFragment : Fragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(
             ManagePeopleInTransactionViewModel::class.java
         )
+
+        viewModel.success.observe(this, Observer {
+            findNavController().navigateUp()
+        })
+
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
     }
 
     override fun onCreateView(
@@ -50,14 +58,6 @@ class ManagePeopleInTransactionFragment : Fragment() {
         binding.btnManagepeopleintransactionConfirm.setOnClickListener {
             viewModel.confirm()
         }
-
-        viewModel.success.observe(viewLifecycleOwner, Observer {
-            findNavController().navigateUp()
-        })
-
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        })
 
         return binding.root
     }

@@ -42,6 +42,7 @@ class LoginViewModel(var sharedPreferences: SharedPreferences) : ViewModel() {
                 val edit = sharedPreferences.edit()
                 edit.putString("token", token)
                 edit.apply()
+
                 _loggedIn.value = true
             } catch (e: HttpException){
                 //TODO: Stringify

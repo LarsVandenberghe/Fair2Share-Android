@@ -19,18 +19,15 @@ import com.example.fair2share.databinding.FragmentRegisterBinding
 class RegisterFragment : Fragment() {
     private lateinit var viewModel: RegisterViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val binding: FragmentRegisterBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         val sharedPrefs = requireActivity().getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
         sharedPrefs?.let {
             val viewModelFactory = LoginAndRegisterViewModelFactory(it)
             viewModel =
                 ViewModelProviders.of(this, viewModelFactory).get(RegisterViewModel::class.java)
 
-            viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message ->
+            viewModel.errorMessage.observe(this, Observer { message ->
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             })
 
@@ -40,17 +37,25 @@ class RegisterFragment : Fragment() {
                     requireActivity().finish()
                 }
             })
-
-            binding.btnRegisterRegister.setOnClickListener {
-                viewModel.register(
-                    binding.editRegisterEmail.text.toString(),
-                    binding.editRegisterPassword.text.toString(),
-                    binding.editRegisterFirstname.text.toString(),
-                    binding.editRegisterLastname.text.toString(),
-                    binding.editRegisterConfirmpassword.text.toString()
-                )
-            }
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding: FragmentRegisterBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
+
+        binding.btnRegisterRegister.setOnClickListener {
+            viewModel.register(
+                binding.editRegisterEmail.text.toString(),
+                binding.editRegisterPassword.text.toString(),
+                binding.editRegisterFirstname.text.toString(),
+                binding.editRegisterLastname.text.toString(),
+                binding.editRegisterConfirmpassword.text.toString()
+            )
+        }
+
         return binding.root
     }
 }

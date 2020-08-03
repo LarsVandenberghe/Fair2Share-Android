@@ -27,6 +27,15 @@ class ActivityTransactionsFragment : Fragment() {
             ActivityTransactionsFragmentViewModel::class.java
         )
 
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
+        viewModel.navigate.observe(this, Observer {
+            if (it){
+                findNavController().navigateUp()
+            }
+        })
+
         setHasOptionsMenu(true)
     }
 
@@ -53,15 +62,6 @@ class ActivityTransactionsFragment : Fragment() {
                 binding.txtActivitytransactionsNotransactions.visibility = View.GONE
             }
             transactionAdapter.data = transactions.reversed()
-        })
-
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        })
-        viewModel.navigate.observe(viewLifecycleOwner, Observer {
-            if (it){
-                findNavController().navigateUp()
-            }
         })
 
         binding.fabActivitytransactionsAddactivity.setOnClickListener {

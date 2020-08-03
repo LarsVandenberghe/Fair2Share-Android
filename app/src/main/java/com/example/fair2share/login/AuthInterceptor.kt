@@ -42,8 +42,12 @@ class AuthInterceptor: Interceptor {
 
         val response = chain.proceed(request)
         if (response.code() == 401) {
-            _shouldRestart.value = true
+            setValueSafeOnBackgroundThread()
         }
         return response
+    }
+
+    private fun setValueSafeOnBackgroundThread(){
+        _shouldRestart.postValue(true)
     }
 }

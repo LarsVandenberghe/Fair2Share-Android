@@ -34,6 +34,10 @@ class AddEditTransactionFragment : Fragment() {
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddEditTransactionViewModel::class.java)
+
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
     }
 
     override fun onCreateView(
@@ -41,6 +45,16 @@ class AddEditTransactionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentAddedittransactionBinding>(inflater, R.layout.fragment_addedittransaction, container, false)
+
+        viewModel.navigate.observe(viewLifecycleOwner, Observer {
+            if (it){
+                if (viewModel.isNewTransaction){
+                    navigateAddPeopleOnNewTransaction()
+                } else {
+                    navigateUpOnEditAndOncePeopleAreAddedToNewTransaction()
+                }
+            }
+        })
 
         binding.activityParticipants = viewModel.activity.participants!!
         binding.transaction = viewModel.transaction
@@ -53,22 +67,6 @@ class AddEditTransactionFragment : Fragment() {
         binding.btnAddedittransaction.setOnClickListener {
             viewModel.createOrUpdate()
         }
-
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        })
-        viewModel.navigate.observe(viewLifecycleOwner, Observer {
-            if (it){
-                if (viewModel.isNewTransaction){
-                    val action = AddEditTransactionFragmentDirections
-                        .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(viewModel.activity, viewModel.transaction)
-                    viewModel.isNewTransaction = false
-                    findNavController().navigate(action)
-                } else {
-                    findNavController().navigateUp()
-                }
-            }
-        })
 
         return binding.root
     }
@@ -100,6 +98,17 @@ class AddEditTransactionFragment : Fragment() {
         } else {
             getString(R.string.btn_edit)
         }
+    }
+
+    private fun navigateUpOnEditAndOncePeopleAreAddedToNewTransaction(){
+        findNavController().navigateUp()
+    }
+
+    private fun navigateAddPeopleOnNewTransaction(){
+        val action = AddEditTransactionFragmentDirections
+            .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(viewModel.activity, viewModel.transaction)
+        viewModel.isNewTransaction = false
+        findNavController().navigate(action)
     }
 
 

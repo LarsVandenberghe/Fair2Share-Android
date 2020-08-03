@@ -32,6 +32,16 @@ class AddEditActivityFragment : Fragment() {
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddEditActivityFragmentViewModel::class.java)
+
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.navigate.observe(this, Observer {
+            if (it){
+                findNavController().navigateUp()
+            }
+        })
     }
 
     override fun onCreateView(
@@ -54,14 +64,6 @@ class AddEditActivityFragment : Fragment() {
         binding.btnAddeditactivity.setOnClickListener {
             viewModel.createOrUpdate()
         }
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        })
-        viewModel.navigate.observe(viewLifecycleOwner, Observer {
-            if (it){
-                findNavController().navigateUp()
-            }
-        })
 
         return binding.root
     }
