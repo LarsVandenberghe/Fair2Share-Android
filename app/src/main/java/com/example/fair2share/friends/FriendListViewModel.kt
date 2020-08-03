@@ -1,14 +1,13 @@
 package com.example.fair2share.friends
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
-import com.example.fair2share.data_models.FriendRequestStates
-import com.example.fair2share.data_models.LoginProperty
-import com.example.fair2share.data_models.ProfileProperty
-import com.example.fair2share.network.AccountApi
+import com.example.fair2share.models.data_models.FriendRequestStates
+import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.models.dto_models.ProfileDTOProperty
+import com.example.fair2share.models.dto_models.asDataModel
 import com.example.fair2share.network.FriendRequestApi
 import com.example.fair2share.network.ProfileApi
 import kotlinx.coroutines.CoroutineScope
@@ -16,17 +15,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.util.logging.Logger
 
-class FriendListViewModel(friendsArg: List<ProfileProperty>?) : ViewModel() {
+class FriendListViewModel(friendsArg: List<ProfileDTOProperty>?) : ViewModel() {
     private var _viewModelJob = Job()
     private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
-    private val _friendRequests = MutableLiveData<List<ProfileProperty>>()
-    val friendRequests: LiveData<List<ProfileProperty>>
+    private val _friendRequests = MutableLiveData<List<ProfileDTOProperty>>()
+    val friendRequests: LiveData<List<ProfileDTOProperty>>
         get() = _friendRequests
 
-    private val _friends = MutableLiveData<List<ProfileProperty>>()
-    val friends: LiveData<List<ProfileProperty>>
+    private val _friends = MutableLiveData<List<ProfileDTOProperty>>()
+    val friends: LiveData<List<ProfileDTOProperty>>
         get() = _friends
 
     private val _errorMessage = MutableLiveData<String>()

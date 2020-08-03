@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
-import com.example.fair2share.data_models.LoginProperty
+import com.example.fair2share.models.data_models.LoginProperty
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AccountApi.sharedPreferences
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +18,8 @@ import retrofit2.HttpException
 import java.lang.StringBuilder
 
 class LoginViewModel(var sharedPreferences: SharedPreferences) : ViewModel() {
+
+    var loginData: LoginProperty
 
     private val _loggedIn = MutableLiveData<Boolean>()
     val loggedIn: LiveData<Boolean>
@@ -32,12 +34,13 @@ class LoginViewModel(var sharedPreferences: SharedPreferences) : ViewModel() {
 
     init {
         AccountApi.sharedPreferences = sharedPreferences
+        loginData = LoginProperty.makeEmpty()
     }
 
-    fun login(email: String, password : String) {
+    fun login() {
         _coroutineScope.launch {
             try {
-                val getJWTDeffered = AccountApi.retrofitService.login(LoginProperty(email, password))
+                val getJWTDeffered = AccountApi.retrofitService.login(loginData.makeDTO())
                 val token = getJWTDeffered.await()
                 val edit = sharedPreferences.edit()
                 edit.putString("token", token)

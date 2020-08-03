@@ -8,8 +8,10 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.example.fair2share.BuildConfig
 import com.example.fair2share.Utils
-import com.example.fair2share.data_models.ActivityProperty
-import com.example.fair2share.data_models.ProfileProperty
+import com.example.fair2share.models.data_models.ActivityProperty
+import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.models.dto_models.ActivityDTOProperty
+import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AccountApi.sharedPreferences
 import com.example.fair2share.network.ActivityApi
@@ -32,17 +34,17 @@ class ProfileFragmentViewModel : ViewModel() {
         get() = _errorMessage
 
 
-    fun update(profile: ProfileProperty? = null){
+    fun update(profile: ProfileDTOProperty? = null){
         if (profile != null) {
-            _profile.value = profile
+            _profile.value = profile.makeDataModel()
         } else {
             _coroutineScope.launch {
-                _profile.value = ProfileApi.retrofitService.profile().await()
+                _profile.value = ProfileApi.retrofitService.profile().await().makeDataModel()
             }
         }
     }
 
-    fun removeActivity(activity: ActivityProperty){
+    fun removeActivity(activity: ActivityDTOProperty){
         _coroutineScope.launch {
             val a = ActivityApi.retrofitService.removeActivity(activity.activityId!!).await()
             if (!a.isSuccessful){

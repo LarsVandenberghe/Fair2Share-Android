@@ -8,11 +8,12 @@ import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fair2share.R
 import com.example.fair2share.ConstraintRowItemViewHolder
-import com.example.fair2share.data_models.TransactionProperty
-import com.example.fair2share.data_models.Valutas
+import com.example.fair2share.models.data_models.TransactionProperty
+import com.example.fair2share.models.data_models.Valutas
+import com.example.fair2share.models.dto_models.TransactionDTOProperty
 
 class TransactionBindingAdapter(val viewModel: ActivityTransactionsFragmentViewModel)  : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
-    var data =  listOf<TransactionProperty>()
+    var data =  listOf<TransactionDTOProperty>()
         set(value) {
             field = value
             notifyDataSetChanged()

@@ -1,11 +1,11 @@
-package com.example.fair2share.data_models
+package com.example.fair2share.models.dto_models
 
-data class LoginProperty(
+data class LoginDTOProperty(
     val email: String,
     val password: String
 )
 
-data class RegisterProperty(
+data class RegisterDTOProperty(
     val email: String,
     val password: String,
     val firstName: String,

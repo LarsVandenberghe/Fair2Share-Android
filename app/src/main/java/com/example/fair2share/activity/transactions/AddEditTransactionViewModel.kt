@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
-import com.example.fair2share.data_models.ActivityProperty
-import com.example.fair2share.data_models.TransactionProperty
+import com.example.fair2share.models.data_models.ActivityProperty
+import com.example.fair2share.models.data_models.TransactionProperty
+import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.network.ActivityApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.Response
 
-class AddEditTransactionViewModel(val activity: ActivityProperty, val transaction: TransactionProperty, var isNewTransaction: Boolean) : ViewModel() {
+class AddEditTransactionViewModel(val activity: ActivityDTOProperty, val transaction: TransactionProperty, var isNewTransaction: Boolean) : ViewModel() {
     private var viewModelJob = Job()
     private val _coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
@@ -30,9 +31,9 @@ class AddEditTransactionViewModel(val activity: ActivityProperty, val transactio
         _coroutineScope.launch {
             try {
                 val response : Response<out Any> = if (isNewTransaction){
-                    ActivityApi.retrofitService.addTransaction(activity.activityId!!, transaction).await()
+                    ActivityApi.retrofitService.addTransaction(activity.activityId!!, transaction.makeDTO()).await()
                 } else {
-                    ActivityApi.retrofitService.updateTransaction(activity.activityId!!, transaction.transactionId!!, transaction).await()
+                    ActivityApi.retrofitService.updateTransaction(activity.activityId!!, transaction.transactionId!!, transaction.makeDTO()).await()
                 }
 
                 Utils.throwExceptionIfHttpNotSuccessful(response)

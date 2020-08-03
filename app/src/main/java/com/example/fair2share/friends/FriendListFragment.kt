@@ -13,8 +13,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
-import com.example.fair2share.data_models.ProfileProperty
+import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.databinding.FragmentFriendlistBinding
+import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
 class FriendListFragment : Fragment() {
     private lateinit var viewModel: FriendListViewModel
@@ -23,7 +24,7 @@ class FriendListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val friends : List<ProfileProperty> = safeArgs.friends.toList()
+        val friends : List<ProfileDTOProperty> = safeArgs.friends.toList()
         val viewModelFactory = FriendListViewModelFactory(friends)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
 

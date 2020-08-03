@@ -15,9 +15,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
-import com.example.fair2share.data_models.ActivityProperty
-import com.example.fair2share.data_models.Valutas
+import com.example.fair2share.models.data_models.ActivityProperty
+import com.example.fair2share.models.data_models.Valutas
 import com.example.fair2share.databinding.FragmentAddeditactivityBinding
+import com.example.fair2share.models.dto_models.ActivityDTOProperty
 
 class AddEditActivityFragment : Fragment() {
     private lateinit var viewModel : AddEditActivityFragmentViewModel
@@ -26,9 +27,9 @@ class AddEditActivityFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val viewModelFactory = if (safeArgs.activity != null){
-             ActivityFragmentViewModelFactory(safeArgs.activity as ActivityProperty)
+            AddEditActivityFragmentViewModelFactory((safeArgs.activity as ActivityDTOProperty).makeDataModel())
         } else {
-            ActivityFragmentViewModelFactory(ActivityProperty.makeEmpty())
+            AddEditActivityFragmentViewModelFactory(ActivityProperty.makeEmpty())
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddEditActivityFragmentViewModel::class.java)

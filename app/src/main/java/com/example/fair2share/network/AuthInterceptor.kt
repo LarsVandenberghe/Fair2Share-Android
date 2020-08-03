@@ -1,11 +1,7 @@
-package com.example.fair2share.login
+package com.example.fair2share.network
 
-import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.fair2share.MainActivity
-import com.example.fair2share.LoginActivity
 import com.example.fair2share.network.AccountApi.sharedPreferences
 import okhttp3.Interceptor
 import okhttp3.Response

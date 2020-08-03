@@ -5,15 +5,15 @@
     tools:context=".activity.transactions.AddEditTransactionFragment"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type="com.example.fair2share.data_models.TransactionProperty"/>
-        <import type="com.example.fair2share.data_models.ProfileProperty"/>
+        <import type="com.example.fair2share.models.data_models.TransactionProperty"/>
+        <import type="com.example.fair2share.models.dto_models.ProfileDTOProperty"/>
         <import type="com.example.fair2share.Converter"/>
         <variable
             name="transaction"
             type="TransactionProperty" />
         <variable
             name="activityParticipants"
-            type="java.util.List&lt;ProfileProperty&gt;" />
+            type="java.util.List&lt;ProfileDTOProperty&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

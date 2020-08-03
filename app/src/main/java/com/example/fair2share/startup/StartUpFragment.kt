@@ -17,7 +17,8 @@ import androidx.navigation.findNavController
 import com.example.fair2share.LoginActivity
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
-import com.example.fair2share.data_models.ProfileProperty
+import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.network.AccountApi
 
 class StartUpFragment : Fragment() {
@@ -46,7 +47,7 @@ class StartUpFragment : Fragment() {
             })
 
             viewModel.profile.observe(this, Observer {
-                navigateToMainActivity(it)
+                navigateToMainActivity(it.makeDTO())
             })
         } else {
             handleLoginState()
@@ -70,7 +71,7 @@ class StartUpFragment : Fragment() {
         }, 1000)
     }
 
-    private fun navigateToMainActivity(profile: ProfileProperty){
+    private fun navigateToMainActivity(profile: ProfileDTOProperty){
         val intent = Intent(context, MainActivity::class.java)
         intent.putExtra("profile", profile)
         startActivity(intent)

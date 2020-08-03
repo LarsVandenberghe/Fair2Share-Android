@@ -1,4 +1,4 @@
-package com.example.fair2share.data_models
+package com.example.fair2share.models.data_models
 
 enum class Valutas {
     EURO{

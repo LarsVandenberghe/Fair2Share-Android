@@ -10,11 +10,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fair2share.R
 import com.example.fair2share.ConstraintRowItemViewHolder
-import com.example.fair2share.data_models.ActivityProperty
+import com.example.fair2share.models.data_models.ActivityProperty
 import androidx.navigation.Navigation.findNavController
+import com.example.fair2share.models.dto_models.ActivityDTOProperty
 
 class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
-    var data =  listOf<ActivityProperty>()
+    var data =  listOf<ActivityDTOProperty>()
         set(value) {
             field = value
             notifyDataSetChanged()

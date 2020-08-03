@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
-import com.example.fair2share.data_models.ActivityProperty
+import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.databinding.FragmentActivitytransactionsBinding
 
 class ActivityTransactionsFragment : Fragment() {

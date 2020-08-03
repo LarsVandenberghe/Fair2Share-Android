@@ -8,16 +8,12 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
-import com.example.fair2share.activity.ActivityFragmentViewModelFactory
-import com.example.fair2share.data_models.ActivityProperty
-import com.example.fair2share.data_models.ProfileProperty
-import com.example.fair2share.data_models.TransactionProperty
-import com.example.fair2share.data_models.Valutas
+import com.example.fair2share.models.data_models.TransactionProperty
 import com.example.fair2share.databinding.FragmentAddedittransactionBinding
+import com.example.fair2share.models.dto_models.TransactionDTOProperty
 
 class AddEditTransactionFragment : Fragment() {
 
@@ -28,7 +24,7 @@ class AddEditTransactionFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val viewModelFactory = if (safeArgs.transaction != null){
             setHasOptionsMenu(true)
-            AddEditTransactionViewModelFactory(safeArgs.activity, safeArgs.transaction as TransactionProperty, false)
+            AddEditTransactionViewModelFactory(safeArgs.activity, (safeArgs.transaction as TransactionDTOProperty).makeDataModel(), false)
         } else {
             AddEditTransactionViewModelFactory(safeArgs.activity, TransactionProperty.makeEmpty(), true)
         }
@@ -80,7 +76,7 @@ class AddEditTransactionFragment : Fragment() {
         return when (item.itemId) {
             R.id.btn_addedittransactionoverflow_managepeople -> {
                 val action = AddEditTransactionFragmentDirections
-                    .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(viewModel.activity, viewModel.transaction)
+                    .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(viewModel.activity, viewModel.transaction.makeDTO())
                 findNavController().navigate(action)
                 return true
             }
@@ -106,7 +102,7 @@ class AddEditTransactionFragment : Fragment() {
 
     private fun navigateAddPeopleOnNewTransaction(){
         val action = AddEditTransactionFragmentDirections
-            .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(viewModel.activity, viewModel.transaction)
+            .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(viewModel.activity, viewModel.transaction.makeDTO())
         viewModel.isNewTransaction = false
         findNavController().navigate(action)
     }

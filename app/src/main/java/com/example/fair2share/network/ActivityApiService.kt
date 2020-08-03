@@ -1,11 +1,10 @@
 package com.example.fair2share.network
 
 import com.example.fair2share.BuildConfig
-import com.example.fair2share.data_models.ActivityProperty
-import com.example.fair2share.data_models.LoginProperty
-import com.example.fair2share.data_models.ProfileProperty
-import com.example.fair2share.data_models.TransactionProperty
-import com.example.fair2share.login.AuthInterceptor
+import com.example.fair2share.models.data_models.ActivityProperty
+import com.example.fair2share.models.data_models.TransactionProperty
+import com.example.fair2share.models.dto_models.ActivityDTOProperty
+import com.example.fair2share.models.dto_models.TransactionDTOProperty
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -14,7 +13,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.*
 
 private val httpClient = OkHttpClient.Builder()
@@ -37,11 +35,11 @@ private val retrofitJsonMap =
 interface ActvityApiService {
     @GET("Activity/{id}")
     fun getActivity(@Path("id") id : Long):
-            Deferred<ActivityProperty>
+            Deferred<ActivityDTOProperty>
 
     @GET("Activity/{id}/transactions")
     fun getActivityTransactions(@Path("id") id : Long):
-            Deferred<List<TransactionProperty>>
+            Deferred<List<TransactionDTOProperty>>
 
     @GET("Activity/{id}/summary")
     fun getActivitySummary(@Path("id") id : Long):
@@ -49,18 +47,18 @@ interface ActvityApiService {
 
     @GET("Activity/{id}/participants")
     fun getActivityParticipants(@Path("id") id : Long):
-            Deferred<ActivityProperty>
+            Deferred<ActivityDTOProperty>
 
     @DELETE("Activity/{id}")
     fun removeActivity(@Path("id") id: Long):
             Deferred<Response<Unit>>
 
     @POST("Activity")
-    fun addActivity(@Body activityProperty: ActivityProperty):
+    fun addActivity(@Body activityProperty: ActivityDTOProperty):
             Deferred<Response<Unit>>
 
     @PUT("Activity/{id}")
-    fun updateActivity(@Path("id") activityId: Long, @Body activity: ActivityProperty):
+    fun updateActivity(@Path("id") activityId: Long, @Body activity: ActivityDTOProperty):
             Deferred<Response<Unit>>
 
     @POST("Activity/{id}/participants")
@@ -72,16 +70,16 @@ interface ActvityApiService {
             Deferred<Response<Unit>>
 
     @POST("Activity/{id}/transactions")
-    fun addTransaction(@Path("id") activityId: Long, @Body transaction: TransactionProperty):
+    fun addTransaction(@Path("id") activityId: Long, @Body transaction: TransactionDTOProperty):
             Deferred<Response<Long>>
 
     @PUT("Activity/{id}/transactions/{transactionId}")
-    fun updateTransaction(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long, @Body transaction: TransactionProperty):
+    fun updateTransaction(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long, @Body transaction: TransactionDTOProperty):
             Deferred<Response<Unit>>
 
     @GET("Activity/{id}/transactions/{transactionId}")
     fun getActivityTransactionById(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long):
-            Deferred<TransactionProperty>
+            Deferred<TransactionDTOProperty>
 
     @DELETE("Activity/{id}/transactions/{transactionId}")
     fun removeTransaction(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long):

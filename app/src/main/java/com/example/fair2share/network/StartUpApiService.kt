@@ -1,9 +1,8 @@
 package com.example.fair2share.network
 
 import com.example.fair2share.BuildConfig
-import com.example.fair2share.data_models.ProfileProperty
-import com.example.fair2share.login.AuthInterceptor
-import com.example.fair2share.startup.StartUpAuthIntercaptor
+import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -32,7 +31,7 @@ private val retrofitJsonMap =
 interface StartUpApiService {
     @GET("Profile")
     fun profile():
-            Deferred<ProfileProperty>
+            Deferred<ProfileDTOProperty>
 }
 
 object StartUpApi {

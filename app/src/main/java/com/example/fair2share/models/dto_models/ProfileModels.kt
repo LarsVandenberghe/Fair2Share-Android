@@ -1,31 +1,30 @@
-package com.example.fair2share.data_models
+package com.example.fair2share.models.dto_models
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.view.View
-import androidx.databinding.BindingAdapter
+import com.example.fair2share.models.data_models.ActivityProperty
+import com.example.fair2share.models.data_models.ProfileProperty
 
-data class ProfileProperty (
+data class ProfileDTOProperty (
     val profileId: Long,
     val firstname: String,
     val lastname: String,
     val email: String?,
-    val friends: List<ProfileProperty>?,
+    val friends: List<ProfileDTOProperty>?,
     val friendRequestState: Int?,
-    val activities: List<ActivityProperty>?,
+    val activities: List<ActivityDTOProperty>?,
     val amountOfFriendRequests: Int?
-):Parcelable {
+): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
-        parcel.readString() ?: "",
-        parcel.readString() ?: "",
+        parcel.readString()!!,
+        parcel.readString()!!,
         parcel.readString(),
         parcel.createTypedArrayList(CREATOR),
         parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.createTypedArrayList(ActivityProperty),
+        parcel.createTypedArrayList(ActivityDTOProperty),
         parcel.readValue(Int::class.java.classLoader) as? Int
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(profileId)
@@ -46,15 +45,23 @@ data class ProfileProperty (
         return String.format("%s %s", firstname, lastname)
     }
 
-    companion object CREATOR : Parcelable.Creator<ProfileProperty> {
-        override fun createFromParcel(parcel: Parcel): ProfileProperty {
-            return ProfileProperty(parcel)
+    fun makeDataModel(): ProfileProperty{
+        return ProfileProperty(profileId, firstname, lastname, email, friends?.asDataModel(), friendRequestState, activities?.asDataModel(), amountOfFriendRequests)
+    }
+
+    companion object CREATOR : Parcelable.Creator<ProfileDTOProperty> {
+        override fun createFromParcel(parcel: Parcel): ProfileDTOProperty {
+            return ProfileDTOProperty(parcel)
         }
 
-        override fun newArray(size: Int): Array<ProfileProperty?> {
+        override fun newArray(size: Int): Array<ProfileDTOProperty?> {
             return arrayOfNulls(size)
         }
     }
 }
 
-
+fun List<ProfileDTOProperty>.asDataModel(): List<ProfileProperty> {
+    return map {
+        it.makeDataModel()
+    }
+}

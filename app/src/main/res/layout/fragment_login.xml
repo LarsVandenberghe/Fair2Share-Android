@@ -5,6 +5,13 @@
     tools:context=".login.LoginFragment"
     >
 
+    <data>
+        <import type="com.example.fair2share.models.data_models.LoginProperty"/>
+        <variable
+            name="loginData"
+            type="com.example.fair2share.models.data_models.LoginProperty" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_login"
         android:layout_width="match_parent"
@@ -29,6 +36,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/txt_login_email"
+                android:text="@={loginData.email}"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -43,6 +51,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/txt_login_password"
+                android:text="@={loginData.password}"
                 android:importantForAutofill="no"
                 android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"

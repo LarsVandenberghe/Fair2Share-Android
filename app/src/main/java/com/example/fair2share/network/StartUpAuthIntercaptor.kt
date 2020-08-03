@@ -1,6 +1,5 @@
-package com.example.fair2share.startup
+package com.example.fair2share.network
 
-import com.example.fair2share.network.AccountApi
 import okhttp3.Interceptor
 import okhttp3.Response
 

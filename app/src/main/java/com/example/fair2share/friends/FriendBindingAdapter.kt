@@ -15,11 +15,12 @@ import com.example.fair2share.BuildConfig
 import com.example.fair2share.ConstraintRowItemViewHolder
 import com.example.fair2share.R
 import com.example.fair2share.Utils
-import com.example.fair2share.data_models.ProfileProperty
+import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.network.AccountApi
 
 class FriendBindingAdapter: RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
-    var data =  listOf<ProfileProperty>()
+    var data =  listOf<ProfileDTOProperty>()
         set(value) {
             field = value
             notifyDataSetChanged()

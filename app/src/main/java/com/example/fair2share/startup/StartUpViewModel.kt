@@ -1,21 +1,16 @@
 package com.example.fair2share.startup
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.fair2share.data_models.LoginProperty
-import com.example.fair2share.data_models.ProfileProperty
-import com.example.fair2share.login.AuthInterceptor
-import com.example.fair2share.network.AccountApi
-import com.example.fair2share.network.ProfileApi
+import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.network.AuthInterceptor
 import com.example.fair2share.network.StartUpApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class StartUpViewModel(var sharedPreferences: SharedPreferences?) : ViewModel() {
     private val _token = MutableLiveData<String>()
@@ -46,7 +41,7 @@ class StartUpViewModel(var sharedPreferences: SharedPreferences?) : ViewModel() 
     fun getProfile() {
         _coroutineScope.launch {
             try {
-                _profile.value = StartUpApi.retrofitService.profile().await()
+                _profile.value = StartUpApi.retrofitService.profile().await().makeDataModel()
             } catch (t: Throwable){
 
                 if (AuthInterceptor.throwableIs401(t)){

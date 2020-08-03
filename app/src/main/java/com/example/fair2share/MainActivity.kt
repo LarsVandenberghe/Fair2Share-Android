@@ -14,10 +14,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.fair2share.data_models.ProfileProperty
 import com.example.fair2share.databinding.ActivityMainBinding
 import com.example.fair2share.databinding.NavHeaderBinding
-import com.example.fair2share.login.AuthInterceptor
+import com.example.fair2share.models.data_models.asDTO
+import com.example.fair2share.network.AuthInterceptor
 import com.example.fair2share.network.AccountApi.sharedPreferences
 import com.example.fair2share.profile.ProfileFragmentDirections
 import com.example.fair2share.profile.ProfileFragmentViewModel
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
             if ( it.itemId == R.id.btn_navdrawer_friends ){
                 val action = ProfileFragmentDirections
                     .actionFragmentProfileToFriendListFragment(
-                        navHeaderBinding.profile?.friends?.toTypedArray() ?: emptyArray()
+                        navHeaderBinding.profile?.friends?.asDTO()?.toTypedArray() ?: emptyArray()
                     )
 
                 navController.navigate(action)

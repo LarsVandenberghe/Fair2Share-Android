@@ -10,8 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
-import com.example.fair2share.data_models.ProfileProperty
+import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.databinding.FragmentProfileBinding
+import com.example.fair2share.models.data_models.asDTO
+import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.google.android.material.navigation.NavigationView
 
 
@@ -83,7 +85,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun receiveProfileData(binding: FragmentProfileBinding, adapter: ActivityBindingAdapter) {
-        val profile = requireActivity().intent.getParcelableExtra<ProfileProperty>("profile")
+        val profile = requireActivity().intent.getParcelableExtra<ProfileDTOProperty>("profile")
 
         if (!firstLoad || profile == null){
             viewModel.update()
@@ -100,7 +102,7 @@ class ProfileFragment : Fragment() {
                 } else {
                     binding.txtProfileNoactivities.visibility = View.GONE
                 }
-                adapter.data = it
+                adapter.data = it.asDTO()
             }
             addFriendRequests(data.amountOfFriendRequests ?: 0)
         })

@@ -11,7 +11,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.databinding.FragmentRegisterBinding
@@ -31,7 +30,7 @@ class RegisterFragment : Fragment() {
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             })
 
-            viewModel.loggedIn.observe(viewLifecycleOwner, Observer { isLoggedIn ->
+            viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
                 if (isLoggedIn){
                     startActivity(Intent(context, MainActivity::class.java))
                     requireActivity().finish()
@@ -45,15 +44,10 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding: FragmentRegisterBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
+        binding.registerData = viewModel.registerData
 
         binding.btnRegisterRegister.setOnClickListener {
-            viewModel.register(
-                binding.editRegisterEmail.text.toString(),
-                binding.editRegisterPassword.text.toString(),
-                binding.editRegisterFirstname.text.toString(),
-                binding.editRegisterLastname.text.toString(),
-                binding.editRegisterConfirmpassword.text.toString()
-            )
+            viewModel.register()
         }
 
         return binding.root

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.R
 import com.example.fair2share.Utils
-import com.example.fair2share.data_models.ActivityProperty
+import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.network.ActivityApi
 import com.example.fair2share.network.ProfileApi
 import kotlinx.coroutines.CoroutineScope
@@ -35,9 +35,9 @@ class AddEditActivityFragmentViewModel(val activity: ActivityProperty): ViewMode
         _coroutineScope.launch {
             try {
                 val response = if (isNewActivity){
-                    ActivityApi.retrofitService.addActivity(activity).await()
+                    ActivityApi.retrofitService.addActivity(activity.makeDTO()).await()
                 } else {
-                    ActivityApi.retrofitService.updateActivity(activity.activityId!!, activity).await()
+                    ActivityApi.retrofitService.updateActivity(activity.activityId!!, activity.makeDTO()).await()
                 }
                 Utils.throwExceptionIfHttpNotSuccessful(response)
                 _navigate.value = true

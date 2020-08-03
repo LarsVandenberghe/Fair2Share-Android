@@ -1,10 +1,8 @@
 package com.example.fair2share.network
 
 import com.example.fair2share.BuildConfig
-import com.example.fair2share.data_models.ActivityProperty
-import com.example.fair2share.data_models.ProfileProperty
-import com.example.fair2share.data_models.TransactionProperty
-import com.example.fair2share.login.AuthInterceptor
+import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -35,7 +33,7 @@ private val retrofitJsonMap =
 interface FriendRequestApiService {
     @GET("FriendRequest")
     fun getFriendRequest():
-            Deferred<List<ProfileProperty>>
+            Deferred<List<ProfileDTOProperty>>
 
     @POST("FriendRequest/email/{email}")
     fun addFriendByEmail(@Path("email") email: String, @Body body: String = "{}"):

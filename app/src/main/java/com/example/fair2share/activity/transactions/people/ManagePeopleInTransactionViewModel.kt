@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
-import com.example.fair2share.data_models.ActivityProperty
-import com.example.fair2share.data_models.ProfileProperty
-import com.example.fair2share.data_models.TransactionProperty
+import com.example.fair2share.models.data_models.ActivityProperty
+import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.models.data_models.TransactionProperty
+import com.example.fair2share.models.dto_models.ActivityDTOProperty
+import com.example.fair2share.models.dto_models.ProfileDTOProperty
+import com.example.fair2share.models.dto_models.TransactionDTOProperty
 import com.example.fair2share.network.ActivityApi
 import com.example.fair2share.network.ProfileApi
 import kotlinx.coroutines.CoroutineScope
@@ -15,21 +18,21 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class ManagePeopleInTransactionViewModel(private val activity: ActivityProperty, private val transaction: TransactionProperty) : ViewModel() {
+class ManagePeopleInTransactionViewModel(private val activity: ActivityDTOProperty, private val transaction: TransactionDTOProperty) : ViewModel() {
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    private val _friends = MutableLiveData<List<ProfileProperty>>()
-    private val _initalParticipants = MutableLiveData<List<ProfileProperty>>()
+    private val _friends = MutableLiveData<List<ProfileDTOProperty>>()
+    private val _initalParticipants = MutableLiveData<List<ProfileDTOProperty>>()
     private val _toBeAdded = MutableLiveData<List<Long>>()
     private val _toBeRemoved = MutableLiveData<List<Long>>()
 
-    private val _participants = MutableLiveData<List<ProfileProperty>>()
-    val participants: LiveData<List<ProfileProperty>>
+    private val _participants = MutableLiveData<List<ProfileDTOProperty>>()
+    val participants: LiveData<List<ProfileDTOProperty>>
         get() = _participants
 
-    private val _candidates = MutableLiveData<List<ProfileProperty>>()
-    val candidates: LiveData<List<ProfileProperty>>
+    private val _candidates = MutableLiveData<List<ProfileDTOProperty>>()
+    val candidates: LiveData<List<ProfileDTOProperty>>
         get() = _candidates
 
     private val _success = MutableLiveData<Boolean>()
@@ -107,7 +110,7 @@ class ManagePeopleInTransactionViewModel(private val activity: ActivityProperty,
 
             _friends.value = ActivityApi
                 .retrofitService
-                .getActivityParticipants(activity.activityId!!)
+                .getActivityParticipants(activity.activityId)
                 .await().participants
         }
     }
@@ -137,8 +140,8 @@ class ManagePeopleInTransactionViewModel(private val activity: ActivityProperty,
         _participants.value = findParticipantsBasedOnCandidates()
     }
 
-    private fun findParticipantsBasedOnCandidates(): List<ProfileProperty> {
-        val participants = ArrayList<ProfileProperty>()
+    private fun findParticipantsBasedOnCandidates(): List<ProfileDTOProperty> {
+        val participants = ArrayList<ProfileDTOProperty>()
         val candidates = _candidates.value
         val friends =_friends.value
         val candidateIds = candidates?.map {
@@ -153,7 +156,7 @@ class ManagePeopleInTransactionViewModel(private val activity: ActivityProperty,
         return participants
     }
 
-    private fun findCandidates() : List<ProfileProperty> {
+    private fun findCandidates() : List<ProfileDTOProperty> {
         val friends =_friends.value
         var initialParticips = _initalParticipants.value
 
@@ -165,7 +168,7 @@ class ManagePeopleInTransactionViewModel(private val activity: ActivityProperty,
 
         val toBeRemoved = _toBeRemoved.value!!
         val toBeAdded = _toBeAdded.value!!
-        val candidates = ArrayList<ProfileProperty>()
+        val candidates = ArrayList<ProfileDTOProperty>()
 
         if (friends != null){
             candidates.addAll(friends.filter {

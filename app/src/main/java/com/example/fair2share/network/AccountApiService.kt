@@ -2,19 +2,18 @@ package com.example.fair2share.network
 
 import android.content.SharedPreferences
 import com.example.fair2share.BuildConfig
-import com.example.fair2share.data_models.LoginProperty
-import com.example.fair2share.data_models.RegisterProperty
-import com.example.fair2share.login.AuthInterceptor
+import com.example.fair2share.models.data_models.LoginProperty
+import com.example.fair2share.models.data_models.RegisterProperty
+import com.example.fair2share.models.dto_models.LoginDTOProperty
+import com.example.fair2share.models.dto_models.RegisterDTOProperty
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 private val httpClient = OkHttpClient.Builder()
@@ -35,11 +34,11 @@ private val retrofitJsonMap =
 
 interface AccountApiService {
     @POST("Account")
-    fun login(@Body loginProperty: LoginProperty):
+    fun login(@Body loginProperty: LoginDTOProperty):
             Deferred<String>
 
     @POST("Account/register")
-    fun register(@Body registerProperty: RegisterProperty):
+    fun register(@Body registerProperty: RegisterDTOProperty):
             Deferred<String>
 }
 

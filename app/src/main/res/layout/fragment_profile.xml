@@ -5,10 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.example.fair2share.data_models.ProfileProperty"/>
+        <import type="com.example.fair2share.models.data_models.ProfileProperty"/>
         <variable
             name="profile"
-            type="ProfileProperty" />
+            type="com.example.fair2share.models.data_models.ProfileProperty" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

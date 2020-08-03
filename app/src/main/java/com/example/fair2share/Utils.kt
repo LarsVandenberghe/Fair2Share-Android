@@ -8,7 +8,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.request.RequestOptions
-import com.example.fair2share.data_models.ProfileProperty
+import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.network.AccountApi
 import org.json.JSONException
 import org.json.JSONObject
@@ -84,11 +85,11 @@ object Converter {
     }
 
     @InverseMethod("listIndexToFriend")
-    @JvmStatic fun friendToListIndex(people: List<ProfileProperty>, selected:ProfileProperty?): Int {
+    @JvmStatic fun friendToListIndex(people: List<ProfileDTOProperty>, selected: ProfileProperty?): Int {
         return people.map { person -> person.profileId }.indexOf(selected?.profileId ?: 0)
     }
 
-    @JvmStatic fun listIndexToFriend(people: List<ProfileProperty>, selected:Int): ProfileProperty? {
-        return people[selected]
+    @JvmStatic fun listIndexToFriend(people: List<ProfileDTOProperty>, selected:Int): ProfileProperty? {
+        return people[selected].makeDataModel()
     }
 }

@@ -15,6 +15,8 @@ import androidx.navigation.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.LoginActivity
+import com.example.fair2share.models.data_models.LoginProperty
+import com.example.fair2share.models.data_models.RegisterProperty
 import com.example.fair2share.databinding.FragmentLoginBinding
 
 
@@ -35,14 +37,14 @@ class LoginFragment : Fragment() {
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             })
 
-            viewModel.loggedIn.observe(viewLifecycleOwner, Observer { bool ->
+            viewModel.loggedIn.observe(this, Observer { bool ->
                 if (bool){
                     startActivity(Intent(context, MainActivity::class.java))
                     requireActivity().finish()
                 }
             })
 
-            viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message  ->
+            viewModel.errorMessage.observe(this, Observer { message  ->
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             })
         }
@@ -51,9 +53,10 @@ class LoginFragment : Fragment() {
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentLoginBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+        binding.loginData = viewModel.loginData
 
         binding.btnLoginLogin.setOnClickListener{view: View ->
-            viewModel.login(binding.editLoginEmail.text.toString(), binding.editLoginPassword.text.toString())
+            viewModel.login()
         }
 
         binding.constraintLayoutLogin.setOnClickListener{ view: View ->

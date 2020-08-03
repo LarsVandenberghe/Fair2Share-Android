@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity.AddEditActivityFragment">
     <data>
-        <import type="com.example.fair2share.data_models.ActivityProperty"/>
+        <import type="com.example.fair2share.models.data_models.ActivityProperty"/>
         <variable
             name="activity"
-            type="ActivityProperty" />
+            type="com.example.fair2share.models.data_models.ActivityProperty" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/createActivityPane"

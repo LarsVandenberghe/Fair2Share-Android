@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
-import com.example.fair2share.data_models.RegisterProperty
+import com.example.fair2share.models.data_models.RegisterProperty
 import com.example.fair2share.network.AccountApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +18,7 @@ import java.lang.StringBuilder
 class RegisterViewModel(var sharedPreferences: SharedPreferences): ViewModel() {
     private var _viewModelJob = Job()
     private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
+    var registerData: RegisterProperty
 
     private val _loggedIn = MutableLiveData<Boolean>()
     val loggedIn: LiveData<Boolean>
@@ -29,26 +30,13 @@ class RegisterViewModel(var sharedPreferences: SharedPreferences): ViewModel() {
 
     init {
         AccountApi.sharedPreferences = sharedPreferences
+        registerData = RegisterProperty.makeEmpty()
     }
 
-    fun register(
-        email: String,
-        password: String,
-        firstName: String,
-        lastName: String,
-        passwordConfirmation: String
-    ){
+    fun register(){
         _coroutineScope.launch {
             try {
-                val getJWTDeffered = AccountApi.retrofitService.register(
-                    RegisterProperty(
-                        email,
-                        password,
-                        firstName,
-                        lastName,
-                        passwordConfirmation
-                    )
-                )
+                val getJWTDeffered = AccountApi.retrofitService.register(registerData.makeDTO())
                 val token = getJWTDeffered.await()
                 val edit = sharedPreferences.edit()
                 edit.putString("token", token)
