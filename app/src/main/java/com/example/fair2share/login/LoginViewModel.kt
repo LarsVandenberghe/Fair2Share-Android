@@ -1,10 +1,13 @@
 package com.example.fair2share.login
 
+import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fair2share.R
 import com.example.fair2share.Utils
 import com.example.fair2share.models.data_models.LoginProperty
 import com.example.fair2share.network.AccountApi
@@ -37,7 +40,7 @@ class LoginViewModel(var sharedPreferences: SharedPreferences) : ViewModel() {
         loginData = LoginProperty.makeEmpty()
     }
 
-    fun login() {
+    fun login(defaultFailedMessage: String) {
         _coroutineScope.launch {
             try {
                 val getJWTDeffered = AccountApi.retrofitService.login(loginData.makeDTO())
@@ -48,8 +51,7 @@ class LoginViewModel(var sharedPreferences: SharedPreferences) : ViewModel() {
 
                 _loggedIn.value = true
             } catch (e: HttpException){
-                //TODO: Stringify
-                _errorMessage.value = Utils.formExceptionsToString(e, "Password or email not correct!")
+                _errorMessage.value = Utils.formExceptionsToString(e, defaultFailedMessage)
             } catch (t: Throwable){
                 _errorMessage.value = t.message
             }

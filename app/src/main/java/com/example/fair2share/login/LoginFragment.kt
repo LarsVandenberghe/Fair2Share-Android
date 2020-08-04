@@ -56,10 +56,10 @@ class LoginFragment : Fragment() {
         binding.loginData = viewModel.loginData
 
         binding.btnLoginLogin.setOnClickListener{view: View ->
-            viewModel.login()
+            viewModel.login(getString(R.string.fragment_login_fail))
         }
 
-        binding.constraintLayoutLogin.setOnClickListener{ view: View ->
+        binding.constraintlayoutLogin.setOnClickListener{ view: View ->
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }

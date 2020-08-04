@@ -55,7 +55,7 @@ class AddEditActivityFragment : Fragment() {
 
         binding.cboAddeditactivityValuta.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, Valutas.values())
 
-        binding.createActivityPane.setOnClickListener {
+        binding.constraintlayoutAddeditactivity.setOnClickListener {
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
         }

@@ -110,7 +110,7 @@
     <fragment
         android:id="@+id/managePeopleInTransactionFragment"
         android:name="com.example.fair2share.activity.transactions.people.ManagePeopleInTransactionFragment"
-        android:label="ManagePeopleInTransactionFragment"
+        android:label="@string/fragment_manage_people_in_transaction"
         tools:layout="@layout/fragment_managepeopleintransaction">
         <argument
             android:name="activity"

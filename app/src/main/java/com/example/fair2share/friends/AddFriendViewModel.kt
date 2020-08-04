@@ -23,20 +23,16 @@ class AddFriendViewModel(val myProfileEmailAddress: String) : ViewModel() {
     val succes: LiveData<Boolean>
         get() = _succes
 
-
-
-
-    //TODO: Implement stringify
-    fun addFriendByEmail(email: String){
+    fun addFriendByEmail(email: String, errorSendYourSelf:String, alreadyAPending:String, emailNotFound:String){
         _coroutineScope.launch {
             if (myProfileEmailAddress.equals(email)){
-                _errorMessage.value = "You can't send yourself a friend request."
+                _errorMessage.value = errorSendYourSelf
             } else {
                 val getJWTDeffered = FriendRequestApi.retrofitService.addFriendByEmail(email)
                 val result = getJWTDeffered.await()
                 when (result.code()){
-                    500 -> _errorMessage.value = "Something went wrong. Maybe you have a pending friend request from this email?"
-                    404 -> _errorMessage.value = "Email does not exist."
+                    500 -> _errorMessage.value = alreadyAPending
+                    404 -> _errorMessage.value = emailNotFound
                     else -> {
                         try {
                             Utils.throwExceptionIfHttpNotSuccessful(result)

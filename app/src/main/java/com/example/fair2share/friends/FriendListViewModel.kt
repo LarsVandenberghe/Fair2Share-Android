@@ -60,12 +60,12 @@ class FriendListViewModel(friendsArg: List<ProfileDTOProperty>?) : ViewModel() {
         }
     }
 
-    fun handleFriendRequest(userId: Long, accept: Boolean){
+    fun handleFriendRequest(userId: Long, accept: Boolean, defaultError: String){
         _coroutineScope.launch {
             val getJWTDeffered = FriendRequestApi.retrofitService.handleFriendRequest(userId, accept)
             val result = getJWTDeffered.await()
             when (result.code()){
-                500 -> _errorMessage.value = "Something went wrong."
+                500 -> _errorMessage.value = defaultError
                 204 -> _succes.value = true
                 else -> {
                     try {

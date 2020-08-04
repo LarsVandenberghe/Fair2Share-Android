@@ -1,8 +1,10 @@
 package com.example.fair2share.activity.transactions
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -51,6 +53,11 @@ class AddEditTransactionFragment : Fragment() {
                 }
             }
         })
+
+        binding.constraintlayoutAddedittransaction.setOnClickListener {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        }
 
         binding.activityParticipants = viewModel.activity.participants!!
         binding.transaction = viewModel.transaction
@@ -106,6 +113,4 @@ class AddEditTransactionFragment : Fragment() {
         viewModel.isNewTransaction = false
         findNavController().navigate(action)
     }
-
-
 }

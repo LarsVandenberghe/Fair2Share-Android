@@ -9,6 +9,7 @@
             name="registerData"
             type="com.example.fair2share.models.data_models.RegisterProperty" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,6 +25,7 @@
             app:layout_constraintVertical_bias="1.0">
 
             <LinearLayout
+                android:id="@+id/linearlayout_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -51,9 +53,9 @@
                         android:layout_marginEnd="10dp"
                         android:ems="10"
                         android:hint="@string/hint_first_name"
-                        android:text="@={registerData.firstName}"
                         android:importantForAutofill="no"
                         android:inputType="textPersonName"
+                        android:text="@={registerData.firstName}"
                         app:layout_constraintEnd_toStartOf="@+id/txt_register_lastname"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_register_firstname" />
@@ -75,9 +77,9 @@
                         android:layout_marginEnd="10dp"
                         android:ems="10"
                         android:hint="@string/hint_last_name"
-                        android:text="@={registerData.lastName}"
                         android:importantForAutofill="no"
                         android:inputType="textPersonName"
+                        android:text="@={registerData.lastName}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_register_lastname" />
 
@@ -100,9 +102,9 @@
                         android:layout_marginEnd="10dp"
                         android:ems="10"
                         android:hint="@string/hint_login_email"
-                        android:text="@={registerData.email}"
                         android:importantForAutofill="no"
                         android:inputType="textEmailAddress"
+                        android:text="@={registerData.email}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_register_email" />
@@ -126,9 +128,9 @@
                         android:layout_marginEnd="10dp"
                         android:ems="10"
                         android:hint="@string/hint_password"
-                        android:text="@={registerData.password}"
                         android:importantForAutofill="no"
                         android:inputType="textPassword"
+                        android:text="@={registerData.password}"
                         app:layout_constraintEnd_toStartOf="@+id/edit_register_confirmpassword"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -143,9 +145,9 @@
                         android:layout_marginEnd="10dp"
                         android:ems="10"
                         android:hint="@string/hint_confirm_password"
-                        android:text="@={registerData.passwordConfirmation}"
                         android:importantForAutofill="no"
                         android:inputType="textPassword"
+                        android:text="@={registerData.passwordConfirmation}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.4"
                         app:layout_constraintStart_toEndOf="@+id/edit_register_password"

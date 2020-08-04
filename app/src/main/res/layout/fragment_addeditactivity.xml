@@ -10,7 +10,7 @@
             type="com.example.fair2share.models.data_models.ActivityProperty" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/createActivityPane"
+        android:id="@+id/constraintlayout_addeditactivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -1,5 +1,6 @@
 package com.example.fair2share.login
 
+import android.app.Application
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -15,6 +15,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
+import java.lang.Exception
 import java.lang.StringBuilder
 
 class Utils {
@@ -34,14 +35,14 @@ class Utils {
                         }
                     }
                 } else {
-                    if (customMessage != null){
-                        sb.append(customMessage)
-                    } else {
-                        sb.append(exception.message())
-                    }
+                    throw Exception()
                 }
-            } catch (e: JSONException){
-                sb.append(text)
+            } catch (e: Exception){
+                if (customMessage != null){
+                    sb.append(customMessage)
+                } else {
+                    sb.append(exception.message())
+                }
             }
 
             return sb.toString()
