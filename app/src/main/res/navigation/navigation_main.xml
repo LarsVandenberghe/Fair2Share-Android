@@ -12,13 +12,16 @@
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_fragmentProfile_to_addEditActivityFragment"
-            app:destination="@id/addEditActivityFragment" />
+            app:destination="@id/addEditActivityFragment"
+            app:enterAnim="@anim/enter_from_right" />
         <action
             android:id="@+id/action_fragmentProfile_to_friendListFragment"
-            app:destination="@id/friendListFragment" />
+            app:destination="@id/friendListFragment"
+            app:enterAnim="@anim/enter_from_right" />
         <action
             android:id="@+id/action_fragmentProfile_to_activityTransactionsFragment"
-            app:destination="@id/activityTransactionsFragment" />
+            app:destination="@id/activityTransactionsFragment"
+            app:enterAnim="@anim/enter_from_right" />
     </fragment>
     <fragment
         android:id="@+id/addEditActivityFragment"
@@ -38,7 +41,8 @@
         tools:layout="@layout/fragment_friendlist">
         <action
             android:id="@+id/action_friendListFragment_to_addFriendFragment"
-            app:destination="@id/addFriendFragment" />
+            app:destination="@id/addFriendFragment"
+            app:enterAnim="@anim/enter_from_right" />
         <argument
             android:name="friends"
             app:argType="com.example.fair2share.models.dto_models.ProfileDTOProperty[]" />
@@ -59,16 +63,19 @@
         tools:layout="@layout/fragment_activitytransactions">
         <action
             android:id="@+id/action_activityTransactionsFragment_to_activitySummaryFragment"
-            app:destination="@id/activitySummaryFragment" />
+            app:destination="@id/activitySummaryFragment"
+            app:enterAnim="@anim/enter_from_right" />
         <action
             android:id="@+id/action_activityTransactionsFragment_to_addEditTransactionFragment"
-            app:destination="@id/addEditTransactionFragment" />
+            app:destination="@id/addEditTransactionFragment"
+            app:enterAnim="@anim/enter_from_right" />
         <argument
             android:name="activity"
             app:argType="com.example.fair2share.models.dto_models.ActivityDTOProperty" />
         <action
             android:id="@+id/action_activityTransactionsFragment_to_addEditActivityFragment"
-            app:destination="@id/addEditActivityFragment" />
+            app:destination="@id/addEditActivityFragment"
+            app:enterAnim="@anim/enter_from_right" />
     </fragment>
     <fragment
         android:id="@+id/activitySummaryFragment"
@@ -77,7 +84,8 @@
         tools:layout="@layout/fragment_activitysummary">
         <action
             android:id="@+id/action_activitySummaryFragment_to_managePeopleInActivityFragment"
-            app:destination="@id/managePeopleInActivityFragment" />
+            app:destination="@id/managePeopleInActivityFragment"
+            app:enterAnim="@anim/enter_from_right" />
         <argument
             android:name="activity"
             app:argType="com.example.fair2share.models.dto_models.ActivityDTOProperty" />
@@ -105,7 +113,8 @@
             app:argType="com.example.fair2share.models.dto_models.ActivityDTOProperty" />
         <action
             android:id="@+id/action_addEditTransactionFragment_to_managePeopleInTransactionFragment"
-            app:destination="@id/managePeopleInTransactionFragment" />
+            app:destination="@id/managePeopleInTransactionFragment"
+            app:enterAnim="@anim/enter_from_right" />
     </fragment>
     <fragment
         android:id="@+id/managePeopleInTransactionFragment"
