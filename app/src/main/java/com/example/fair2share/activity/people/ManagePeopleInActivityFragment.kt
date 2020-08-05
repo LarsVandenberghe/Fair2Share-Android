@@ -46,10 +46,11 @@ class ManagePeopleInActivityFragment : Fragment() {
             container,
             false
         )
+        viewModel.update(resources)
         configureAdapters(binding)
 
         binding.btnManagepeopleinactivityConfirm.setOnClickListener {
-            viewModel.confirm()
+            viewModel.confirm(resources)
         }
 
         return binding.root

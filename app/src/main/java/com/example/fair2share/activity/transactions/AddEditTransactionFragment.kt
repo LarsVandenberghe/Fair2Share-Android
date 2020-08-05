@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.data_models.TransactionProperty
 import com.example.fair2share.databinding.FragmentAddedittransactionBinding
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
@@ -24,11 +25,12 @@ class AddEditTransactionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory = if (safeArgs.transaction != null){
             setHasOptionsMenu(true)
-            AddEditTransactionViewModelFactory(safeArgs.activity, (safeArgs.transaction as TransactionDTOProperty).makeDataModel(), false)
+            AddEditTransactionViewModelFactory(safeArgs.activity, (safeArgs.transaction as TransactionDTOProperty).makeDataModel(), false, database)
         } else {
-            AddEditTransactionViewModelFactory(safeArgs.activity, TransactionProperty.makeEmpty(), true)
+            AddEditTransactionViewModelFactory(safeArgs.activity, TransactionProperty.makeEmpty(), true, database)
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddEditTransactionViewModel::class.java)
@@ -68,7 +70,7 @@ class AddEditTransactionFragment : Fragment() {
         )
         binding.btnAddedittransaction.text = getButtonName()
         binding.btnAddedittransaction.setOnClickListener {
-            viewModel.createOrUpdate()
+            viewModel.createOrUpdate(resources)
         }
 
         return binding.root
@@ -88,7 +90,7 @@ class AddEditTransactionFragment : Fragment() {
                 return true
             }
             R.id.btn_addedittransactionoverflow_remove -> {
-                viewModel.removeTransaction()
+                viewModel.removeTransaction(resources)
                 return true
             }
             else -> super.onOptionsItemSelected(item)

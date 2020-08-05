@@ -15,8 +15,6 @@ import com.example.fair2share.models.dto_models.asDataModel2
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AccountApi.sharedPreferences
 import com.example.fair2share.network.ActivityApi
-import com.example.fair2share.network.AuthInterceptor
-import com.example.fair2share.network.ProfileApi
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
 import retrofit2.HttpException
@@ -59,6 +57,10 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
     val navigate: LiveData<Boolean>
         get() = _navigate
 
+    private val _resetSelected = MutableLiveData<Boolean>()
+    val resetSelected: LiveData<Boolean>
+        get() = _resetSelected
+
     fun removeActivity(resources: Resources, activityId: Long){
          _coroutineScope.launch {
              try {
@@ -89,14 +91,14 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
                     ActivityApi.retrofitService.updateActivity(activity.activityId!!, activity.makeDTO()).await()
                 }
                 Utils.throwExceptionIfHttpNotSuccessful(response)
-                _navigate.value = true
+                _navigate.postValue(true)
             } catch (e: ConnectException){
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
             } catch (e: HttpException){
-                _errorMessage.value = Utils.formExceptionsToString(e)
+                _errorMessage.postValue(Utils.formExceptionsToString(e))
             } catch (t: Throwable){
-                _errorMessage.value = t.message
+                _errorMessage.postValue(t.message)
             }
         }
     }
@@ -182,6 +184,30 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
                 database.summaryDao.insertActivitySummary(
                     ActivitySummaryDatabaseProperty(profileId, activity.activityId, jsonData)
                 )
+            } catch (e: ConnectException){
+                AccountApi.setIsOfflineValue(true)
+                _errorMessage.postValue(resources.getString(R.string.offline_error))
+            } catch (t: Throwable){
+                _errorMessage.postValue(t.message)
+            }
+        }
+    }
+
+    fun postActivityParticipants(resources: Resources, activityId:Long, toBeAdded: List<Long>, toBeRemoved: List<Long>){
+        _coroutineScope.launch {
+            try {
+                if (toBeRemoved.size > 0) {
+                    val result = ActivityApi.retrofitService.removeActivityParticipants(activityId, toBeRemoved).await()
+                    Utils.throwExceptionIfHttpNotSuccessful(result)
+                }
+                if (toBeAdded.size > 0) {
+                    val result = ActivityApi.retrofitService.addActivityParticipants(activityId, toBeAdded).await()
+                    Utils.throwExceptionIfHttpNotSuccessful(result)
+                }
+                _success.postValue(true)
+            } catch (e: HttpException){
+                _errorMessage.postValue(Utils.formExceptionsToString(e))
+                _resetSelected.postValue(true)
             } catch (e: ConnectException){
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))

@@ -18,6 +18,7 @@ import com.example.fair2share.activity.people.ActivityCandidatesAdapter
 import com.example.fair2share.activity.people.ActivityParticipantsAdapter
 import com.example.fair2share.activity.people.ManagePeopleInActivityFragmentArgs
 import com.example.fair2share.activity.people.ManagePeopleInActivityViewModel
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentManagepeopleinactivityBinding
 import com.example.fair2share.databinding.FragmentManagepeopleintransactionBinding
 
@@ -27,8 +28,8 @@ class ManagePeopleInTransactionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val viewModelFactory = ManagePeopleInTransactionViewModelFacotry(safeArgs.activity, safeArgs.transaction)
+        val database = Fair2ShareDatabase.getInstance(requireContext())
+        val viewModelFactory = ManagePeopleInTransactionViewModelFacotry(safeArgs.activity, safeArgs.transaction, database)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(
             ManagePeopleInTransactionViewModel::class.java
         )
@@ -53,10 +54,11 @@ class ManagePeopleInTransactionFragment : Fragment() {
             container,
             false
         )
+        viewModel.update(resources)
         configureAdapters(binding)
 
         binding.btnManagepeopleintransactionConfirm.setOnClickListener {
-            viewModel.confirm()
+            viewModel.confirm(resources)
         }
 
         return binding.root

@@ -1,9 +1,12 @@
 package com.example.fair2share.activity.transactions
 
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
+import com.example.fair2share.database.Fair2ShareDatabase
+import com.example.fair2share.database.TransactionRepository
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.TransactionProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
@@ -15,50 +18,17 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.Response
 
-class AddEditTransactionViewModel(val activity: ActivityDTOProperty, val transaction: TransactionProperty, var isNewTransaction: Boolean) : ViewModel() {
-    private var viewModelJob = Job()
-    private val _coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+class AddEditTransactionViewModel(val activity: ActivityDTOProperty, val transaction: TransactionProperty, var isNewTransaction: Boolean, database: Fair2ShareDatabase) : ViewModel() {
+    private val transactionRepository = TransactionRepository(database)
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
-        get() = _errorMessage
+    val errorMessage: LiveData<String> = transactionRepository.errorMessage
+    val navigate: LiveData<Boolean> = transactionRepository.navigate
 
-    private val _navigate = MutableLiveData<Boolean>()
-    val navigate: LiveData<Boolean>
-        get() = _navigate
-
-    fun createOrUpdate(){
-        _coroutineScope.launch {
-            try {
-                val response : Response<out Any> = if (isNewTransaction){
-                    ActivityApi.retrofitService.addTransaction(activity.activityId!!, transaction.makeDTO()).await()
-                } else {
-                    ActivityApi.retrofitService.updateTransaction(activity.activityId!!, transaction.transactionId!!, transaction.makeDTO()).await()
-                }
-
-                Utils.throwExceptionIfHttpNotSuccessful(response)
-
-                if (isNewTransaction){
-                    transaction.transactionId = (response as Response<Long>).body()!!
-                }
-
-                _navigate.value = true
-            } catch (e: HttpException){
-                _errorMessage.value = Utils.formExceptionsToString(e)
-            } catch (t: Throwable){
-                _errorMessage.value = t.message
-            }
-        }
+    fun createOrUpdate(resources: Resources){
+        transactionRepository.createOrUpdate(resources, isNewTransaction, activity, transaction)
     }
 
-    fun removeTransaction(){
-        _coroutineScope.launch {
-            val a = ActivityApi.retrofitService.removeTransaction(activity.activityId!!, transaction.transactionId!!).await()
-            if (!a.isSuccessful){
-                _errorMessage.value = a.errorBody()!!.charStream().toString()
-            } else {
-                _navigate.value = true
-            }
-        }
+    fun removeTransaction(resources: Resources){
+        transactionRepository.removeTransaction(resources, activity.activityId!!, transaction.transactionId!!)
     }
 }

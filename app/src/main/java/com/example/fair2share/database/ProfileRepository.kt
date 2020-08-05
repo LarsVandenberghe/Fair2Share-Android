@@ -115,16 +115,16 @@ class ProfileRepository(private val database: Fair2ShareDatabase) {
                 val getJWTDeffered = FriendRequestApi.retrofitService.handleFriendRequest(userId, accept)
                 val result = getJWTDeffered.await()
                 when (result.code()){
-                    500 -> _errorMessage.value = resources.getString(R.string.fragment_friendrequest_defaulterror)
-                    204 -> _success.value = true
+                    500 -> _errorMessage.postValue(resources.getString(R.string.fragment_friendrequest_defaulterror))
+                    204 -> _success.postValue(true)
                     else -> {
                         try {
                             Utils.throwExceptionIfHttpNotSuccessful(result)
-                            _success.value = true
+                            _success.postValue(true)
                         } catch (e: HttpException){
-                            _errorMessage.value = Utils.formExceptionsToString(e)
+                            _errorMessage.postValue(Utils.formExceptionsToString(e))
                         } catch (t: Throwable){
-                            _errorMessage.value = t.message
+                            _errorMessage.postValue(t.message)
                         }
                     }
                 }
@@ -139,21 +139,21 @@ class ProfileRepository(private val database: Fair2ShareDatabase) {
         _coroutineScope.launch {
             try{
                 if (myProfileEmailAddress.equals(email)){
-                    _errorMessage.value = resources.getString(R.string.fragment_addfriend_errorsendyourself)
+                    _errorMessage.postValue(resources.getString(R.string.fragment_addfriend_errorsendyourself))
                 } else {
                     val deffered = FriendRequestApi.retrofitService.addFriendByEmail(email)
                     val result = deffered.await()
                     when (result.code()){
-                        500 -> _errorMessage.value = resources.getString(R.string.fragment_addfriend_alreadpending)
-                        404 -> _errorMessage.value = resources.getString(R.string.fragment_addfriend_emailnotfound)
+                        500 -> _errorMessage.postValue(resources.getString(R.string.fragment_addfriend_alreadpending))
+                        404 -> _errorMessage.postValue(resources.getString(R.string.fragment_addfriend_emailnotfound))
                         else -> {
                             try {
                                 Utils.throwExceptionIfHttpNotSuccessful(result)
-                                _success.value = true
+                                _success.postValue(true)
                             } catch (e:HttpException){
-                                _errorMessage.value = Utils.formExceptionsToString(e)
+                                _errorMessage.postValue(Utils.formExceptionsToString(e))
                             } catch (t: Throwable){
-                                _errorMessage.value = t.message
+                                _errorMessage.postValue(t.message)
                             }
                         }
                     }

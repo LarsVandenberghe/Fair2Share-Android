@@ -1,9 +1,15 @@
 package com.example.fair2share.activity.transactions.people
 
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
+import com.example.fair2share.database.ActivityRepository
+import com.example.fair2share.database.Fair2ShareDatabase
+import com.example.fair2share.database.ProfileRepository
+import com.example.fair2share.database.TransactionRepository
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.data_models.TransactionProperty
@@ -18,12 +24,22 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class ManagePeopleInTransactionViewModel(private val activity: ActivityDTOProperty, private val transaction: TransactionDTOProperty) : ViewModel() {
-    private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOProperty, private var transactionArg: TransactionDTOProperty, database: Fair2ShareDatabase) : ViewModel() {
+    private val activityRepository = ActivityRepository(database)
+    private val transactionRepository = TransactionRepository(database)
 
-    private val _friends = MutableLiveData<List<ProfileDTOProperty>>()
-    private val _initalParticipants = MutableLiveData<List<ProfileDTOProperty>>()
+
+    val success: LiveData<Boolean> = transactionRepository.success
+    val errorMessage: LiveData<String> = transactionRepository.errorMessage
+    val acivity: LiveData<ActivityDTOProperty> = activityRepository.activity
+    val transaction: LiveData<TransactionDTOProperty> = transactionRepository.transaction
+
+    private val _initialParticipants: LiveData<List<ProfileDTOProperty>> = Transformations.map(transaction) {
+        it.profilesInTransaction
+    }
+    private val _friends: LiveData<List<ProfileDTOProperty>> = Transformations.map(acivity){
+        it.participants
+    }
     private val _toBeAdded = MutableLiveData<List<Long>>()
     private val _toBeRemoved = MutableLiveData<List<Long>>()
 
@@ -35,18 +51,21 @@ class ManagePeopleInTransactionViewModel(private val activity: ActivityDTOProper
     val candidates: LiveData<List<ProfileDTOProperty>>
         get() = _candidates
 
-    private val _success = MutableLiveData<Boolean>()
-    val success: LiveData<Boolean>
-        get() = _success
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
-        get() = _errorMessage
 
     init {
         candidatesAndParticipantsListenToUpdates()
-        update()
+        transaction.observeForever {
+            transactionArg = it
+        }
+
+        transactionRepository.resetSelected.observeForever {
+            if(it){
+                resetSelected()
+            }
+        }
     }
+
 
     fun addToParticipants(id:Long){
         val toBeAdded = _toBeAdded.value!!.toMutableList()
@@ -72,27 +91,18 @@ class ManagePeopleInTransactionViewModel(private val activity: ActivityDTOProper
         }
     }
 
-    fun confirm(){
-        coroutineScope.launch {
-            try {
-                val toBeAdded = _toBeAdded.value!!
-                val toBeRemoved = _toBeRemoved.value!!
-                if (toBeRemoved.size > 0) {
-                    val result = ActivityApi.retrofitService.removeTransactionParticipants(activity.activityId!!, transaction.transactionId!!, toBeRemoved).await()
-                    Utils.throwExceptionIfHttpNotSuccessful(result)
-                }
-                if (toBeAdded.size > 0) {
-                    val result = ActivityApi.retrofitService.addTransactionParticipants(activity.activityId!!, transaction.transactionId!!, toBeAdded).await()
-                    Utils.throwExceptionIfHttpNotSuccessful(result)
-                }
-                _success.value = true
-            } catch (e: HttpException){
-                _errorMessage.value = Utils.formExceptionsToString(e)
-                resetSelected()
-            } catch (t: Throwable){
-                _errorMessage.value = t.message
-            }
-        }
+    fun confirm(resources: Resources){
+
+        val toBeAdded = _toBeAdded.value!!
+        val toBeRemoved = _toBeRemoved.value!!
+        transactionRepository.postTransactionParticipants(
+            resources,
+            activityArg.activityId!!,
+            transactionArg.transactionId!!,
+            toBeAdded,
+            toBeRemoved
+        )
+        update(resources)
     }
 
 
@@ -101,18 +111,11 @@ class ManagePeopleInTransactionViewModel(private val activity: ActivityDTOProper
         _toBeRemoved.value = ArrayList()
     }
 
-    private fun update(){
-        coroutineScope.launch {
-            _initalParticipants.value = ActivityApi
-                .retrofitService
-                .getActivityTransactionById(activity.activityId!!, transaction.transactionId!!)
-                .await().profilesInTransaction
-
-            _friends.value = ActivityApi
-                .retrofitService
-                .getActivityParticipants(activity.activityId)
-                .await().participants
-        }
+    fun update(resources:Resources){
+        transactionRepository.updateTransactionWithRoom(activityArg.activityId!!, transactionArg.transactionId!!)
+        transactionRepository.updateTransactionWithApi(resources, activityArg.activityId, transactionArg.transactionId!!)
+        activityRepository.updateActivityWithRoom(activityArg.activityId)
+        activityRepository.updateActivityWithApi(resources, activityArg.activityId)
     }
 
     private fun candidatesAndParticipantsListenToUpdates(){
@@ -122,7 +125,7 @@ class ManagePeopleInTransactionViewModel(private val activity: ActivityDTOProper
             updateCandidatesAndParticipants()
         }
 
-        _initalParticipants.observeForever {
+        _initialParticipants.observeForever {
             updateCandidatesAndParticipants()
         }
 
@@ -158,7 +161,7 @@ class ManagePeopleInTransactionViewModel(private val activity: ActivityDTOProper
 
     private fun findCandidates() : List<ProfileDTOProperty> {
         val friends =_friends.value
-        var initialParticips = _initalParticipants.value
+        var initialParticips = _initialParticipants.value
 
         initialParticips = initialParticips?.filter {
             (friends?.map {friend ->
