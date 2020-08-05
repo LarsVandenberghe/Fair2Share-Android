@@ -22,23 +22,19 @@ class RegisterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPrefs = requireActivity().getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
-        sharedPrefs?.let {
-            val viewModelFactory = LoginAndRegisterViewModelFactory(it)
-            viewModel =
-                ViewModelProviders.of(this, viewModelFactory).get(RegisterViewModel::class.java)
+        viewModel =
+            ViewModelProviders.of(this).get(RegisterViewModel::class.java)
 
-            viewModel.errorMessage.observe(this, Observer { message ->
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-            })
+        viewModel.errorMessage.observe(this, Observer { message ->
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        })
 
-            viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
-                if (isLoggedIn){
-                    startActivity(Intent(context, MainActivity::class.java))
-                    requireActivity().finish()
-                }
-            })
-        }
+        viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
+            if (isLoggedIn){
+                startActivity(Intent(context, MainActivity::class.java))
+                requireActivity().finish()
+            }
+        })
     }
 
     override fun onCreateView(

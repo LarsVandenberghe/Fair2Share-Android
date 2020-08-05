@@ -4,6 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.TransactionProperty
+import com.example.fair2share.models.database_models.ActivityDatabaseProperty
+import com.example.fair2share.models.database_models.ProfileDatabaseProperty
+import com.example.fair2share.models.database_models.TransactionDatabaseProperty
+import com.squareup.moshi.Moshi
 
 data class ActivityDTOProperty (
     val activityId: Long?,
@@ -37,6 +41,16 @@ data class ActivityDTOProperty (
 
     fun makeDataModel(): ActivityProperty{
         return ActivityProperty(activityId, name, description, currencyType, participants?.asDataModel(), transactions?.asDataModel2())
+    }
+
+    fun makeDatabaseModel(profileId:Long): ActivityDatabaseProperty {
+        val moshi = Moshi.Builder().build()
+        val jsonAdapter = moshi.adapter(ActivityDTOProperty::class.java)
+        return ActivityDatabaseProperty(
+            activityId!!,
+            profileId,
+            jsonAdapter.toJson(this)
+        )
     }
 
     companion object CREATOR : Parcelable.Creator<ActivityDTOProperty> {
@@ -85,6 +99,17 @@ data class TransactionDTOProperty(
 
     fun makeDataModel(): TransactionProperty{
         return TransactionProperty(transactionId, name, description, timeStamp, payment, profilesInTransaction?.asDataModel(), paidBy.makeDataModel())
+    }
+
+    fun makeDatabaseModel(profileId:Long, activityId:Long): TransactionDatabaseProperty {
+        val moshi = Moshi.Builder().build()
+        val jsonAdapter = moshi.adapter(TransactionDTOProperty::class.java)
+        return TransactionDatabaseProperty(
+            profileId,
+            activityId,
+            transactionId!!,
+            jsonAdapter.toJson(this)
+        )
     }
 
     companion object CREATOR : Parcelable.Creator<TransactionDTOProperty> {

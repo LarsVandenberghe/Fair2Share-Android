@@ -1,5 +1,6 @@
 package com.example.fair2share.profile
 
+import android.content.res.Resources
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
@@ -10,6 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
+import com.example.fair2share.database.DatabaseOnlyViewModelFactory
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.databinding.FragmentProfileBinding
 import com.example.fair2share.models.data_models.asDTO
@@ -24,12 +27,22 @@ class ProfileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProviders.of(this).get(ProfileFragmentViewModel::class.java)
+        val database = Fair2ShareDatabase.getInstance(requireContext())
+        val viewModelFactory = DatabaseOnlyViewModelFactory(database)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProfileFragmentViewModel::class.java)
 
         viewModel.errorMessage.observe(this, Observer { errorMsg ->
             Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+        })
 
+        viewModel.activityErrorMessage.observe(this, Observer { errorMsg ->
+            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.activityDeleteSuccess.observe(this, Observer {
+            if(it){
+                viewModel.update(resources)
+            }
         })
         setHasOptionsMenu(true)
     }
@@ -43,7 +56,6 @@ class ProfileFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentProfileBinding>(inflater, R.layout.fragment_profile, container, false)
         val adapter = ActivityBindingAdapter(viewModel)
         binding.rvProfileActivitylist.adapter = adapter
-
 
         receiveProfileData(binding, adapter)
 
@@ -88,21 +100,20 @@ class ProfileFragment : Fragment() {
         val profile = requireActivity().intent.getParcelableExtra<ProfileDTOProperty>("profile")
 
         if (!firstLoad || profile == null){
-            viewModel.update()
+            viewModel.update(resources)
         } else {
-            viewModel.update(profile)
+            viewModel.update(resources, profile)
             firstLoad = false
         }
 
         viewModel.profile.observe(viewLifecycleOwner, Observer{ data ->
-            binding.profile = data
             data.activities?.let{
                 if (it.size == 0){
                     binding.txtProfileNoactivities.visibility = View.VISIBLE
                 } else {
                     binding.txtProfileNoactivities.visibility = View.GONE
                 }
-                adapter.data = it.asDTO()
+                adapter.data = it
             }
             addFriendRequests(data.amountOfFriendRequests ?: 0)
         })

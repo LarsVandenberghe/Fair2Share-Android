@@ -27,27 +27,24 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sharedPrefs = requireActivity().getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
-        sharedPrefs?.let {
-            val viewModelFactory = LoginAndRegisterViewModelFactory(it)
-            viewModel =
-                ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
+        viewModel =
+            ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
-            viewModel.errorMessage.observe(this, Observer { message  ->
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            })
+        viewModel.errorMessage.observe(this, Observer { message  ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        })
 
-            viewModel.loggedIn.observe(this, Observer { bool ->
-                if (bool){
-                    startActivity(Intent(context, MainActivity::class.java))
-                    requireActivity().finish()
-                }
-            })
+        viewModel.loggedIn.observe(this, Observer { bool ->
+            if (bool){
+                startActivity(Intent(context, MainActivity::class.java))
+                requireActivity().finish()
+            }
+        })
 
-            viewModel.errorMessage.observe(this, Observer { message  ->
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            })
-        }
+        viewModel.errorMessage.observe(this, Observer { message  ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        })
+
         setHasOptionsMenu(true)
     }
 
@@ -56,7 +53,7 @@ class LoginFragment : Fragment() {
         binding.loginData = viewModel.loginData
 
         binding.btnLoginLogin.setOnClickListener{view: View ->
-            viewModel.login(getString(R.string.fragment_login_fail))
+            viewModel.login(resources)
         }
 
         binding.constraintlayoutLogin.setOnClickListener{ view: View ->

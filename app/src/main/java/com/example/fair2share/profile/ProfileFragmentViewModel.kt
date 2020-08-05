@@ -1,5 +1,6 @@
 package com.example.fair2share.profile
 
+import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +9,9 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.example.fair2share.BuildConfig
 import com.example.fair2share.Utils
+import com.example.fair2share.database.ActivityRepository
+import com.example.fair2share.database.Fair2ShareDatabase
+import com.example.fair2share.database.ProfileRepository
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
@@ -22,41 +26,25 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 
-class ProfileFragmentViewModel : ViewModel() {
+class ProfileFragmentViewModel(val database: Fair2ShareDatabase) : ViewModel() {
+    private val profileRepository = ProfileRepository(database)
+    private val activityRepository = ActivityRepository(database)
 
-    private var _viewModelJob = Job()
-    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
-    private val _profile = MutableLiveData<ProfileProperty>()
-    val profile: LiveData<ProfileProperty>
-        get() = _profile
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
-        get() = _errorMessage
+    val profile: LiveData<ProfileDTOProperty> = profileRepository.profile
+    val errorMessage: LiveData<String> = profileRepository.errorMessage
+    val activityErrorMessage: LiveData<String> = activityRepository.errorMessage
+    val activityDeleteSuccess: LiveData<Boolean> = activityRepository.success
 
-
-    fun update(profile: ProfileDTOProperty? = null){
+    fun update(resouces: Resources, profile: ProfileDTOProperty? = null){
         if (profile != null) {
-            _profile.value = profile.makeDataModel()
+            profileRepository.updateFromSafeArgs(profile)
         } else {
-            _coroutineScope.launch {
-                _profile.value = ProfileApi.retrofitService.profile().await().makeDataModel()
-            }
+            profileRepository.updateProfileWithRoom()
+            profileRepository.updateProfileWithApi(resouces)
         }
     }
 
-    fun removeActivity(activity: ActivityDTOProperty){
-        _coroutineScope.launch {
-            val a = ActivityApi.retrofitService.removeActivity(activity.activityId!!).await()
-            if (!a.isSuccessful){
-                val sb = StringBuilder()
-                val charStream = a.errorBody()?.charStream()
-                if (charStream != null){
-                    sb.append(charStream.readText())
-                }
-                _errorMessage.value = sb.toString()
-            } else {
-                update()
-            }
-        }
+    fun removeActivity(resources: Resources, activity: ActivityDTOProperty){
+        activityRepository.removeActivity(resources, activity.activityId!!)
     }
 }

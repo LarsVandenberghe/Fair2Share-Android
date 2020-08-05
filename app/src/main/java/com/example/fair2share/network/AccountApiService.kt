@@ -1,6 +1,8 @@
 package com.example.fair2share.network
 
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.fair2share.BuildConfig
 import com.example.fair2share.models.data_models.LoginProperty
 import com.example.fair2share.models.data_models.RegisterProperty
@@ -46,5 +48,18 @@ object AccountApi {
     val retrofitService : AccountApiService by lazy {
         retrofitJsonMap.create(AccountApiService::class.java)
     }
-    var sharedPreferences : SharedPreferences? = null
+    lateinit var sharedPreferences : SharedPreferences
+
+    private val _isOffline = MutableLiveData<Boolean>()
+    val isOffline: LiveData<Boolean>
+        get() = _isOffline
+
+    fun setIsOfflineValue(value: Boolean){
+        _isOffline.postValue(value)
+    }
+
+    fun logout(){
+        sharedPreferences.edit()?.remove("profileId")?.apply()
+        sharedPreferences.edit()?.remove("token")?.apply()
+    }
 }

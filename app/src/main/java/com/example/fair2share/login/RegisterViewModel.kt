@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
 import com.example.fair2share.models.data_models.RegisterProperty
 import com.example.fair2share.network.AccountApi
+import com.example.fair2share.network.AccountApi.sharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -15,7 +16,7 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import java.lang.StringBuilder
 
-class RegisterViewModel(var sharedPreferences: SharedPreferences): ViewModel() {
+class RegisterViewModel: ViewModel() {
     private var _viewModelJob = Job()
     private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
     var registerData: RegisterProperty
@@ -29,7 +30,6 @@ class RegisterViewModel(var sharedPreferences: SharedPreferences): ViewModel() {
         get() = _errorMessage
 
     init {
-        AccountApi.sharedPreferences = sharedPreferences
         registerData = RegisterProperty.makeEmpty()
     }
 

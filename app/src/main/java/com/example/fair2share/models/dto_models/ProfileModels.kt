@@ -4,6 +4,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.models.database_models.ProfileDatabaseProperty
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 
 data class ProfileDTOProperty (
     val profileId: Long,
@@ -47,6 +50,15 @@ data class ProfileDTOProperty (
 
     fun makeDataModel(): ProfileProperty{
         return ProfileProperty(profileId, firstname, lastname, email, friends?.asDataModel(), friendRequestState, activities?.asDataModel(), amountOfFriendRequests)
+    }
+
+    fun makeDatabaseModel(): ProfileDatabaseProperty{
+        val moshi = Moshi.Builder().build()
+        val jsonAdapter = moshi.adapter(ProfileDTOProperty::class.java)
+        return ProfileDatabaseProperty(
+            profileId,
+            jsonAdapter.toJson(this)
+        )
     }
 
     companion object CREATOR : Parcelable.Creator<ProfileDTOProperty> {

@@ -42,7 +42,7 @@ class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) : Recycler
 
         holder.rowView.findViewById<TextView>(R.id.txt_recycleractivity_name).text = String.format("%s", item.name)
         holder.rowView.findViewById<ImageButton>(R.id.btn_recycleractivity_remove).setOnClickListener{
-            viewModel.removeActivity(item)
+            viewModel.removeActivity(holder.rowView.resources, item)
         }
     }
 }

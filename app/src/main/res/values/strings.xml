@@ -61,10 +61,12 @@
     <string name="txt_addedittransaction_paidby">Paid By*</string>
     <string name="remove_transaction">Remove Transaction</string>
     <string name="fragment_manage_people_in_transaction">Transaction Participants</string>
-    <string name="fragment_login_fail">"Password or email not correct!"</string>
-    <string name="fragment_addfriend_success">"FriendRequest has been sent."</string>
+    <string name="fragment_login_fail">Password or email not correct!</string>
+    <string name="fragment_addfriend_success">FriendRequest has been sent."</string>
     <string name="fragment_addfriend_errorsendyourself">"You can't send yourself a friend request."</string>
-    <string name="fragment_addfriend_alreadpending">"Something went wrong. Maybe you have a pending friend request from this email?"</string>
-    <string name="fragment_addfriend_emailnotfound">"Email does not exist."</string>
-    <string name="fragment_friendrequest_defaulterror">"Something went wrong."</string>
+    <string name="fragment_addfriend_alreadpending">Something went wrong. Maybe you have a pending friend request from this email?</string>
+    <string name="fragment_addfriend_emailnotfound">Email does not exist.</string>
+    <string name="fragment_friendrequest_defaulterror">Something went wrong.</string>
+    <string name="fragment_startup_tokenexipred">Token expired, please relog.</string>
+    <string name="offline_error">You are offline, make sure you have an internet conncetion!</string>
 </resources>

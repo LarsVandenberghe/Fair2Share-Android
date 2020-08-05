@@ -17,6 +17,8 @@ import androidx.navigation.findNavController
 import com.example.fair2share.LoginActivity
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
+import com.example.fair2share.database.DatabaseOnlyViewModelFactory
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.network.AccountApi
@@ -27,10 +29,12 @@ class StartUpFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         AccountApi.sharedPreferences = requireActivity()
             .getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
 
-        val viewModelFactory = StartUpViewModelFactory(AccountApi.sharedPreferences)
+        val database = Fair2ShareDatabase.getInstance(requireContext())
+        val viewModelFactory = DatabaseOnlyViewModelFactory(database)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(StartUpViewModel::class.java)
 
         viewModel.errorMessage.observe(this, Observer {
@@ -38,7 +42,7 @@ class StartUpFragment : Fragment() {
         })
 
         if (viewModel.token.value != null){
-            viewModel.getProfile()
+            viewModel.getProfileOnline(resources)
 
             viewModel.shouldRelog.observe(this, Observer {
                 if (it){
@@ -46,8 +50,14 @@ class StartUpFragment : Fragment() {
                 }
             })
 
+            viewModel.isOffline.observe(this, Observer {
+                if (it){
+                    viewModel.getProfileCached()
+                }
+            })
+
             viewModel.profile.observe(this, Observer {
-                navigateToMainActivity(it.makeDTO())
+                navigateToMainActivity(it)
             })
         } else {
             handleLoginState()

@@ -14,9 +14,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.fair2share.database.Fair2ShareDatabase
+import com.example.fair2share.database.ProfileRepository
 import com.example.fair2share.databinding.ActivityMainBinding
 import com.example.fair2share.databinding.NavHeaderBinding
 import com.example.fair2share.models.data_models.asDTO
+import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AuthInterceptor
 import com.example.fair2share.network.AccountApi.sharedPreferences
 import com.example.fair2share.profile.ProfileFragmentDirections
@@ -85,7 +88,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupNavigationListener(navController: NavController){
         (drawerLayout.navview_activity_main as NavigationView).setNavigationItemSelectedListener {
             if (  it.itemId == R.id.btn_navdrawer_logout ){
-                sharedPreferences?.edit()?.remove("token")?.apply()
+                AccountApi.logout()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
@@ -93,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             if ( it.itemId == R.id.btn_navdrawer_friends ){
                 val action = ProfileFragmentDirections
                     .actionFragmentProfileToFriendListFragment(
-                        navHeaderBinding.profile?.friends?.asDTO()?.toTypedArray() ?: emptyArray()
+                        navHeaderBinding.profile?.friends?.toTypedArray() ?: emptyArray()
                     )
 
                 navController.navigate(action)
