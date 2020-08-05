@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
@@ -17,7 +18,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class ManagePeopleInActivityViewModel(private val activity: ActivityDTOProperty) : ViewModel() {
+class ManagePeopleInActivityViewModel(private val activity: ActivityDTOProperty, database: Fair2ShareDatabase) : ViewModel() {
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 

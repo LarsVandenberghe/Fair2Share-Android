@@ -1,9 +1,13 @@
 package com.example.fair2share.friends
 
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fair2share.Utils
+import com.example.fair2share.database.ActivityRepository
+import com.example.fair2share.database.Fair2ShareDatabase
+import com.example.fair2share.database.ProfileRepository
 import com.example.fair2share.models.data_models.FriendRequestStates
 import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
@@ -16,68 +20,29 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class FriendListViewModel(friendsArg: List<ProfileDTOProperty>?) : ViewModel() {
-    private var _viewModelJob = Job()
-    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
-    private val _friendRequests = MutableLiveData<List<ProfileDTOProperty>>()
-    val friendRequests: LiveData<List<ProfileDTOProperty>>
-        get() = _friendRequests
+class FriendListViewModel(var profileArg: ProfileDTOProperty, database: Fair2ShareDatabase) : ViewModel() {
+    private val profileRepository = ProfileRepository(database)
 
-    private val _friends = MutableLiveData<List<ProfileDTOProperty>>()
-    val friends: LiveData<List<ProfileDTOProperty>>
-        get() = _friends
-
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
-        get() = _errorMessage
-
-    private val _succes = MutableLiveData<Boolean>()
-    val succes: LiveData<Boolean>
-        get() = _succes
-
-    lateinit var myProfileEmailAddress: String
+    val profile: LiveData<ProfileDTOProperty> = profileRepository.profile
+    val errorMessage: LiveData<String> = profileRepository.errorMessage
+    val success: LiveData<Boolean> = profileRepository.success
+    val friendRequests: LiveData<List<ProfileDTOProperty>> = profileRepository.friendRequests
 
     init {
-        if (friendsArg != null){
-            _friends.value = friendsArg
+        if (profileArg.friends != null){
+            profileRepository.updateFromSafeArgs(profileArg)
         }
-        update()
-    }
-
-    fun update(){
-        _coroutineScope.launch {
-            val getJWTDeffered = FriendRequestApi.retrofitService.getFriendRequest()
-            _friendRequests.value = getJWTDeffered.await().filter { potentialFriend ->
-                potentialFriend.friendRequestState == FriendRequestStates.PENDING.ordinal
-            }
-        }
-
-        _coroutineScope.launch {
-            val getJWTDeffered = ProfileApi.retrofitService.profile()
-            val profile = getJWTDeffered.await()
-            _friends.value = profile.friends
-            myProfileEmailAddress = profile.email!!
+        profile.observeForever{
+            profileArg = it
         }
     }
 
-    fun handleFriendRequest(userId: Long, accept: Boolean, defaultError: String){
-        _coroutineScope.launch {
-            val getJWTDeffered = FriendRequestApi.retrofitService.handleFriendRequest(userId, accept)
-            val result = getJWTDeffered.await()
-            when (result.code()){
-                500 -> _errorMessage.value = defaultError
-                204 -> _succes.value = true
-                else -> {
-                    try {
-                        Utils.throwExceptionIfHttpNotSuccessful(result)
-                        _succes.value = true
-                    } catch (e: HttpException){
-                        _errorMessage.value = Utils.formExceptionsToString(e)
-                    } catch (t: Throwable){
-                        _errorMessage.value = t.message
-                    }
-                }
-            }
-        }
+    fun update(resources: Resources){
+        profileRepository.updateProfileWithApi(resources)
+        profileRepository.updateFriendRequestsWithApi(resources)
+    }
+
+    fun handleFriendRequest(userId: Long, accept: Boolean, resources: Resources){
+        profileRepository.handleFriendRequest(userId, accept, resources)
     }
 }

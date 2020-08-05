@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.Valutas
 import com.example.fair2share.databinding.FragmentAddeditactivityBinding
@@ -26,10 +27,11 @@ class AddEditActivityFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory = if (safeArgs.activity != null){
-            AddEditActivityFragmentViewModelFactory((safeArgs.activity as ActivityDTOProperty).makeDataModel())
+            AddEditActivityFragmentViewModelFactory((safeArgs.activity as ActivityDTOProperty).makeDataModel(), database)
         } else {
-            AddEditActivityFragmentViewModelFactory(ActivityProperty.makeEmpty())
+            AddEditActivityFragmentViewModelFactory(ActivityProperty.makeEmpty(), database)
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddEditActivityFragmentViewModel::class.java)
@@ -63,7 +65,7 @@ class AddEditActivityFragment : Fragment() {
         binding.btnAddeditactivity.text = getButtonName()
 
         binding.btnAddeditactivity.setOnClickListener {
-            viewModel.createOrUpdate()
+            viewModel.createOrUpdate(resources)
         }
 
         return binding.root

@@ -3,6 +3,7 @@ package com.example.fair2share.activity.summary
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.databinding.FragmentActivitysummaryBinding
 
@@ -22,11 +24,13 @@ class ActivitySummaryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory =
-            ActivityFragmentViewModelFactory(safeArgs.activity)
+            ActivityFragmentViewModelFactory(safeArgs.activity, database)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActivitySummaryViewModel::class.java)
-
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
         setHasOptionsMenu(true)
     }
 
@@ -43,9 +47,9 @@ class ActivitySummaryFragment : Fragment() {
         viewModel.summary.observe(viewLifecycleOwner, Observer { summaryItem ->
             summaryAdapter.data = summaryItem
         })
-        viewModel.update()
+        viewModel.update(resources)
 
-        (activity as AppCompatActivity).supportActionBar?.title = viewModel.activity.name
+        (activity as AppCompatActivity).supportActionBar?.title = viewModel.activityArg.name
         return binding.root
     }
 
@@ -62,7 +66,7 @@ class ActivitySummaryFragment : Fragment() {
                 return true
             }
             R.id.btn_summaryoverflow_addfriends -> {
-                val action = ActivitySummaryFragmentDirections.actionActivitySummaryFragmentToManagePeopleInActivityFragment(viewModel.activity)
+                val action = ActivitySummaryFragmentDirections.actionActivitySummaryFragmentToManagePeopleInActivityFragment(viewModel.activityArg)
                 findNavController().navigate(action)
                 return true
             }

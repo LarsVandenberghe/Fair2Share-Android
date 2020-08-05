@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentAddfriendBinding
 
 
@@ -23,8 +24,8 @@ class AddFriendFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val viewModelFactory = AddFriendViewModelFactory(safeArgs.email)
+        val database = Fair2ShareDatabase.getInstance(requireContext())
+        val viewModelFactory = AddFriendViewModelFactory(safeArgs.email, database)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddFriendViewModel::class.java)
 
         viewModel.errorMessage.observe(this, Observer {message ->
@@ -47,12 +48,7 @@ class AddFriendFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentAddfriendBinding>(inflater, R.layout.fragment_addfriend, container, false)
 
         binding.btnRecycleraddandremovefriendAddfriend.setOnClickListener {
-            viewModel.addFriendByEmail(
-                binding.editAddfriendEmail.text.toString(),
-                getString(R.string.fragment_addfriend_errorsendyourself),
-                getString(R.string.fragment_addfriend_alreadpending),
-                getString(R.string.fragment_addfriend_emailnotfound)
-            )
+            viewModel.addFriendByEmail(binding.editAddfriendEmail.text.toString(), resources)
         }
 
         binding.constraintlayoutAddfriend.setOnClickListener{ view: View ->

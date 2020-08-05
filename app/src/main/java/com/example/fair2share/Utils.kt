@@ -1,6 +1,5 @@
 package com.example.fair2share
 
-import android.widget.EditText
 import android.widget.ImageView
 import androidx.databinding.InverseMethod
 import com.bumptech.glide.Glide
@@ -11,12 +10,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.network.AccountApi
-import org.json.JSONException
+import com.squareup.moshi.*
 import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
 import java.lang.Exception
 import java.lang.StringBuilder
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
 class Utils {
     companion object {
@@ -92,5 +93,77 @@ object Converter {
 
     @JvmStatic fun listIndexToFriend(people: List<ProfileDTOProperty>, selected:Int): ProfileProperty? {
         return people[selected].makeDataModel()
+    }
+}
+
+// The issue:
+// https://github.com/square/moshi/issues/508
+// The solution
+// https://github.com/loewenfels/dep-graph-releaser/blob/66c822830aa38ac6b4a2278dfe0020d551782bf0/dep-graph-releaser-serialization/src/main/kotlin/ch/loewenfels/depgraph/serialization/PairAdapterFactory.kt
+object PairAdapterFactory : JsonAdapter.Factory {
+
+    override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
+        if (type !is ParameterizedType) {
+            return null
+        }
+        if (Pair::class.java != type.rawType) {
+            return null
+        }
+        val profileType = type.actualTypeArguments[0]
+        if (ProfileDTOProperty::class.java != profileType) {
+            return null
+        }
+        val doubleType = type.actualTypeArguments[1]
+
+        if (Double::class.javaObjectType != doubleType) {
+            return null
+        }
+
+        return PairAdapter(moshi.adapter(type.actualTypeArguments[0]), moshi.adapter(type.actualTypeArguments[1]))
+    }
+
+    private class PairAdapter(
+        private val firstAdapter: JsonAdapter<ProfileDTOProperty>,
+        private val secondAdapter: JsonAdapter<Double>
+    ) : JsonAdapter<Pair<Any, Any>>() {
+
+        companion object {
+            val NAMES = JsonReader.Options.of("profileId", "firstname", "lastname", "email", "friendRequestState")
+        }
+        override fun toJson(writer: JsonWriter, value: Pair<Any, Any>?) {
+            writer.beginArray()
+            firstAdapter.toJson(writer, value!!.first as ProfileDTOProperty)
+            secondAdapter.toJson(writer, value.second as Double)
+            writer.endArray()
+        }
+
+        override fun fromJson(reader: JsonReader): Pair<Any, Any>? {
+            reader.beginArray()
+            reader.beginObject()
+            var profileId: Long = -1L
+            var firstname = ""
+            var lastname = ""
+            var email: String? = null
+            var friendRequestState = 0
+            while (reader.hasNext()) {
+                when (reader.selectName(NAMES)) {
+                    0 -> profileId = reader.nextLong()
+                    1 -> firstname = reader.nextString()
+                    2 -> lastname = reader.nextString()
+                    3 -> email = reader.nextString()
+                    4 -> friendRequestState = reader.nextInt()
+                    else -> {
+                        reader.skipName()
+                        reader.skipValue()
+                    }
+                }
+            }
+            reader.endObject()
+            val first = ProfileDTOProperty(profileId, firstname, lastname, email, null, null, null, friendRequestState)
+
+            val second = reader.nextDouble()
+            reader.endArray()
+            return first to second
+        }
     }
 }

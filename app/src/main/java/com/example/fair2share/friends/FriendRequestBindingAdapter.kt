@@ -44,10 +44,10 @@ class FriendRequestBindingAdapter(val viewModel: FriendListViewModel) : Recycler
         (holder.rowView.getViewById(R.id.txt_recycleraddandremovefriend_name) as TextView).text = String.format("%s %s", item.firstname, item.lastname)
 
         addFriend.setOnClickListener {
-            viewModel.handleFriendRequest(item.profileId, true, holder.rowView.resources.getString(R.string.fragment_friendrequest_defaulterror))
+            viewModel.handleFriendRequest(item.profileId, true, holder.rowView.resources)
         }
         removeFriend.setOnClickListener {
-            viewModel.handleFriendRequest(item.profileId, false, holder.rowView.resources.getString(R.string.fragment_friendrequest_defaulterror))
+            viewModel.handleFriendRequest(item.profileId, false, holder.rowView.resources)
         }
     }
 

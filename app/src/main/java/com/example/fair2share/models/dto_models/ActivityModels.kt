@@ -47,8 +47,8 @@ data class ActivityDTOProperty (
         val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(ActivityDTOProperty::class.java)
         return ActivityDatabaseProperty(
-            activityId!!,
             profileId,
+            activityId!!,
             jsonAdapter.toJson(this)
         )
     }

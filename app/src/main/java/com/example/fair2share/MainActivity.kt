@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun preventGestureIfNotOnStartDestination(navController: NavController){
-        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, bundle: Bundle? ->
+        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, _: Bundle? ->
             if (nd.id == nc.graph.startDestination) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             } else {
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             if ( it.itemId == R.id.btn_navdrawer_friends ){
                 val action = ProfileFragmentDirections
                     .actionFragmentProfileToFriendListFragment(
-                        navHeaderBinding.profile?.friends?.toTypedArray() ?: emptyArray()
+                        navHeaderBinding.profile!!
                     )
 
                 navController.navigate(action)

@@ -5,13 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.fair2share.models.database_models.ActivityDatabaseProperty
+import com.example.fair2share.models.database_models.ActivitySummaryDatabaseProperty
 import com.example.fair2share.models.database_models.ProfileDatabaseProperty
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty
 
-@Database(entities = [ProfileDatabaseProperty::class, ActivityDatabaseProperty::class, TransactionDatabaseProperty::class], version = 1, exportSchema = false)
+@Database(entities = [ProfileDatabaseProperty::class, ActivityDatabaseProperty::class, ActivitySummaryDatabaseProperty::class, TransactionDatabaseProperty::class], version = 1, exportSchema = false)
 abstract class Fair2ShareDatabase : RoomDatabase(){
     abstract val profileDao: ProfileDao
     abstract val activityDao: ActivityDao
+    abstract val summaryDao: SummaryDao
     abstract val transactionDao: TransactionDao
 
     companion object {

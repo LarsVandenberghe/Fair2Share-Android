@@ -44,8 +44,8 @@
             app:destination="@id/addFriendFragment"
             app:enterAnim="@anim/enter_from_right" />
         <argument
-            android:name="friends"
-            app:argType="com.example.fair2share.models.dto_models.ProfileDTOProperty[]" />
+            android:name="profile"
+            app:argType="com.example.fair2share.models.dto_models.ProfileDTOProperty" />
     </fragment>
     <fragment
         android:id="@+id/addFriendFragment"

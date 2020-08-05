@@ -9,6 +9,13 @@ data class ActivityDatabaseProperty (
     val data: String
 )
 
+@Entity(tableName = "activity_summary_table", primaryKeys = ["profileId", "activityId"])
+data class ActivitySummaryDatabaseProperty (
+    val profileId: Long,
+    val activityId: Long,
+    val data: String
+)
+
 @Entity(tableName = "transaction_table", primaryKeys = ["profileId", "activityId", "transactionId"])
 data class TransactionDatabaseProperty(
     val profileId: Long,

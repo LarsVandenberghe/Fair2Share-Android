@@ -31,6 +31,6 @@ class SummaryBindingAdapter(val viewModel: ActivitySummaryViewModel) : RecyclerV
 
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
         holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_name).text = String.format("%s %s", data[position].first.firstname, data[position].first.lastname)
-        holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_price).text = String.format("%s %.2f", Valutas.values()[viewModel.activity.currencyType].getSymbol(),data[position].second)
+        holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_price).text = String.format("%s %.2f", Valutas.values()[viewModel.activityArg.currencyType].getSymbol(),data[position].second)
     }
 }

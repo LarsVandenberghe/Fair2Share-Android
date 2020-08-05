@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.databinding.FragmentActivitytransactionsBinding
 
@@ -21,8 +22,8 @@ class ActivityTransactionsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val viewModelFactory = ActivityFragmentViewModelFactory(safeArgs.activity)
+        val database = Fair2ShareDatabase.getInstance(requireContext())
+        val viewModelFactory = ActivityFragmentViewModelFactory(safeArgs.activity, database)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(
             ActivityTransactionsFragmentViewModel::class.java
         )
@@ -55,26 +56,26 @@ class ActivityTransactionsFragment : Fragment() {
 
         binding.rvActivitytransactionsList.adapter = transactionAdapter
 
-        viewModel.transactions.observe(viewLifecycleOwner, Observer { transactions ->
-            if(transactions.isEmpty()){
+        viewModel.activity.observe(viewLifecycleOwner, Observer { activity ->
+            if(activity.transactions.isNullOrEmpty()){
                 binding.txtActivitytransactionsNotransactions.visibility = View.VISIBLE
             } else {
                 binding.txtActivitytransactionsNotransactions.visibility = View.GONE
             }
-            transactionAdapter.data = transactions.reversed()
+            transactionAdapter.data = activity.transactions?.reversed() ?: emptyList()
         })
 
         binding.fabActivitytransactionsAddactivity.setOnClickListener {
             val action = ActivityTransactionsFragmentDirections.actionActivityTransactionsFragmentToAddEditTransactionFragment(
                 null,
-                viewModel.activity
+                viewModel.activityArg
             )
             findNavController().navigate(action)
         }
 
-        viewModel.update()
+        viewModel.update(resources)
 
-        (activity as AppCompatActivity).supportActionBar?.title = viewModel.activity.name
+        (activity as AppCompatActivity).supportActionBar?.title = viewModel.activityArg.name
         return binding.root
     }
 
@@ -86,18 +87,18 @@ class ActivityTransactionsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.btn_transactionsoverflow_removeactivity -> {
-                viewModel.removeActivity()
+                viewModel.removeActivity(resources)
                 return true
             }
             R.id.btn_transactionsoverflow_summary -> {
                 val action = ActivityTransactionsFragmentDirections
-                    .actionActivityTransactionsFragmentToActivitySummaryFragment(viewModel.activity)
+                    .actionActivityTransactionsFragmentToActivitySummaryFragment(viewModel.activityArg)
                 findNavController().navigate(action)
                 return true
             }
             R.id.btn_transactionsoverflow_editactivity -> {
                 val action = ActivityTransactionsFragmentDirections
-                    .actionActivityTransactionsFragmentToAddEditActivityFragment(viewModel.activity)
+                    .actionActivityTransactionsFragmentToAddEditActivityFragment(viewModel.activityArg)
                 findNavController().navigate(action)
                 return true
             }

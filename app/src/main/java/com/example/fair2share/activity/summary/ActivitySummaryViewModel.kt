@@ -1,8 +1,11 @@
 package com.example.fair2share.activity.summary
 
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fair2share.database.ActivityRepository
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
@@ -13,29 +16,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ActivitySummaryViewModel(val activity : ActivityDTOProperty) : ViewModel() {
-    private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+class ActivitySummaryViewModel(var activityArg : ActivityDTOProperty, database: Fair2ShareDatabase) : ViewModel() {
+    private val activityRepository = ActivityRepository(database)
 
-    private val _summary = MutableLiveData<List<Pair<ProfileDTOProperty, Double>>>()
-    val summary: LiveData<List<Pair<ProfileDTOProperty, Double>>>
-        get() = _summary
+    val summary: LiveData<List<Pair<ProfileDTOProperty, Double>>> = activityRepository.summary
+    val activity: LiveData<ActivityDTOProperty> = activityRepository.activity
+    val errorMessage: LiveData<String> = activityRepository.errorMessage
 
-    private val _participants = MutableLiveData<List<ProfileDTOProperty>>()
-
-
-    fun update(){
-        coroutineScope.launch {
-            _participants.value = ActivityApi.retrofitService.getActivityParticipants(activity.activityId!!).await().participants
-            _summary.value = ActivityApi.retrofitService.getActivitySummary(activity.activityId).await().map {
-                val profile = (_participants.value as List).find {participant ->
-                    participant.profileId == it.key.toLong()
-                }
-                val out : Pair<ProfileDTOProperty, Double> = Pair(
-                    first = profile!!, second = it.value
-                )
-                out
-            }
+    init {
+        activity.observeForever {
+            activityArg = it
         }
+    }
+
+    fun update(resources: Resources){
+        activityRepository.updateActivitySummaryWithRoom(activityArg.activityId!!)
+        activityRepository.updateActivitySummaryWithApi(resources, activityArg)
     }
 }

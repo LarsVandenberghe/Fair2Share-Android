@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentManagepeopleinactivityBinding
 
 class ManagePeopleInActivityFragment : Fragment() {
@@ -22,8 +23,8 @@ class ManagePeopleInActivityFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val viewModelFactory = ActivityFragmentViewModelFactory(safeArgs.activity)
+        val database = Fair2ShareDatabase.getInstance(requireContext())
+        val viewModelFactory = ActivityFragmentViewModelFactory(safeArgs.activity, database)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ManagePeopleInActivityViewModel::class.java)
         viewModel.success.observe(this, Observer {
             findNavController().navigateUp()
