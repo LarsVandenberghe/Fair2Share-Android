@@ -9,6 +9,18 @@ buildscript {
         version_retrofit_coroutines_adapter = "0.9.2"
         version_kotlin_coroutines = "1.1.0"
         version_glide = "4.8.0"
+        version_gradle = "3.5.0"
+        version_room = "2.2.5"
+        version_constraintlayout = "1.1.3"
+        version_swiperefreshlayout = "1.0.0"
+        version_lifecycle = "2.0.0"
+        version_appcompat = "1.0.2"
+        version_material = "1.0.0"
+        version_annotation = "1.0.2"
+        version_espresso = "3.1.1"
+        version_junit = "4.12"
+        version_testrunner = "1.1.1"
+        version_legacysupport = "1.0.0"
     }
     repositories {
         google()
@@ -16,11 +28,9 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath "com.android.tools.build:gradle:$version_gradle"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 

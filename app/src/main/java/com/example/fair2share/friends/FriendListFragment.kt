@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
+import com.example.fair2share.Utils
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentFriendlistBinding
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
@@ -40,6 +41,11 @@ class FriendListFragment : Fragment() {
             false
         )
         configureAdapters(binding)
+        binding.refreshlayoutFriendlst.setOnRefreshListener{
+            viewModel.update(resources)
+            Utils.stopRefreshingAnimationAfter700ms(binding.refreshlayoutFriendlst)
+        }
+
         viewModel.update(resources)
         return binding.root
     }

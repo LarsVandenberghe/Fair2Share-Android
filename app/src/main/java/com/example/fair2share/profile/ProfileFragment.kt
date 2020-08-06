@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
+import com.example.fair2share.Utils
 import com.example.fair2share.database.DatabaseOnlyViewModelFactory
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentProfileBinding
@@ -135,7 +136,7 @@ class ProfileFragment : Fragment() {
 
         binding.refreshlayoutProfile.setOnRefreshListener {
             viewModel.update(resources)
-            binding.refreshlayoutProfile.isRefreshing = false
+            Utils.stopRefreshingAnimationAfter700ms(binding.refreshlayoutProfile)
         }
         return adapter
     }

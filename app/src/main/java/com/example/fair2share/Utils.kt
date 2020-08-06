@@ -2,6 +2,7 @@ package com.example.fair2share
 
 import android.widget.ImageView
 import androidx.databinding.InverseMethod
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
@@ -19,6 +20,8 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
+import java.util.*
+import kotlin.concurrent.schedule
 
 class Utils {
     companion object {
@@ -79,6 +82,12 @@ class Utils {
                 LazyHeaders.Builder()
                     .addHeader("Authorization", String.format("Bearer %s", token)).build()
             )
+        }
+
+        fun stopRefreshingAnimationAfter700ms(refreshLayout: SwipeRefreshLayout){
+            Timer("SettingUp", false).schedule(700) {
+                refreshLayout.isRefreshing = false
+            }
         }
     }
 }

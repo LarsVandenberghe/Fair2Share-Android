@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
+import com.example.fair2share.Utils
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentActivitysummaryBinding
@@ -93,5 +94,10 @@ class ActivitySummaryFragment : Fragment() {
         viewModel.summary.observe(viewLifecycleOwner, Observer { summaryItem ->
             summaryAdapter.data = summaryItem
         })
+
+        binding.refreshlayoutActivity.setOnRefreshListener {
+            viewModel.update(resources)
+            Utils.stopRefreshingAnimationAfter700ms(binding.refreshlayoutActivity)
+        }
     }
 }
