@@ -60,7 +60,7 @@ Het inloggen moet slechts enkel moeten gebeuren bij de eerste keer dat de applic
 
 ## References
 
-* [SpanningLinearLayoutManager](https://gist.github.com/heinrichreimer/39f9d2f9023a184d96f8)
+* [PairAdapterFactory](https://github.com/loewenfels/dep-graph-releaser/blob/66c822830aa38ac6b4a2278dfe0020d551782bf0/dep-graph-releaser-serialization/src/main/kotlin/ch/loewenfels/depgraph/serialization/PairAdapterFactory.kt) - Deze klasse is een oplossing voor de: [moshi pair parsing issue](https://github.com/square/moshi/issues/508)
 
 
 
