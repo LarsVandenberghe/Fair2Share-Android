@@ -11,8 +11,9 @@ import com.example.fair2share.R
 import com.example.fair2share.models.data_models.Valutas
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
 
-class TransactionBindingAdapter(val viewModel: ActivityTransactionsFragmentViewModel)  : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
-    var data =  listOf<TransactionDTOProperty>()
+class TransactionBindingAdapter(val viewModel: ActivityTransactionsFragmentViewModel) :
+    RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
+    var data = listOf<TransactionDTOProperty>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -32,10 +33,20 @@ class TransactionBindingAdapter(val viewModel: ActivityTransactionsFragmentViewM
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
         val item = data[position]
 
-        holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_name).text = data[position].name
-        holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_price).text = String.format("%s %.2f", Valutas.values()[viewModel.activityArg.currencyType].getSymbol(),data[position].payment)
+        holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_name).text =
+            data[position].name
+        holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_price).text =
+            String.format(
+                "%s %.2f",
+                Valutas.values()[viewModel.activityArg.currencyType].getSymbol(),
+                data[position].payment
+            )
         holder.rowView.setOnClickListener {
-            val action = ActivityTransactionsFragmentDirections.actionActivityTransactionsFragmentToAddEditTransactionFragment(item, viewModel.activityArg)
+            val action =
+                ActivityTransactionsFragmentDirections.actionActivityTransactionsFragmentToAddEditTransactionFragment(
+                    item,
+                    viewModel.activityArg
+                )
             findNavController(holder.rowView).navigate(action)
         }
     }

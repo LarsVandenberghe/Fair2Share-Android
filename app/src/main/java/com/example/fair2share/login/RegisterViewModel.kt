@@ -13,7 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class RegisterViewModel: ViewModel() {
+class RegisterViewModel : ViewModel() {
     private var _viewModelJob = Job()
     private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
     var registerData: RegisterProperty = RegisterProperty.makeEmpty()
@@ -26,7 +26,7 @@ class RegisterViewModel: ViewModel() {
     val errorMessage: LiveData<String>
         get() = _errorMessage
 
-    fun register(){
+    fun register() {
         _coroutineScope.launch {
             try {
                 val getJWTDeffered = AccountApi.retrofitService.register(registerData.makeDTO())
@@ -35,9 +35,9 @@ class RegisterViewModel: ViewModel() {
                 edit.putString("token", token)
                 edit.apply()
                 _loggedIn.value = true
-            } catch (e: HttpException){
+            } catch (e: HttpException) {
                 _errorMessage.value = Utils.formExceptionsToString(e)
-            }catch (t: Throwable){
+            } catch (t: Throwable) {
                 _errorMessage.value = t.message
             }
         }

@@ -18,7 +18,7 @@ class ProfileFragmentViewModel(val database: Fair2ShareDatabase) : ViewModel() {
     val activityErrorMessage: LiveData<String> = activityRepository.errorMessage
     val activityDeleteSuccess: LiveData<Boolean> = activityRepository.success
 
-    fun update(resouces: Resources, profile: ProfileDTOProperty? = null){
+    fun update(resouces: Resources, profile: ProfileDTOProperty? = null) {
         if (profile != null) {
             profileRepository.updateFromSafeArgs(profile)
         } else {
@@ -26,7 +26,7 @@ class ProfileFragmentViewModel(val database: Fair2ShareDatabase) : ViewModel() {
         }
     }
 
-    fun removeActivity(resources: Resources, activity: ActivityDTOProperty){
+    fun removeActivity(resources: Resources, activity: ActivityDTOProperty) {
         activityRepository.removeActivity(resources, activity.activityId!!)
     }
 }

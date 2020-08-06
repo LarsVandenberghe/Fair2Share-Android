@@ -13,7 +13,8 @@ class StartUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_startup)
     }
 
-    private fun setSharedPreferences(){
-        AccountApi.sharedPreferences = this.getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
+    private fun setSharedPreferences() {
+        AccountApi.sharedPreferences =
+            this.getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
     }
 }

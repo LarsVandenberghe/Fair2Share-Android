@@ -34,7 +34,7 @@ interface ProfileApiService {
 }
 
 object ProfileApi {
-    val retrofitService : ProfileApiService by lazy {
+    val retrofitService: ProfileApiService by lazy {
         retrofitJsonMap.create(ProfileApiService::class.java)
     }
 }

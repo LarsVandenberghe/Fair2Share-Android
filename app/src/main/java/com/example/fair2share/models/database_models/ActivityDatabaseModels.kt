@@ -3,14 +3,14 @@ package com.example.fair2share.models.database_models
 import androidx.room.Entity
 
 @Entity(tableName = "activity_table", primaryKeys = ["profileId", "activityId"])
-data class ActivityDatabaseProperty (
+data class ActivityDatabaseProperty(
     val profileId: Long,
     val activityId: Long,
     val data: String
 )
 
 @Entity(tableName = "activity_summary_table", primaryKeys = ["profileId", "activityId"])
-data class ActivitySummaryDatabaseProperty (
+data class ActivitySummaryDatabaseProperty(
     val profileId: Long,
     val activityId: Long,
     val data: String

@@ -47,111 +47,156 @@ class TransactionRepository(private val database: Fair2ShareDatabase) {
     val resetSelected: LiveData<Boolean>
         get() = _resetSelected
 
-    fun update(resources: Resources, activityId: Long, transactionId: Long){
+    fun update(resources: Resources, activityId: Long, transactionId: Long) {
         updateTransactionWithRoom(activityId, transactionId)
         updateTransactionWithApi(resources, activityId, transactionId)
     }
 
-    fun createOrUpdate(resources: Resources, isNewTransaction: Boolean, activity: ActivityDTOProperty, transaction: TransactionProperty){
+    fun createOrUpdate(
+        resources: Resources,
+        isNewTransaction: Boolean,
+        activity: ActivityDTOProperty,
+        transaction: TransactionProperty
+    ) {
         _coroutineScope.launch {
             try {
-                val response : Response<out Any> = if (isNewTransaction){
-                    ActivityApi.retrofitService.addTransaction(activity.activityId!!, transaction.makeDTO()).await()
+                val response: Response<out Any> = if (isNewTransaction) {
+                    ActivityApi.retrofitService.addTransaction(
+                        activity.activityId!!,
+                        transaction.makeDTO()
+                    ).await()
                 } else {
-                    ActivityApi.retrofitService.updateTransaction(activity.activityId!!, transaction.transactionId!!, transaction.makeDTO()).await()
+                    ActivityApi.retrofitService.updateTransaction(
+                        activity.activityId!!,
+                        transaction.transactionId!!,
+                        transaction.makeDTO()
+                    ).await()
                 }
 
                 Utils.throwExceptionIfHttpNotSuccessful(response)
 
-                if (isNewTransaction){
+                if (isNewTransaction) {
                     transaction.transactionId = (response as Response<Long>).body()!!
                 }
 
                 _navigate.postValue(true)
-            } catch (e: HttpException){
+            } catch (e: HttpException) {
                 _errorMessage.postValue(Utils.formExceptionsToString(e))
-            } catch (e: ConnectException){
+            } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
-            }catch (t: Throwable){
+            } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)
             }
         }
     }
 
 
-    fun removeTransaction(resources: Resources, activityId: Long, transactionId:Long){
+    fun removeTransaction(resources: Resources, activityId: Long, transactionId: Long) {
         _coroutineScope.launch {
             try {
-                val deferred = ActivityApi.retrofitService.removeTransaction(activityId, transactionId).await()
-                if (!deferred.isSuccessful){
-                        val sb = StringBuilder()
-                        val charStream = deferred.errorBody()?.charStream()
-                        if (charStream != null){
-                            sb.append(charStream.readText())
-                        }
-                        _errorMessage.postValue(sb.toString())
+                val deferred =
+                    ActivityApi.retrofitService.removeTransaction(activityId, transactionId).await()
+                if (!deferred.isSuccessful) {
+                    val sb = StringBuilder()
+                    val charStream = deferred.errorBody()?.charStream()
+                    if (charStream != null) {
+                        sb.append(charStream.readText())
+                    }
+                    _errorMessage.postValue(sb.toString())
                 } else {
                     _navigate.postValue(true)
                 }
-            } catch (e: ConnectException){
+            } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
             }
         }
     }
 
-    fun postTransactionParticipants(resources: Resources, activityId:Long, transactionId: Long,toBeAdded: List<Long>, toBeRemoved: List<Long>){
+    fun postTransactionParticipants(
+        resources: Resources,
+        activityId: Long,
+        transactionId: Long,
+        toBeAdded: List<Long>,
+        toBeRemoved: List<Long>
+    ) {
         _coroutineScope.launch {
             try {
                 if (toBeRemoved.size > 0) {
-                    val result = ActivityApi.retrofitService.removeTransactionParticipants(activityId, transactionId, toBeRemoved).await()
+                    val result = ActivityApi.retrofitService.removeTransactionParticipants(
+                        activityId,
+                        transactionId,
+                        toBeRemoved
+                    ).await()
                     Utils.throwExceptionIfHttpNotSuccessful(result)
                 }
                 if (toBeAdded.size > 0) {
-                    val result = ActivityApi.retrofitService.addTransactionParticipants(activityId, transactionId, toBeAdded).await()
+                    val result = ActivityApi.retrofitService.addTransactionParticipants(
+                        activityId,
+                        transactionId,
+                        toBeAdded
+                    ).await()
                     Utils.throwExceptionIfHttpNotSuccessful(result)
                 }
                 _success.postValue(true)
-            } catch (e: HttpException){
+            } catch (e: HttpException) {
                 _errorMessage.postValue(Utils.formExceptionsToString(e))
                 _resetSelected.postValue(true)
-            } catch (e: ConnectException){
+            } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
-            } catch (t: Throwable){
+            } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)
             }
         }
     }
 
-    private fun updateTransactionWithRoom(activityId: Long, transactionId: Long){
+    private fun updateTransactionWithRoom(activityId: Long, transactionId: Long) {
         val profileId = AccountApi.sharedPreferences.getLong("profileId", 0L)
-        if (profileId == 0L){
+        if (profileId == 0L) {
             throw Exception("ProfileID sharedPreferences not set!")
         }
 
-        Transformations.map(database.transactionDao.getTransaction(profileId, activityId, transactionId)){ property : TransactionDatabaseProperty? ->
-            if (property != null){
+        Transformations.map(
+            database.transactionDao.getTransaction(
+                profileId,
+                activityId,
+                transactionId
+            )
+        ) { property: TransactionDatabaseProperty? ->
+            if (property != null) {
                 jsonAdapter.fromJson(property.data)
             } else {
                 null
             }
-        }.observeForever{data: TransactionDTOProperty? ->
+        }.observeForever { data: TransactionDTOProperty? ->
             if (data != null) _transaction.postValue(data)
         }
     }
 
-    private fun updateTransactionWithApi(resources: Resources, activityId: Long, transactionId: Long){
+    private fun updateTransactionWithApi(
+        resources: Resources,
+        activityId: Long,
+        transactionId: Long
+    ) {
         _coroutineScope.launch {
             try {
-                val transaction = ActivityApi.retrofitService.getActivityTransactionById(activityId, transactionId).await()
+                val transaction = ActivityApi.retrofitService.getActivityTransactionById(
+                    activityId,
+                    transactionId
+                ).await()
                 val profileId = AccountApi.sharedPreferences.getLong("profileId", 0L)
-                database.transactionDao.insertTransaction(transaction.makeDatabaseModel(profileId, activityId))
-            } catch (e: ConnectException){
+                database.transactionDao.insertTransaction(
+                    transaction.makeDatabaseModel(
+                        profileId,
+                        activityId
+                    )
+                )
+            } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
-            } catch (t: Throwable){
+            } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)
             }
         }

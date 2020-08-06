@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "profile_table")
-data class ProfileDatabaseProperty (
+data class ProfileDatabaseProperty(
     @PrimaryKey
     val profileId: Long,
     val data: String

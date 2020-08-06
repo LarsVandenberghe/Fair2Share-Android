@@ -32,7 +32,12 @@ class ActivitySummaryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentActivitysummaryBinding>(inflater, R.layout.fragment_activitysummary, container, false)
+        val binding = DataBindingUtil.inflate<FragmentActivitysummaryBinding>(
+            inflater,
+            R.layout.fragment_activitysummary,
+            container,
+            false
+        )
 
         configureAdapters(binding)
         viewModel.update(resources)
@@ -54,7 +59,10 @@ class ActivitySummaryFragment : Fragment() {
                 return true
             }
             R.id.btn_summaryoverflow_addfriends -> {
-                val action = ActivitySummaryFragmentDirections.actionActivitySummaryFragmentToManagePeopleInActivityFragment(viewModel.activityArg)
+                val action =
+                    ActivitySummaryFragmentDirections.actionActivitySummaryFragmentToManagePeopleInActivityFragment(
+                        viewModel.activityArg
+                    )
                 findNavController().navigate(action)
                 return true
             }
@@ -62,21 +70,22 @@ class ActivitySummaryFragment : Fragment() {
         }
     }
 
-    private fun makeViewModel(){
+    private fun makeViewModel() {
         val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory =
             ActivityFragmentViewModelFactory(safeArgs.activity, database)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActivitySummaryViewModel::class.java)
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(ActivitySummaryViewModel::class.java)
 
     }
 
-    private fun setupObservables(){
+    private fun setupObservables() {
         viewModel.errorMessage.observe(this, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
     }
 
-    private fun configureAdapters(binding: FragmentActivitysummaryBinding){
+    private fun configureAdapters(binding: FragmentActivitysummaryBinding) {
         val summaryAdapter =
             SummaryBindingAdapter(viewModel)
         binding.rvActivitySummarylist.adapter = summaryAdapter

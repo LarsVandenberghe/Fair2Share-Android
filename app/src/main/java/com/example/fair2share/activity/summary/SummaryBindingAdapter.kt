@@ -11,8 +11,9 @@ import com.example.fair2share.R
 import com.example.fair2share.models.data_models.Valutas
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
-class SummaryBindingAdapter(val viewModel: ActivitySummaryViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
-    var data =  listOf<Pair<ProfileDTOProperty, Double>>()
+class SummaryBindingAdapter(val viewModel: ActivitySummaryViewModel) :
+    RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
+    var data = listOf<Pair<ProfileDTOProperty, Double>>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -30,21 +31,30 @@ class SummaryBindingAdapter(val viewModel: ActivitySummaryViewModel) : RecyclerV
     }
 
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
-        holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_name).text = String.format("%s %s", data[position].first.firstname, data[position].first.lastname)
+        holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_name).text =
+            String.format("%s %s", data[position].first.firstname, data[position].first.lastname)
         val money_field = holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_price)
-        money_field.text = String.format("%s %.2f", Valutas.values()[viewModel.activityArg.currencyType].getSymbol(),data[position].second)
-        if (data[position].second < 0){
+        money_field.text = String.format(
+            "%s %.2f",
+            Valutas.values()[viewModel.activityArg.currencyType].getSymbol(),
+            data[position].second
+        )
+        if (data[position].second < 0) {
             setTextColor(money_field, holder, R.color.colorNegativeBalance)
         } else {
             setTextColor(money_field, holder, R.color.colorPositiveBalance)
         }
     }
 
-    private fun setTextColor(textView: TextView, holder: ConstraintRowItemViewHolder, resourceId: Int){
+    private fun setTextColor(
+        textView: TextView,
+        holder: ConstraintRowItemViewHolder,
+        resourceId: Int
+    ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             textView.setTextColor(holder.rowView.context.getColor(resourceId))
         } else {
-            textView.setTextColor( holder.rowView.resources.getColor(resourceId))
+            textView.setTextColor(holder.rowView.resources.getColor(resourceId))
         }
     }
 }

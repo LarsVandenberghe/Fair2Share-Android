@@ -41,13 +41,13 @@ interface FriendRequestApiService {
             Deferred<Response<Unit>>
 
     @POST("FriendRequest/{id}/{accept}")
-    fun handleFriendRequest(@Path("id") userId : Long, @Path("accept") accept : Boolean, @Body body: String = "{}"):
+    fun handleFriendRequest(@Path("id") userId: Long, @Path("accept") accept: Boolean, @Body body: String = "{}"):
             Deferred<Response<Unit>>
 }
 
 
 object FriendRequestApi {
-    val retrofitService : FriendRequestApiService by lazy {
+    val retrofitService: FriendRequestApiService by lazy {
         retrofitJsonMap.create(FriendRequestApiService::class.java)
     }
 }

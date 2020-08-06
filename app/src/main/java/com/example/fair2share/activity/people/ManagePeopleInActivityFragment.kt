@@ -31,8 +31,7 @@ class ManagePeopleInActivityFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding
-                = DataBindingUtil.inflate<FragmentManagepeopleinactivityBinding>(
+        val binding = DataBindingUtil.inflate<FragmentManagepeopleinactivityBinding>(
             inflater,
             R.layout.fragment_managepeopleinactivity,
             container,
@@ -54,20 +53,24 @@ class ManagePeopleInActivityFragment : Fragment() {
 
         viewModel.candidates.observe(viewLifecycleOwner, Observer {
             candidateAdapter.data = it
-            if (it.isEmpty()){
-                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_nocandidates).visibility = View.VISIBLE
+            if (it.isEmpty()) {
+                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_nocandidates)
+                    .visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_nocandidates).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_nocandidates)
+                    .visibility = View.GONE
             }
 
         })
 
         viewModel.participants.observe(viewLifecycleOwner, Observer {
             participantAdapter.data = it
-            if (it.isEmpty()){
-                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_noparticipants).visibility = View.VISIBLE
+            if (it.isEmpty()) {
+                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_noparticipants)
+                    .visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_noparticipants).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_managepeopleinactivity_noparticipants)
+                    .visibility = View.GONE
             }
         })
 
@@ -80,13 +83,14 @@ class ManagePeopleInActivityFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun makeViewModel(){
+    private fun makeViewModel() {
         val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory = ActivityFragmentViewModelFactory(safeArgs.activity, database)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ManagePeopleInActivityViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(ManagePeopleInActivityViewModel::class.java)
     }
 
-    private fun setupObservables(){
+    private fun setupObservables() {
         viewModel.success.observe(this, Observer {
             findNavController().navigateUp()
         })

@@ -10,7 +10,7 @@ import com.example.fair2share.models.database_models.ProfileDatabaseProperty
 @Dao
 interface ProfileDao {
     @Query("select * from profile_table where profileId = :profileId")
-    fun getProfile(profileId:Long): LiveData<ProfileDatabaseProperty>
+    fun getProfile(profileId: Long): LiveData<ProfileDatabaseProperty>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProfile(vararg profile: ProfileDatabaseProperty)

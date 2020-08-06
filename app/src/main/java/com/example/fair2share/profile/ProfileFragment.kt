@@ -20,7 +20,7 @@ import com.google.android.material.navigation.NavigationView
 class ProfileFragment : Fragment() {
 
     private lateinit var viewModel: ProfileFragmentViewModel
-    private var firstLoad : Boolean = true
+    private var firstLoad: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +34,17 @@ class ProfileFragment : Fragment() {
         (activity as MainActivity).bindProfileToNavHeader(viewModel)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil.inflate<FragmentProfileBinding>(inflater, R.layout.fragment_profile, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = DataBindingUtil.inflate<FragmentProfileBinding>(
+            inflater,
+            R.layout.fragment_profile,
+            container,
+            false
+        )
 
         val adapter = bindViewModelData(binding)
         setupUIObservables(binding, adapter)
@@ -54,18 +63,19 @@ class ProfileFragment : Fragment() {
             R.id.btn_profileoverflow_addactivity -> {
                 navigateToCreateActivity()
                 return true
-            } else -> super.onOptionsItemSelected(item)
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun navigateToCreateActivity(){
+    private fun navigateToCreateActivity() {
         val action = ProfileFragmentDirections.actionFragmentProfileToAddEditActivityFragment()
         findNavController().navigate(action)
     }
 
-    private fun addFriendRequests(amountOfFriendRequests: Int){
+    private fun addFriendRequests(amountOfFriendRequests: Int) {
         val menu = requireActivity().findViewById<NavigationView>(R.id.navview_activity_main).menu
-        if (amountOfFriendRequests > 0){
+        if (amountOfFriendRequests > 0) {
             menu.findItem(R.id.btn_navdrawer_friends).title = String.format(
                 "Friends (%d)",
                 amountOfFriendRequests
@@ -75,13 +85,14 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun makeViewModel(){
+    private fun makeViewModel() {
         val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory = DatabaseOnlyViewModelFactory(database)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProfileFragmentViewModel::class.java)
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(ProfileFragmentViewModel::class.java)
     }
 
-    private fun setupObservables(){
+    private fun setupObservables() {
         viewModel.errorMessage.observe(this, Observer { errorMsg ->
             Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
         })
@@ -91,16 +102,19 @@ class ProfileFragment : Fragment() {
         })
 
         viewModel.activityDeleteSuccess.observe(this, Observer {
-            if(it){
+            if (it) {
                 viewModel.update(resources)
             }
         })
     }
 
-    private fun setupUIObservables(binding: FragmentProfileBinding, adapter: ActivityBindingAdapter){
-        viewModel.profile.observe(viewLifecycleOwner, Observer{ data ->
-            data.activities?.let{
-                if (it.size == 0){
+    private fun setupUIObservables(
+        binding: FragmentProfileBinding,
+        adapter: ActivityBindingAdapter
+    ) {
+        viewModel.profile.observe(viewLifecycleOwner, Observer { data ->
+            data.activities?.let {
+                if (it.size == 0) {
                     binding.txtProfileNoactivities.visibility = View.VISIBLE
                 } else {
                     binding.txtProfileNoactivities.visibility = View.GONE
@@ -115,13 +129,13 @@ class ProfileFragment : Fragment() {
         val adapter = ActivityBindingAdapter(viewModel)
         binding.rvProfileActivitylist.adapter = adapter
 
-        binding.fabProfileAddactivity.setOnClickListener{
+        binding.fabProfileAddactivity.setOnClickListener {
             navigateToCreateActivity()
         }
 
-        binding.refreshlayoutProfile.setOnRefreshListener{
+        binding.refreshlayoutProfile.setOnRefreshListener {
             viewModel.update(resources)
-            binding.refreshlayoutProfile.setRefreshing(false)
+            binding.refreshlayoutProfile.isRefreshing = false
         }
         return adapter
     }
@@ -129,7 +143,7 @@ class ProfileFragment : Fragment() {
     private fun receiveProfileData() {
         val profile = requireActivity().intent.getParcelableExtra<ProfileDTOProperty>("profile")
 
-        if (!firstLoad || profile == null){
+        if (!firstLoad || profile == null) {
             viewModel.update(resources)
         } else {
             viewModel.update(resources, profile)

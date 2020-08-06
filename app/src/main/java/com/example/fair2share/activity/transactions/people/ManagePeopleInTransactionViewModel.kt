@@ -12,7 +12,11 @@ import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
 
-class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOProperty, private var transactionArg: TransactionDTOProperty, database: Fair2ShareDatabase) : ViewModel() {
+class ManagePeopleInTransactionViewModel(
+    private val activityArg: ActivityDTOProperty,
+    private var transactionArg: TransactionDTOProperty,
+    database: Fair2ShareDatabase
+) : ViewModel() {
     private val activityRepository = ActivityRepository(database)
     private val transactionRepository = TransactionRepository(database)
 
@@ -21,10 +25,11 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
     val acivity: LiveData<ActivityDTOProperty> = activityRepository.activity
     val transaction: LiveData<TransactionDTOProperty> = transactionRepository.transaction
 
-    private val _initialParticipants: LiveData<List<ProfileDTOProperty>> = Transformations.map(transaction) {
-        it.profilesInTransaction
-    }
-    private val _friends: LiveData<List<ProfileDTOProperty>> = Transformations.map(acivity){
+    private val _initialParticipants: LiveData<List<ProfileDTOProperty>> =
+        Transformations.map(transaction) {
+            it.profilesInTransaction
+        }
+    private val _friends: LiveData<List<ProfileDTOProperty>> = Transformations.map(acivity) {
         it.participants
     }
     private val _toBeAdded = MutableLiveData<List<Long>>()
@@ -39,7 +44,6 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
         get() = _candidates
 
 
-
     init {
         candidatesAndParticipantsListenToUpdates()
         transaction.observeForever {
@@ -47,17 +51,17 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
         }
 
         transactionRepository.resetSelected.observeForever {
-            if(it){
+            if (it) {
                 resetSelected()
             }
         }
     }
 
 
-    fun addToParticipants(id:Long){
+    fun addToParticipants(id: Long) {
         val toBeAdded = _toBeAdded.value!!.toMutableList()
         val toBeRemoved = _toBeRemoved.value!!.toMutableList()
-        if (toBeRemoved.contains(id)){
+        if (toBeRemoved.contains(id)) {
             toBeRemoved.remove(id)
             _toBeRemoved.value = toBeRemoved
         } else {
@@ -66,10 +70,10 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
         }
     }
 
-    fun removeFromParticipants(id:Long){
+    fun removeFromParticipants(id: Long) {
         val toBeAdded = _toBeAdded.value!!.toMutableList()
         val toBeRemoved = _toBeRemoved.value!!.toMutableList()
-        if (toBeAdded.contains(id)){
+        if (toBeAdded.contains(id)) {
             toBeAdded.remove(id)
             _toBeAdded.value = toBeAdded
         } else {
@@ -78,7 +82,7 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
         }
     }
 
-    fun confirm(resources: Resources){
+    fun confirm(resources: Resources) {
 
         val toBeAdded = _toBeAdded.value!!
         val toBeRemoved = _toBeRemoved.value!!
@@ -93,17 +97,21 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
     }
 
 
-    fun resetSelected(){
+    fun resetSelected() {
         _toBeAdded.value = ArrayList()
         _toBeRemoved.value = ArrayList()
     }
 
-    fun update(resources:Resources){
-        transactionRepository.update(resources, activityArg.activityId!!, transactionArg.transactionId!!)
+    fun update(resources: Resources) {
+        transactionRepository.update(
+            resources,
+            activityArg.activityId!!,
+            transactionArg.transactionId!!
+        )
         activityRepository.update(resources, activityArg.activityId)
     }
 
-    private fun candidatesAndParticipantsListenToUpdates(){
+    private fun candidatesAndParticipantsListenToUpdates() {
         _toBeAdded.value = ArrayList()
         _toBeRemoved.value = ArrayList()
         _friends.observeForever {
@@ -123,7 +131,7 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
         }
     }
 
-    private fun updateCandidatesAndParticipants(){
+    private fun updateCandidatesAndParticipants() {
         _candidates.value = findCandidates()
         _participants.value = findParticipantsBasedOnCandidates()
     }
@@ -131,12 +139,12 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
     private fun findParticipantsBasedOnCandidates(): List<ProfileDTOProperty> {
         val participants = ArrayList<ProfileDTOProperty>()
         val candidates = _candidates.value
-        val friends =_friends.value
+        val friends = _friends.value
         val candidateIds = candidates?.map {
             it.profileId
         } ?: ArrayList<Long>()
 
-        friends?.let{
+        friends?.let {
             participants.addAll(it.filter { paticipant ->
                 !candidateIds.contains(paticipant.profileId)
             })
@@ -144,12 +152,12 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
         return participants
     }
 
-    private fun findCandidates() : List<ProfileDTOProperty> {
-        val friends =_friends.value
+    private fun findCandidates(): List<ProfileDTOProperty> {
+        val friends = _friends.value
         var initialParticips = _initialParticipants.value
 
         initialParticips = initialParticips?.filter {
-            (friends?.map {friend ->
+            (friends?.map { friend ->
                 friend.profileId
             } ?: ArrayList()).contains(it.profileId)
         } ?: ArrayList()
@@ -158,12 +166,12 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
         val toBeAdded = _toBeAdded.value!!
         val candidates = ArrayList<ProfileDTOProperty>()
 
-        if (friends != null){
+        if (friends != null) {
             candidates.addAll(friends.filter {
-                val initialParticipsIds = initialParticips.map{part -> part.profileId }
+                val initialParticipsIds = initialParticips.map { part -> part.profileId }
                 if (initialParticipsIds.contains(it.profileId)) {
                     false
-                } else{
+                } else {
                     !toBeAdded.contains(it.profileId)
                 }
             })

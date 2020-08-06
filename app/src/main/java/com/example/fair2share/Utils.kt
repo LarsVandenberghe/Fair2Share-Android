@@ -22,16 +22,19 @@ import java.lang.reflect.Type
 
 class Utils {
     companion object {
-        fun formExceptionsToString(exception: HttpException, customMessage: String? = null): String{
+        fun formExceptionsToString(
+            exception: HttpException,
+            customMessage: String? = null
+        ): String {
             val sb = StringBuilder()
             val text = exception.response().errorBody()?.charStream()?.readText()
             try {
-                if (text != null){
+                if (text != null) {
                     var json = JSONObject(text)
                     json = json.getJSONObject("errors")
                     json.keys().forEach {
                         val array = json.getJSONArray(it)
-                        for (i in 0 until array.length()){
+                        for (i in 0 until array.length()) {
                             sb.append(array.getString(i))
                             sb.append("\n")
                         }
@@ -39,8 +42,8 @@ class Utils {
                 } else {
                     throw Exception()
                 }
-            } catch (e: Exception){
-                if (customMessage != null){
+            } catch (e: Exception) {
+                if (customMessage != null) {
                     sb.append(customMessage)
                 } else {
                     sb.append(exception.message())
@@ -50,13 +53,13 @@ class Utils {
             return sb.toString()
         }
 
-        fun throwExceptionIfHttpNotSuccessful(response: Response<out Any>){
-            if (!response.isSuccessful){
+        fun throwExceptionIfHttpNotSuccessful(response: Response<out Any>) {
+            if (!response.isSuccessful) {
                 throw HttpException(response)
             }
         }
 
-        fun bindClientImageOnId(imgView: ImageView, imageId:Long?){
+        fun bindClientImageOnId(imgView: ImageView, imageId: Long?) {
             imageId?.let {
                 Glide.with(imgView.context)
                     .load(getProfilePicUrl(it))
@@ -69,30 +72,37 @@ class Utils {
         }
 
 
-        fun getProfilePicUrl(imageId:Long): GlideUrl {
+        fun getProfilePicUrl(imageId: Long): GlideUrl {
             val token = AccountApi.sharedPreferences.getString("token", "") ?: ""
-            return GlideUrl(String.format("%sProfile/image/%s", BuildConfig.BASE_URL, imageId), LazyHeaders.Builder()
-                .addHeader("Authorization", String.format("Bearer %s", token)).build())
+            return GlideUrl(
+                String.format("%sProfile/image/%s", BuildConfig.BASE_URL, imageId),
+                LazyHeaders.Builder()
+                    .addHeader("Authorization", String.format("Bearer %s", token)).build()
+            )
         }
     }
 }
 
 object Converter {
     @InverseMethod("stringToDouble")
-    @JvmStatic fun doubleToString(value: Double): String {
+    @JvmStatic
+    fun doubleToString(value: Double): String {
         return String.format("%.2f", value)
     }
 
-    @JvmStatic fun stringToDouble(value: String): Double {
+    @JvmStatic
+    fun stringToDouble(value: String): Double {
         return value.toDouble()
     }
 
     @InverseMethod("listIndexToFriend")
-    @JvmStatic fun friendToListIndex(people: List<ProfileDTOProperty>, selected: ProfileProperty?): Int {
+    @JvmStatic
+    fun friendToListIndex(people: List<ProfileDTOProperty>, selected: ProfileProperty?): Int {
         return people.map { person -> person.profileId }.indexOf(selected?.profileId ?: 0)
     }
 
-    @JvmStatic fun listIndexToFriend(people: List<ProfileDTOProperty>, selected:Int): ProfileProperty? {
+    @JvmStatic
+    fun listIndexToFriend(people: List<ProfileDTOProperty>, selected: Int): ProfileProperty? {
         return people[selected].makeDataModel()
     }
 }
@@ -102,7 +112,11 @@ object Converter {
 // The solution
 // https://github.com/loewenfels/dep-graph-releaser/blob/66c822830aa38ac6b4a2278dfe0020d551782bf0/dep-graph-releaser-serialization/src/main/kotlin/ch/loewenfels/depgraph/serialization/PairAdapterFactory.kt
 object PairAdapterFactory : JsonAdapter.Factory {
-    override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
+    override fun create(
+        type: Type,
+        annotations: MutableSet<out Annotation>,
+        moshi: Moshi
+    ): JsonAdapter<*>? {
         if (type !is ParameterizedType) {
             return null
         }
@@ -119,7 +133,10 @@ object PairAdapterFactory : JsonAdapter.Factory {
             return null
         }
 
-        return PairAdapter(moshi.adapter(type.actualTypeArguments[0]), moshi.adapter(type.actualTypeArguments[1]))
+        return PairAdapter(
+            moshi.adapter(type.actualTypeArguments[0]),
+            moshi.adapter(type.actualTypeArguments[1])
+        )
     }
 
     private class PairAdapter(
@@ -128,8 +145,15 @@ object PairAdapterFactory : JsonAdapter.Factory {
     ) : JsonAdapter<Pair<Any, Any>>() {
 
         companion object {
-            val NAMES = JsonReader.Options.of("profileId", "firstname", "lastname", "email", "friendRequestState")
+            val NAMES = JsonReader.Options.of(
+                "profileId",
+                "firstname",
+                "lastname",
+                "email",
+                "friendRequestState"
+            )
         }
+
         override fun toJson(writer: JsonWriter, value: Pair<Any, Any>?) {
             writer.beginArray()
             firstAdapter.toJson(writer, value!!.first as ProfileDTOProperty)
@@ -159,7 +183,16 @@ object PairAdapterFactory : JsonAdapter.Factory {
                 }
             }
             reader.endObject()
-            val first = ProfileDTOProperty(profileId, firstname, lastname, email, null, null, null, friendRequestState)
+            val first = ProfileDTOProperty(
+                profileId,
+                firstname,
+                lastname,
+                email,
+                null,
+                null,
+                null,
+                friendRequestState
+            )
 
             val second = reader.nextDouble()
             reader.endArray()

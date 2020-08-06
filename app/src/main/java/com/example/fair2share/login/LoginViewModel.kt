@@ -30,7 +30,7 @@ class LoginViewModel : ViewModel() {
     val errorMessage: LiveData<String>
         get() = _errorMessage
 
-    fun login(resources:Resources) {
+    fun login(resources: Resources) {
         _coroutineScope.launch {
             try {
                 val getJWTDeffered = AccountApi.retrofitService.login(loginData.makeDTO())
@@ -41,13 +41,15 @@ class LoginViewModel : ViewModel() {
                 AuthInterceptor.loginSucceeded()
 
                 _loggedIn.value = true
-            } catch (e: HttpException){
-                _errorMessage.value = Utils.formExceptionsToString(e, resources.getString(R.string.fragment_login_fail))
-            }catch (e: ConnectException){
+            } catch (e: HttpException) {
+                _errorMessage.value = Utils.formExceptionsToString(
+                    e,
+                    resources.getString(R.string.fragment_login_fail)
+                )
+            } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
-            }
-            catch (t: Throwable){
+            } catch (t: Throwable) {
                 _errorMessage.value = t.message
             }
         }

@@ -7,7 +7,10 @@ import com.example.fair2share.database.ActivityRepository
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 
-class ActivityTransactionsFragmentViewModel(var activityArg : ActivityDTOProperty, database: Fair2ShareDatabase):ViewModel() {
+class ActivityTransactionsFragmentViewModel(
+    var activityArg: ActivityDTOProperty,
+    database: Fair2ShareDatabase
+) : ViewModel() {
     private val activityRepository = ActivityRepository(database)
 
     val activity: LiveData<ActivityDTOProperty> = activityRepository.activity
@@ -15,17 +18,17 @@ class ActivityTransactionsFragmentViewModel(var activityArg : ActivityDTOPropert
     val navigate: LiveData<Boolean> = activityRepository.navigate
 
     init {
-        activity.observeForever{
+        activity.observeForever {
             activityArg = it
         }
     }
 
-    fun update(resources: Resources){
+    fun update(resources: Resources) {
         activityRepository.update(resources, activityArg.activityId!!)
     }
 
 
-    fun removeActivity(resources: Resources){
+    fun removeActivity(resources: Resources) {
         activityRepository.removeActivity(resources, activityArg.activityId!!)
     }
 }

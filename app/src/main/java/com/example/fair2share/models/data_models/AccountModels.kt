@@ -6,7 +6,7 @@ import com.example.fair2share.models.dto_models.RegisterDTOProperty
 data class LoginProperty(
     var email: String,
     var password: String
-){
+) {
     companion object {
         fun makeEmpty(): LoginProperty {
             return LoginProperty("", "")
@@ -24,7 +24,7 @@ data class RegisterProperty(
     var firstName: String,
     var lastName: String,
     var passwordConfirmation: String
-){
+) {
 
     companion object {
         fun makeEmpty(): RegisterProperty {

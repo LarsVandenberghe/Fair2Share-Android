@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.fair2share.database.Fair2ShareDatabase
 
 @Suppress("UNCHECKED_CAST")
-class AddFriendViewModelFactory(private val myProfileEmailAddress: String, private val database: Fair2ShareDatabase): ViewModelProvider.Factory {
+class AddFriendViewModelFactory(
+    private val myProfileEmailAddress: String,
+    private val database: Fair2ShareDatabase
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AddFriendViewModel::class.java)){
+        if (modelClass.isAssignableFrom(AddFriendViewModel::class.java)) {
             return AddFriendViewModel(myProfileEmailAddress, database) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

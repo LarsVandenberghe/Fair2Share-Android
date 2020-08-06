@@ -11,12 +11,13 @@ import com.example.fair2share.ConstraintRowItemViewHolder
 import com.example.fair2share.R
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 
-class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
-    var data =  listOf<ActivityDTOProperty>()
+class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) :
+    RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
+    var data = listOf<ActivityDTOProperty>()
         set(value) {
             field = value
             notifyDataSetChanged()
-    }
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConstraintRowItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -31,15 +32,18 @@ class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) : Recycler
 
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
         val item = data[position]
-        val action = ProfileFragmentDirections.actionFragmentProfileToActivityTransactionsFragment(item)
+        val action =
+            ProfileFragmentDirections.actionFragmentProfileToActivityTransactionsFragment(item)
 
         holder.rowView.setOnClickListener {
             findNavController(holder.rowView).navigate(action)
         }
 
-        holder.rowView.findViewById<TextView>(R.id.txt_recycleractivity_name).text = String.format("%s", item.name)
-        holder.rowView.findViewById<ImageButton>(R.id.btn_recycleractivity_remove).setOnClickListener{
-            viewModel.removeActivity(holder.rowView.resources, item)
-        }
+        holder.rowView.findViewById<TextView>(R.id.txt_recycleractivity_name).text =
+            String.format("%s", item.name)
+        holder.rowView.findViewById<ImageButton>(R.id.btn_recycleractivity_remove)
+            .setOnClickListener {
+                viewModel.removeActivity(holder.rowView.resources, item)
+            }
     }
 }

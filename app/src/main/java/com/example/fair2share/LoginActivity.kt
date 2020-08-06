@@ -11,7 +11,7 @@ import com.example.fair2share.network.AccountApi
 
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var appBarConfiguration : AppBarConfiguration
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private var isOnLoginFragment: Boolean = false
     lateinit var navController: NavController
 
@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (isOnLoginFragment){
+        if (isOnLoginFragment) {
             finish()
         } else {
             super.onBackPressed()
@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        if (isOnLoginFragment){
+        if (isOnLoginFragment) {
             finish()
             return false
         } else {
@@ -42,11 +42,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun setIsOnLoginFragment(bool: Boolean){
+    fun setIsOnLoginFragment(bool: Boolean) {
         isOnLoginFragment = bool
     }
 
-    private fun setSharedPreferences(){
-        AccountApi.sharedPreferences = this.getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
+    private fun setSharedPreferences() {
+        AccountApi.sharedPreferences =
+            this.getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
     }
 }

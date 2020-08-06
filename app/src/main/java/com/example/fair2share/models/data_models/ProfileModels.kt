@@ -2,7 +2,7 @@ package com.example.fair2share.models.data_models
 
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
-data class ProfileProperty (
+data class ProfileProperty(
     val profileId: Long,
     val firstname: String,
     val lastname: String,
@@ -13,7 +13,16 @@ data class ProfileProperty (
     val amountOfFriendRequests: Int?
 ) {
     fun makeDTO(): ProfileDTOProperty {
-        return ProfileDTOProperty(profileId, firstname, lastname, email, friends?.asDTO(), friendRequestState, activities?.asDTO(), amountOfFriendRequests)
+        return ProfileDTOProperty(
+            profileId,
+            firstname,
+            lastname,
+            email,
+            friends?.asDTO(),
+            friendRequestState,
+            activities?.asDTO(),
+            amountOfFriendRequests
+        )
     }
 
     override fun toString(): String {

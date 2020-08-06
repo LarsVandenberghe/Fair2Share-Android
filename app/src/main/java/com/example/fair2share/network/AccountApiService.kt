@@ -25,11 +25,11 @@ private val moshi = Moshi.Builder()
 
 private val retrofitJsonMap =
     Retrofit.Builder()
-    .client(httpClient)
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .addCallAdapterFactory(CoroutineCallAdapterFactory())
-    .baseUrl(BuildConfig.BASE_URL)
-    .build()
+        .client(httpClient)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .baseUrl(BuildConfig.BASE_URL)
+        .build()
 
 
 interface AccountApiService {
@@ -43,20 +43,20 @@ interface AccountApiService {
 }
 
 object AccountApi {
-    val retrofitService : AccountApiService by lazy {
+    val retrofitService: AccountApiService by lazy {
         retrofitJsonMap.create(AccountApiService::class.java)
     }
-    lateinit var sharedPreferences : SharedPreferences
+    lateinit var sharedPreferences: SharedPreferences
 
     private val _isOffline = MutableLiveData<Boolean>()
     val isOffline: LiveData<Boolean>
         get() = _isOffline
 
-    fun setIsOfflineValue(value: Boolean){
+    fun setIsOfflineValue(value: Boolean) {
         _isOffline.postValue(value)
     }
 
-    fun logout(){
+    fun logout() {
         sharedPreferences.edit().remove("profileId").apply()
         sharedPreferences.edit().remove("token").apply()
     }

@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.transactions.AddEditTransactionFragment"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.transactions.AddEditTransactionFragment">
+
     <data>
-        <import type="com.example.fair2share.models.data_models.TransactionProperty"/>
-        <import type="com.example.fair2share.models.dto_models.ProfileDTOProperty"/>
-        <import type="com.example.fair2share.Converter"/>
+
+        <import type="com.example.fair2share.models.data_models.TransactionProperty" />
+
+        <import type="com.example.fair2share.models.dto_models.ProfileDTOProperty" />
+
+        <import type="com.example.fair2share.Converter" />
+
         <variable
             name="transaction"
             type="TransactionProperty" />
+
         <variable
             name="activityParticipants"
             type="java.util.List&lt;ProfileDTOProperty&gt;" />

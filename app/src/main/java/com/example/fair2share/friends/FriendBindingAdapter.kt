@@ -11,8 +11,8 @@ import com.example.fair2share.R
 import com.example.fair2share.Utils
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
-class FriendBindingAdapter: RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
-    var data =  listOf<ProfileDTOProperty>()
+class FriendBindingAdapter : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
+    var data = listOf<ProfileDTOProperty>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -31,7 +31,11 @@ class FriendBindingAdapter: RecyclerView.Adapter<ConstraintRowItemViewHolder>() 
 
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
         val item = data[position]
-        Utils.bindClientImageOnId((holder.rowView.getViewById(R.id.img_recyclerfriend_profile) as ImageView), item.profileId)
-        (holder.rowView.getViewById(R.id.txt_recyclerfriend_name) as TextView).text = String.format("%s %s", item.firstname, item.lastname)
+        Utils.bindClientImageOnId(
+            (holder.rowView.getViewById(R.id.img_recyclerfriend_profile) as ImageView),
+            item.profileId
+        )
+        (holder.rowView.getViewById(R.id.txt_recyclerfriend_name) as TextView).text =
+            String.format("%s %s", item.firstname, item.lastname)
     }
 }

@@ -8,18 +8,18 @@ import okhttp3.Response
 import retrofit2.HttpException
 
 
-class AuthInterceptor: Interceptor {
+class AuthInterceptor : Interceptor {
     companion object {
         private val _shouldRestart = MutableLiveData<Boolean>()
         val shouldRestart: LiveData<Boolean>
             get() = _shouldRestart
 
-        fun loginSucceeded(){
+        fun loginSucceeded() {
             _shouldRestart.postValue(false)
         }
 
-        fun throwableIs401(throwable: Throwable) : Boolean {
-            if (throwable is HttpException && throwable.code() == 401){
+        fun throwableIs401(throwable: Throwable): Boolean {
+            if (throwable is HttpException && throwable.code() == 401) {
                 return true
             }
             return false
@@ -30,7 +30,7 @@ class AuthInterceptor: Interceptor {
         var request = chain.request()
 
         val token = sharedPreferences.getString("token", "") ?: ""
-        if (token.isNotEmpty()){
+        if (token.isNotEmpty()) {
             request = request.newBuilder()
                 .addHeader("Authorization", String.format("Bearer %s", token))
                 .build()
@@ -45,7 +45,7 @@ class AuthInterceptor: Interceptor {
         return response
     }
 
-    private fun setValueSafeOnBackgroundThread(){
+    private fun setValueSafeOnBackgroundThread() {
         _shouldRestart.postValue(true)
     }
 }

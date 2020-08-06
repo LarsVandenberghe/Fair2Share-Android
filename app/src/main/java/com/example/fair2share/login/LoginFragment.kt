@@ -28,8 +28,13 @@ class LoginFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentLoginBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding: FragmentLoginBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         bindViewModelData(binding)
 
         (requireActivity() as LoginActivity).setIsOnLoginFragment(true)
@@ -47,7 +52,8 @@ class LoginFragment : Fragment() {
                 val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                 requireActivity().findNavController(R.id.navhostfragment_login).navigate(action)
                 return true
-            } else -> super.onOptionsItemSelected(item)
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -56,23 +62,23 @@ class LoginFragment : Fragment() {
         (requireActivity() as LoginActivity).setIsOnLoginFragment(false)
     }
 
-    private fun makeViewModel(){
+    private fun makeViewModel() {
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
     }
 
-    private fun setupObservables(){
-        viewModel.errorMessage.observe(this, Observer { message  ->
+    private fun setupObservables() {
+        viewModel.errorMessage.observe(this, Observer { message ->
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         })
 
         viewModel.loggedIn.observe(this, Observer { bool ->
-            if (bool){
+            if (bool) {
                 startActivity(Intent(context, MainActivity::class.java))
                 requireActivity().finish()
             }
         })
 
-        viewModel.errorMessage.observe(this, Observer { message  ->
+        viewModel.errorMessage.observe(this, Observer { message ->
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         })
     }
@@ -80,11 +86,11 @@ class LoginFragment : Fragment() {
     private fun bindViewModelData(binding: FragmentLoginBinding) {
         binding.loginData = viewModel.loginData
 
-        binding.btnLoginLogin.setOnClickListener{view: View ->
+        binding.btnLoginLogin.setOnClickListener { view: View ->
             viewModel.login(resources)
         }
 
-        binding.constraintlayoutLogin.setOnClickListener{ view: View ->
+        binding.constraintlayoutLogin.setOnClickListener { view: View ->
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }

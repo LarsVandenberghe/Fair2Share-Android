@@ -7,7 +7,10 @@ import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.database.ProfileRepository
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
-class FriendListViewModel(private var profileArg: ProfileDTOProperty, database: Fair2ShareDatabase) : ViewModel() {
+class FriendListViewModel(
+    private var profileArg: ProfileDTOProperty,
+    database: Fair2ShareDatabase
+) : ViewModel() {
     private val profileRepository = ProfileRepository(database)
 
     val profile: LiveData<ProfileDTOProperty> = profileRepository.profile
@@ -16,20 +19,20 @@ class FriendListViewModel(private var profileArg: ProfileDTOProperty, database: 
     val friendRequests: LiveData<List<ProfileDTOProperty>> = profileRepository.friendRequests
 
     init {
-        if (profileArg.friends != null){
+        if (profileArg.friends != null) {
             profileRepository.updateFromSafeArgs(profileArg)
         }
-        profile.observeForever{
+        profile.observeForever {
             profileArg = it
         }
     }
 
-    fun update(resources: Resources){
+    fun update(resources: Resources) {
         profileRepository.update(resources)
         profileRepository.updateFriendRequestsWithApi(resources)
     }
 
-    fun handleFriendRequest(userId: Long, accept: Boolean, resources: Resources){
+    fun handleFriendRequest(userId: Long, accept: Boolean, resources: Resources) {
         profileRepository.handleFriendRequest(userId, accept, resources)
     }
 }

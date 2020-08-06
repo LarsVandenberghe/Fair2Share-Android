@@ -38,8 +38,8 @@
     <string name="txt_email">Email*</string>
     <string name="hint_password">password</string>
     <string name="hint_confirm_password">confirm password</string>
-    <string name="btn_summary" >Summary</string>
-    <string name="btn_edit_activity" >Edit Activity</string>
+    <string name="btn_summary">Summary</string>
+    <string name="btn_edit_activity">Edit Activity</string>
     <string name="btn_add_friends">Add Friends</string>
     <string name="img_nav_profile_description">Profile Image</string>
     <string name="rv_profile_activity_delete_button">Delete Button</string>

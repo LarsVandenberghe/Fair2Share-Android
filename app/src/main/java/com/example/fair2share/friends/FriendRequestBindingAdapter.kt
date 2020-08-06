@@ -12,8 +12,9 @@ import com.example.fair2share.R
 import com.example.fair2share.Utils
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
-class FriendRequestBindingAdapter(val viewModel: FriendListViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>(){
-    var data =  listOf<ProfileDTOProperty>()
+class FriendRequestBindingAdapter(val viewModel: FriendListViewModel) :
+    RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
+    var data = listOf<ProfileDTOProperty>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -28,11 +29,17 @@ class FriendRequestBindingAdapter(val viewModel: FriendListViewModel) : Recycler
 
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
         val item = data[position]
-        val removeFriend = holder.rowView.getViewById(R.id.btn_recycleraddandremovefriend_removefriend) as ImageButton
-        val addFriend = holder.rowView.getViewById(R.id.btn_recycleraddandremovefriend_addfriend) as ImageButton
+        val removeFriend =
+            holder.rowView.getViewById(R.id.btn_recycleraddandremovefriend_removefriend) as ImageButton
+        val addFriend =
+            holder.rowView.getViewById(R.id.btn_recycleraddandremovefriend_addfriend) as ImageButton
 
-        Utils.bindClientImageOnId((holder.rowView.getViewById(R.id.img_recycleraddandremovefriend_profile) as ImageView), item.profileId)
-        (holder.rowView.getViewById(R.id.txt_recycleraddandremovefriend_name) as TextView).text = String.format("%s %s", item.firstname, item.lastname)
+        Utils.bindClientImageOnId(
+            (holder.rowView.getViewById(R.id.img_recycleraddandremovefriend_profile) as ImageView),
+            item.profileId
+        )
+        (holder.rowView.getViewById(R.id.txt_recycleraddandremovefriend_name) as TextView).text =
+            String.format("%s %s", item.firstname, item.lastname)
 
         addFriend.setOnClickListener {
             viewModel.handleFriendRequest(item.profileId, true, holder.rowView.resources)

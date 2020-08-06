@@ -3,7 +3,7 @@ package com.example.fair2share.models.data_models
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
 
-data class ActivityProperty (
+data class ActivityProperty(
     var activityId: Long?,
     var name: String,
     var description: String?,
@@ -12,10 +12,18 @@ data class ActivityProperty (
     var transactions: List<TransactionProperty>?
 ) {
     fun makeDTO(): ActivityDTOProperty {
-        return ActivityDTOProperty(activityId, name, description, currencyType, participants?.asDTO(), transactions?.asDTO2())
+        return ActivityDTOProperty(
+            activityId,
+            name,
+            description,
+            currencyType,
+            participants?.asDTO(),
+            transactions?.asDTO2()
+        )
     }
+
     companion object {
-        fun makeEmpty() : ActivityProperty {
+        fun makeEmpty(): ActivityProperty {
             return ActivityProperty(
                 null,
                 "",
@@ -38,11 +46,19 @@ data class TransactionProperty(
     var paidBy: ProfileProperty?
 ) {
     fun makeDTO(): TransactionDTOProperty {
-        return TransactionDTOProperty(transactionId, name, description, timeStamp, payment, profilesInTransaction?.asDTO(), paidBy!!.makeDTO())
+        return TransactionDTOProperty(
+            transactionId,
+            name,
+            description,
+            timeStamp,
+            payment,
+            profilesInTransaction?.asDTO(),
+            paidBy!!.makeDTO()
+        )
     }
 
     companion object {
-        fun makeEmpty() : TransactionProperty {
+        fun makeEmpty(): TransactionProperty {
             return TransactionProperty(
                 null,
                 "",

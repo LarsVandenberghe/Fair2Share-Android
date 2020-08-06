@@ -1,13 +1,13 @@
 package com.example.fair2share.models.data_models
 
 enum class Valutas {
-    EURO{
+    EURO {
         override fun getSymbol(): String = "€"
     },
-    DOLLAR{
+    DOLLAR {
         override fun getSymbol(): String = "$"
     },
-    POUND{
+    POUND {
         override fun getSymbol(): String = "£"
     };
 

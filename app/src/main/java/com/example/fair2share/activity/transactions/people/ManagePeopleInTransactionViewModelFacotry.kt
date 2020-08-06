@@ -7,7 +7,11 @@ import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
 
 @Suppress("UNCHECKED_CAST")
-class ManagePeopleInTransactionViewModelFacotry(private val activity: ActivityDTOProperty, private val transaction: TransactionDTOProperty, private val database: Fair2ShareDatabase) : ViewModelProvider.Factory{
+class ManagePeopleInTransactionViewModelFacotry(
+    private val activity: ActivityDTOProperty,
+    private val transaction: TransactionDTOProperty,
+    private val database: Fair2ShareDatabase
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(ManagePeopleInTransactionViewModel::class.java) -> {

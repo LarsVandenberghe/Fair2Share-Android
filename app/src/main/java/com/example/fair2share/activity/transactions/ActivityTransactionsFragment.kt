@@ -73,7 +73,7 @@ class ActivityTransactionsFragment : Fragment() {
         }
     }
 
-    private fun makeViewModel(){
+    private fun makeViewModel() {
         val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory = ActivityFragmentViewModelFactory(safeArgs.activity, database)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(
@@ -81,24 +81,24 @@ class ActivityTransactionsFragment : Fragment() {
         )
     }
 
-    private fun setupObservables(){
+    private fun setupObservables() {
         viewModel.errorMessage.observe(this, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
         viewModel.navigate.observe(this, Observer {
-            if (it){
+            if (it) {
                 findNavController().navigateUp()
             }
         })
     }
 
-    private fun configureAdapters(binding: FragmentActivitytransactionsBinding){
+    private fun configureAdapters(binding: FragmentActivitytransactionsBinding) {
         val transactionAdapter = TransactionBindingAdapter(viewModel)
 
         binding.rvActivitytransactionsList.adapter = transactionAdapter
 
         viewModel.activity.observe(viewLifecycleOwner, Observer { activity ->
-            if(activity.transactions.isNullOrEmpty()){
+            if (activity.transactions.isNullOrEmpty()) {
                 binding.txtActivitytransactionsNotransactions.visibility = View.VISIBLE
             } else {
                 binding.txtActivitytransactionsNotransactions.visibility = View.GONE
@@ -107,10 +107,11 @@ class ActivityTransactionsFragment : Fragment() {
         })
 
         binding.fabActivitytransactionsAddactivity.setOnClickListener {
-            val action = ActivityTransactionsFragmentDirections.actionActivityTransactionsFragmentToAddEditTransactionFragment(
-                null,
-                viewModel.activityArg
-            )
+            val action =
+                ActivityTransactionsFragmentDirections.actionActivityTransactionsFragmentToAddEditTransactionFragment(
+                    null,
+                    viewModel.activityArg
+                )
             findNavController().navigate(action)
         }
     }

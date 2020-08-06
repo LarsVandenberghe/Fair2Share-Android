@@ -31,19 +31,19 @@ private val retrofitJsonMap =
 
 interface ActvityApiService {
     @GET("Activity/{id}")
-    fun getActivity(@Path("id") id : Long):
+    fun getActivity(@Path("id") id: Long):
             Deferred<ActivityDTOProperty>
 
     @GET("Activity/{id}/transactions")
-    fun getActivityTransactions(@Path("id") id : Long):
+    fun getActivityTransactions(@Path("id") id: Long):
             Deferred<List<TransactionDTOProperty>>
 
     @GET("Activity/{id}/summary")
-    fun getActivitySummary(@Path("id") id : Long):
+    fun getActivitySummary(@Path("id") id: Long):
             Deferred<Map<String, Double>>
 
     @GET("Activity/{id}/participants")
-    fun getActivityParticipants(@Path("id") id : Long):
+    fun getActivityParticipants(@Path("id") id: Long):
             Deferred<ActivityDTOProperty>
 
     @DELETE("Activity/{id}")
@@ -87,12 +87,16 @@ interface ActvityApiService {
             Deferred<Response<Unit>>
 
     @DELETE("Activity/{id}/transactions/{transactionId}/participants")
-    fun removeTransactionParticipants(@Path("id") activityId: Long, @Path("transactionId") transactionId: Long, @Query("friend_ids") idList: List<Long>):
+    fun removeTransactionParticipants(
+        @Path("id") activityId: Long, @Path("transactionId") transactionId: Long, @Query(
+            "friend_ids"
+        ) idList: List<Long>
+    ):
             Deferred<Response<Unit>>
 }
 
 object ActivityApi {
-    val retrofitService : ActvityApiService by lazy {
+    val retrofitService: ActvityApiService by lazy {
         retrofitJsonMap.create(ActvityApiService::class.java)
     }
 }

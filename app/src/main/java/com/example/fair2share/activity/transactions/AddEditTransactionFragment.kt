@@ -33,7 +33,12 @@ class AddEditTransactionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<FragmentAddedittransactionBinding>(inflater, R.layout.fragment_addedittransaction, container, false)
+        val binding = DataBindingUtil.inflate<FragmentAddedittransactionBinding>(
+            inflater,
+            R.layout.fragment_addedittransaction,
+            container,
+            false
+        )
 
         setupUIObservables()
         bindViewModelData(binding)
@@ -50,7 +55,10 @@ class AddEditTransactionFragment : Fragment() {
         return when (item.itemId) {
             R.id.btn_addedittransactionoverflow_managepeople -> {
                 val action = AddEditTransactionFragmentDirections
-                    .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(viewModel.activity, viewModel.transaction.makeDTO())
+                    .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(
+                        viewModel.activity,
+                        viewModel.transaction.makeDTO()
+                    )
                 findNavController().navigate(action)
                 return true
             }
@@ -62,36 +70,47 @@ class AddEditTransactionFragment : Fragment() {
         }
     }
 
-    private fun getButtonName() : String{
-        return if (viewModel.isNewTransaction){
+    private fun getButtonName(): String {
+        return if (viewModel.isNewTransaction) {
             getString(R.string.btn_add)
         } else {
             getString(R.string.btn_edit)
         }
     }
 
-    private fun makeViewModel(){
+    private fun makeViewModel() {
         val database = Fair2ShareDatabase.getInstance(requireContext())
-        val viewModelFactory = if (safeArgs.transaction != null){
+        val viewModelFactory = if (safeArgs.transaction != null) {
             setHasOptionsMenu(true)
-            AddEditTransactionViewModelFactory(safeArgs.activity, (safeArgs.transaction as TransactionDTOProperty).makeDataModel(), false, database)
+            AddEditTransactionViewModelFactory(
+                safeArgs.activity,
+                (safeArgs.transaction as TransactionDTOProperty).makeDataModel(),
+                false,
+                database
+            )
         } else {
-            AddEditTransactionViewModelFactory(safeArgs.activity, TransactionProperty.makeEmpty(), true, database)
+            AddEditTransactionViewModelFactory(
+                safeArgs.activity,
+                TransactionProperty.makeEmpty(),
+                true,
+                database
+            )
         }
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddEditTransactionViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(AddEditTransactionViewModel::class.java)
     }
 
-    private fun setupObservables(){
+    private fun setupObservables() {
         viewModel.errorMessage.observe(this, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
     }
 
-    private fun setupUIObservables(){
+    private fun setupUIObservables() {
         viewModel.navigate.observe(viewLifecycleOwner, Observer {
-            if (it){
-                if (viewModel.isNewTransaction){
+            if (it) {
+                if (viewModel.isNewTransaction) {
                     navigateAddPeopleOnNewTransaction()
                 } else {
                     navigateUpOnEditAndOncePeopleAreAddedToNewTransaction()
@@ -100,18 +119,21 @@ class AddEditTransactionFragment : Fragment() {
         })
     }
 
-    private fun navigateUpOnEditAndOncePeopleAreAddedToNewTransaction(){
+    private fun navigateUpOnEditAndOncePeopleAreAddedToNewTransaction() {
         findNavController().navigateUp()
     }
 
-    private fun navigateAddPeopleOnNewTransaction(){
+    private fun navigateAddPeopleOnNewTransaction() {
         val action = AddEditTransactionFragmentDirections
-            .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(viewModel.activity, viewModel.transaction.makeDTO())
+            .actionAddEditTransactionFragmentToManagePeopleInTransactionFragment(
+                viewModel.activity,
+                viewModel.transaction.makeDTO()
+            )
         viewModel.isNewTransaction = false
         findNavController().navigate(action)
     }
 
-    private fun bindViewModelData(binding: FragmentAddedittransactionBinding){
+    private fun bindViewModelData(binding: FragmentAddedittransactionBinding) {
         binding.constraintlayoutAddedittransaction.setOnClickListener {
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)

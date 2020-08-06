@@ -10,7 +10,10 @@ import com.example.fair2share.models.database_models.ActivitySummaryDatabaseProp
 @Dao
 interface SummaryDao {
     @Query("select * from activity_summary_table where profileId = :profileId and activityId = :activityId")
-    fun getActivitySummary(profileId:Long, activityId:Long): LiveData<ActivitySummaryDatabaseProperty>
+    fun getActivitySummary(
+        profileId: Long,
+        activityId: Long
+    ): LiveData<ActivitySummaryDatabaseProperty>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertActivitySummary(vararg activity: ActivitySummaryDatabaseProperty)

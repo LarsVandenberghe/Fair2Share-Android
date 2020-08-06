@@ -30,7 +30,7 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding: FragmentRegisterBinding =  DataBindingUtil.inflate(
+        val binding: FragmentRegisterBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_register,
             container,
@@ -41,29 +41,29 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
-    private fun makeViewModel(){
+    private fun makeViewModel() {
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
     }
 
-    private fun setupObservables(){
+    private fun setupObservables() {
         viewModel.errorMessage.observe(this, Observer { message ->
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         })
 
         viewModel.loggedIn.observe(this, Observer { isLoggedIn ->
-            if (isLoggedIn){
+            if (isLoggedIn) {
                 startActivity(Intent(context, MainActivity::class.java))
                 requireActivity().finish()
             }
         })
     }
 
-    private fun bindViewModelData(binding: FragmentRegisterBinding){
+    private fun bindViewModelData(binding: FragmentRegisterBinding) {
         binding.registerData = viewModel.registerData
         binding.btnRegisterRegister.setOnClickListener {
             viewModel.register()
         }
-        binding.linearlayoutRegister.setOnClickListener{ view: View ->
+        binding.linearlayoutRegister.setOnClickListener { view: View ->
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }

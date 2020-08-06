@@ -49,24 +49,24 @@ class ProfileRepository(private val database: Fair2ShareDatabase) {
     val success: LiveData<Boolean>
         get() = _success
 
-    fun updateFromSafeArgs(profile: ProfileDTOProperty){
+    fun updateFromSafeArgs(profile: ProfileDTOProperty) {
         _profile.postValue(profile)
     }
 
-    fun update(resouces: Resources){
+    fun update(resouces: Resources) {
         updateProfileWithRoom()
         updateProfileWithApi(resouces)
     }
 
-    fun updateOnStartUpCheckOnline(resouces: Resources){
+    fun updateOnStartUpCheckOnline(resouces: Resources) {
         updateProfileWithApi(resouces)
     }
 
-    fun updateWithCachedProfileOnStartUp(){
+    fun updateWithCachedProfileOnStartUp() {
         updateProfileWithRoom()
     }
 
-    fun updateFriendRequestsWithApi(resources: Resources){
+    fun updateFriendRequestsWithApi(resources: Resources) {
         _coroutineScope.launch {
             try {
                 val deffered = FriendRequestApi.retrofitService.getFriendRequest()
@@ -75,11 +75,11 @@ class ProfileRepository(private val database: Fair2ShareDatabase) {
                         potentialFriend.friendRequestState == FriendRequestStates.PENDING.ordinal
                     }
                 )
-            } catch (e: ConnectException){
+            } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
-            } catch (t: Throwable){
-                if (AuthInterceptor.throwableIs401(t)){
+            } catch (t: Throwable) {
+                if (AuthInterceptor.throwableIs401(t)) {
                     _errorMessage.postValue(resources.getString(R.string.fragment_startup_tokenexipred))
                     _shouldRelog.postValue(true)
                 } else {
@@ -89,89 +89,90 @@ class ProfileRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
-    fun handleFriendRequest(userId: Long, accept: Boolean, resources: Resources){
+    fun handleFriendRequest(userId: Long, accept: Boolean, resources: Resources) {
         _coroutineScope.launch {
             try {
-                val getJWTDeffered = FriendRequestApi.retrofitService.handleFriendRequest(userId, accept)
+                val getJWTDeffered =
+                    FriendRequestApi.retrofitService.handleFriendRequest(userId, accept)
                 val result = getJWTDeffered.await()
-                when (result.code()){
+                when (result.code()) {
                     500 -> _errorMessage.postValue(resources.getString(R.string.fragment_friendrequest_defaulterror))
                     204 -> _success.postValue(true)
                     else -> {
                         try {
                             Utils.throwExceptionIfHttpNotSuccessful(result)
                             _success.postValue(true)
-                        } catch (e: HttpException){
+                        } catch (e: HttpException) {
                             _errorMessage.postValue(Utils.formExceptionsToString(e))
-                        } catch (t: Throwable){
+                        } catch (t: Throwable) {
                             _errorMessage.postValue(t.message)
                         }
                     }
                 }
-            } catch (e: ConnectException){
+            } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
             }
         }
     }
 
-    fun addFriendByEmail(myProfileEmailAddress: String, email: String, resources: Resources){
+    fun addFriendByEmail(myProfileEmailAddress: String, email: String, resources: Resources) {
         _coroutineScope.launch {
-            try{
-                if (myProfileEmailAddress.equals(email)){
+            try {
+                if (myProfileEmailAddress.equals(email)) {
                     _errorMessage.postValue(resources.getString(R.string.fragment_addfriend_errorsendyourself))
                 } else {
                     val deffered = FriendRequestApi.retrofitService.addFriendByEmail(email)
                     val result = deffered.await()
-                    when (result.code()){
+                    when (result.code()) {
                         500 -> _errorMessage.postValue(resources.getString(R.string.fragment_addfriend_alreadpending))
                         404 -> _errorMessage.postValue(resources.getString(R.string.fragment_addfriend_emailnotfound))
                         else -> {
                             try {
                                 Utils.throwExceptionIfHttpNotSuccessful(result)
                                 _success.postValue(true)
-                            } catch (e:HttpException){
+                            } catch (e: HttpException) {
                                 _errorMessage.postValue(Utils.formExceptionsToString(e))
-                            } catch (t: Throwable){
+                            } catch (t: Throwable) {
                                 _errorMessage.postValue(t.message)
                             }
                         }
                     }
                 }
-            } catch (e: ConnectException){
+            } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
             }
         }
     }
 
-    private fun updateProfileWithRoom(){
+    private fun updateProfileWithRoom() {
         val profileId = sharedPreferences.getLong("profileId", 0L)
-        if (profileId == 0L){
+        if (profileId == 0L) {
             return
         }
 
-        Transformations.map(database.profileDao.getProfile(profileId)){ property : ProfileDatabaseProperty? ->
-            if (property != null){
+        Transformations.map(database.profileDao.getProfile(profileId)) { property: ProfileDatabaseProperty? ->
+            if (property != null) {
                 jsonAdapter.fromJson(property.data)
             } else {
                 null
             }
-        }.observeForever{data ->  if (data != null) _profile.postValue(data)}
+        }.observeForever { data -> if (data != null) _profile.postValue(data) }
     }
 
-    private fun updateProfileWithApi(resources: Resources){
+    private fun updateProfileWithApi(resources: Resources) {
         _coroutineScope.launch {
             try {
                 val data = ProfileApi.retrofitService.profile().await()
                 _profile.postValue(data)
                 sharedPreferences.edit().putLong("profileId", data.profileId)?.apply()
                 database.profileDao.insertProfile(data.makeDatabaseModel())
-            } catch (e: ConnectException){
+            } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
-            } catch (t: Throwable){
-                if (AuthInterceptor.throwableIs401(t)){
+            } catch (t: Throwable) {
+                if (AuthInterceptor.throwableIs401(t)) {
                     _errorMessage.postValue(resources.getString(R.string.fragment_startup_tokenexipred))
                     _shouldRelog.postValue(true)
                 } else {

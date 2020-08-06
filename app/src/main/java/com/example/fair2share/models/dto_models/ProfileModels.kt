@@ -6,7 +6,7 @@ import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.database_models.ProfileDatabaseProperty
 import com.squareup.moshi.Moshi
 
-data class ProfileDTOProperty (
+data class ProfileDTOProperty(
     val profileId: Long,
     val firstname: String,
     val lastname: String,
@@ -15,7 +15,7 @@ data class ProfileDTOProperty (
     val friendRequestState: Int?,
     val activities: List<ActivityDTOProperty>?,
     val amountOfFriendRequests: Int?
-): Parcelable {
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString()!!,
@@ -46,11 +46,20 @@ data class ProfileDTOProperty (
         return String.format("%s %s", firstname, lastname)
     }
 
-    fun makeDataModel(): ProfileProperty{
-        return ProfileProperty(profileId, firstname, lastname, email, friends?.asDataModel(), friendRequestState, activities?.asDataModel(), amountOfFriendRequests)
+    fun makeDataModel(): ProfileProperty {
+        return ProfileProperty(
+            profileId,
+            firstname,
+            lastname,
+            email,
+            friends?.asDataModel(),
+            friendRequestState,
+            activities?.asDataModel(),
+            amountOfFriendRequests
+        )
     }
 
-    fun makeDatabaseModel(): ProfileDatabaseProperty{
+    fun makeDatabaseModel(): ProfileDatabaseProperty {
         val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(ProfileDTOProperty::class.java)
         return ProfileDatabaseProperty(

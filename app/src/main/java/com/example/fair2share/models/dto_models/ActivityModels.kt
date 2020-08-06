@@ -8,14 +8,14 @@ import com.example.fair2share.models.database_models.ActivityDatabaseProperty
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty
 import com.squareup.moshi.Moshi
 
-data class ActivityDTOProperty (
+data class ActivityDTOProperty(
     val activityId: Long?,
     val name: String,
     val description: String?,
     val currencyType: Int,
     val participants: List<ProfileDTOProperty>?,
     val transactions: List<TransactionDTOProperty>?
-): Parcelable {
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString()!!,
@@ -38,11 +38,18 @@ data class ActivityDTOProperty (
         return 0
     }
 
-    fun makeDataModel(): ActivityProperty{
-        return ActivityProperty(activityId, name, description, currencyType, participants?.asDataModel(), transactions?.asDataModel2())
+    fun makeDataModel(): ActivityProperty {
+        return ActivityProperty(
+            activityId,
+            name,
+            description,
+            currencyType,
+            participants?.asDataModel(),
+            transactions?.asDataModel2()
+        )
     }
 
-    fun makeDatabaseModel(profileId:Long): ActivityDatabaseProperty {
+    fun makeDatabaseModel(profileId: Long): ActivityDatabaseProperty {
         val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(ActivityDTOProperty::class.java)
         return ActivityDatabaseProperty(
@@ -71,7 +78,7 @@ data class TransactionDTOProperty(
     val payment: Double,
     val profilesInTransaction: List<ProfileDTOProperty>?,
     val paidBy: ProfileDTOProperty
-): Parcelable {
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString()!!,
@@ -96,11 +103,19 @@ data class TransactionDTOProperty(
         return 0
     }
 
-    fun makeDataModel(): TransactionProperty{
-        return TransactionProperty(transactionId, name, description, timeStamp, payment, profilesInTransaction?.asDataModel(), paidBy.makeDataModel())
+    fun makeDataModel(): TransactionProperty {
+        return TransactionProperty(
+            transactionId,
+            name,
+            description,
+            timeStamp,
+            payment,
+            profilesInTransaction?.asDataModel(),
+            paidBy.makeDataModel()
+        )
     }
 
-    fun makeDatabaseModel(profileId:Long, activityId:Long): TransactionDatabaseProperty {
+    fun makeDatabaseModel(profileId: Long, activityId: Long): TransactionDatabaseProperty {
         val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(TransactionDTOProperty::class.java)
         return TransactionDatabaseProperty(

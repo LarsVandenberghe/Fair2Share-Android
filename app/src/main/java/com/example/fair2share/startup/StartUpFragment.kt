@@ -35,7 +35,7 @@ class StartUpFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_startup, container, false)
     }
 
-    private fun handleLoginState(){
+    private fun handleLoginState() {
         val handler = Handler()
         handler.postDelayed({
             val intent = Intent(context, LoginActivity::class.java)
@@ -44,35 +44,35 @@ class StartUpFragment : Fragment() {
         }, 1000)
     }
 
-    private fun navigateToMainActivity(profile: ProfileDTOProperty){
+    private fun navigateToMainActivity(profile: ProfileDTOProperty) {
         val intent = Intent(context, MainActivity::class.java)
         intent.putExtra("profile", profile)
         startActivity(intent)
         requireActivity().finish()
     }
 
-    private fun makeViewModel(){
+    private fun makeViewModel() {
         val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory = DatabaseOnlyViewModelFactory(database)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(StartUpViewModel::class.java)
     }
 
-    private fun setupObservables(){
+    private fun setupObservables() {
         viewModel.errorMessage.observe(this, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
 
-        if (viewModel.token.value != null){
+        if (viewModel.token.value != null) {
             viewModel.getProfileOnline(resources)
 
             viewModel.shouldRelog.observe(this, Observer {
-                if (it){
+                if (it) {
                     handleLoginState()
                 }
             })
 
             viewModel.isOffline.observe(this, Observer {
-                if (it){
+                if (it) {
                     viewModel.getProfileCached()
                 }
             })

@@ -8,7 +8,8 @@ import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
-class ActivitySummaryViewModel(var activityArg : ActivityDTOProperty, database: Fair2ShareDatabase) : ViewModel() {
+class ActivitySummaryViewModel(var activityArg: ActivityDTOProperty, database: Fair2ShareDatabase) :
+    ViewModel() {
     private val activityRepository = ActivityRepository(database)
 
     val summary: LiveData<List<Pair<ProfileDTOProperty, Double>>> = activityRepository.summary
@@ -21,7 +22,7 @@ class ActivitySummaryViewModel(var activityArg : ActivityDTOProperty, database: 
         }
     }
 
-    fun update(resources: Resources){
+    fun update(resources: Resources) {
         activityRepository.updateSummary(resources, activityArg)
     }
 }

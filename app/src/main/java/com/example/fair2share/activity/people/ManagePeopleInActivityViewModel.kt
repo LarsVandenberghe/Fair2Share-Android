@@ -11,7 +11,10 @@ import com.example.fair2share.database.ProfileRepository
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
-class ManagePeopleInActivityViewModel(private var activityArg: ActivityDTOProperty, database: Fair2ShareDatabase) : ViewModel() {
+class ManagePeopleInActivityViewModel(
+    private var activityArg: ActivityDTOProperty,
+    database: Fair2ShareDatabase
+) : ViewModel() {
     private val activityRepository = ActivityRepository(database)
     private val profileRepository = ProfileRepository(database)
 
@@ -20,10 +23,11 @@ class ManagePeopleInActivityViewModel(private var activityArg: ActivityDTOProper
     val acivity: LiveData<ActivityDTOProperty> = activityRepository.activity
     val profile: LiveData<ProfileDTOProperty> = profileRepository.profile
 
-    private val _initialParticipants: LiveData<List<ProfileDTOProperty>> = Transformations.map(acivity) {
-        it.participants
-    }
-    private val _friends: LiveData<List<ProfileDTOProperty>> = Transformations.map(profile){
+    private val _initialParticipants: LiveData<List<ProfileDTOProperty>> =
+        Transformations.map(acivity) {
+            it.participants
+        }
+    private val _friends: LiveData<List<ProfileDTOProperty>> = Transformations.map(profile) {
         it.friends
     }
     private val _toBeAdded = MutableLiveData<List<Long>>()
@@ -38,7 +42,6 @@ class ManagePeopleInActivityViewModel(private var activityArg: ActivityDTOProper
         get() = _candidates
 
 
-
     init {
         candidatesAndParticipantsListenToUpdates()
         acivity.observeForever {
@@ -46,16 +49,16 @@ class ManagePeopleInActivityViewModel(private var activityArg: ActivityDTOProper
         }
 
         activityRepository.resetSelected.observeForever {
-            if(it){
+            if (it) {
                 resetSelected()
             }
         }
     }
 
-    fun addToParticipants(id:Long){
+    fun addToParticipants(id: Long) {
         val toBeAdded = _toBeAdded.value!!.toMutableList()
         val toBeRemoved = _toBeRemoved.value!!.toMutableList()
-        if (toBeRemoved.contains(id)){
+        if (toBeRemoved.contains(id)) {
             toBeRemoved.remove(id)
             _toBeRemoved.value = toBeRemoved
         } else {
@@ -64,10 +67,10 @@ class ManagePeopleInActivityViewModel(private var activityArg: ActivityDTOProper
         }
     }
 
-    fun removeFromParticipants(id:Long){
+    fun removeFromParticipants(id: Long) {
         val toBeAdded = _toBeAdded.value!!.toMutableList()
         val toBeRemoved = _toBeRemoved.value!!.toMutableList()
-        if (toBeAdded.contains(id)){
+        if (toBeAdded.contains(id)) {
             toBeAdded.remove(id)
             _toBeAdded.value = toBeAdded
         } else {
@@ -76,25 +79,30 @@ class ManagePeopleInActivityViewModel(private var activityArg: ActivityDTOProper
         }
     }
 
-    fun confirm(resources: Resources){
+    fun confirm(resources: Resources) {
         val toBeAdded = _toBeAdded.value!!
         val toBeRemoved = _toBeRemoved.value!!
-        activityRepository.postActivityParticipants(resources, activityArg.activityId!!, toBeAdded, toBeRemoved)
+        activityRepository.postActivityParticipants(
+            resources,
+            activityArg.activityId!!,
+            toBeAdded,
+            toBeRemoved
+        )
         update(resources)
     }
 
 
-    fun resetSelected(){
+    fun resetSelected() {
         _toBeAdded.value = ArrayList()
         _toBeRemoved.value = ArrayList()
     }
 
-    fun update(resources: Resources){
+    fun update(resources: Resources) {
         activityRepository.update(resources, activityArg.activityId!!)
         profileRepository.update(resources)
     }
 
-    private fun candidatesAndParticipantsListenToUpdates(){
+    private fun candidatesAndParticipantsListenToUpdates() {
         _toBeAdded.value = ArrayList()
         _toBeRemoved.value = ArrayList()
         _friends.observeForever {
@@ -114,7 +122,7 @@ class ManagePeopleInActivityViewModel(private var activityArg: ActivityDTOProper
         }
     }
 
-    private fun updateCandidatesAndParticipants(){
+    private fun updateCandidatesAndParticipants() {
         _candidates.value = findCandidates()
         _participants.value = findParticipantsBasedOnCandidates()
     }
@@ -122,12 +130,12 @@ class ManagePeopleInActivityViewModel(private var activityArg: ActivityDTOProper
     private fun findParticipantsBasedOnCandidates(): List<ProfileDTOProperty> {
         val participants = ArrayList<ProfileDTOProperty>()
         val candidates = _candidates.value
-        val friends =_friends.value
+        val friends = _friends.value
         val candidateIds = candidates?.map {
             it.profileId
         } ?: ArrayList<Long>()
 
-        friends?.let{
+        friends?.let {
             participants.addAll(it.filter { paticipant ->
                 !candidateIds.contains(paticipant.profileId)
             })
@@ -135,12 +143,12 @@ class ManagePeopleInActivityViewModel(private var activityArg: ActivityDTOProper
         return participants
     }
 
-    private fun findCandidates() : List<ProfileDTOProperty> {
-        val friends =_friends.value
+    private fun findCandidates(): List<ProfileDTOProperty> {
+        val friends = _friends.value
         var initialParticips = _initialParticipants.value
 
         initialParticips = initialParticips?.filter {
-            (friends?.map {friend ->
+            (friends?.map { friend ->
                 friend.profileId
             } ?: ArrayList()).contains(it.profileId)
         } ?: ArrayList()
@@ -149,12 +157,12 @@ class ManagePeopleInActivityViewModel(private var activityArg: ActivityDTOProper
         val toBeAdded = _toBeAdded.value!!
         val candidates = ArrayList<ProfileDTOProperty>()
 
-        if (friends != null){
+        if (friends != null) {
             candidates.addAll(friends.filter {
-                val initialParticipsIds = initialParticips.map{part -> part.profileId }
+                val initialParticipsIds = initialParticips.map { part -> part.profileId }
                 if (initialParticipsIds.contains(it.profileId)) {
                     false
-                } else{
+                } else {
                     !toBeAdded.contains(it.profileId)
                 }
             })

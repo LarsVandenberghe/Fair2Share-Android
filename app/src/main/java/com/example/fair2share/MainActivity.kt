@@ -25,7 +25,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.view.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var appBarConfiguration : AppBarConfiguration
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navHeaderBinding: NavHeaderBinding
 
@@ -53,8 +53,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     //This code is being called from the root fragment of this activity (ProfileFragment and passes its viewModel)
-    fun bindProfileToNavHeader(vm: ProfileFragmentViewModel){
-        navHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navviewActivityMain, true)
+    fun bindProfileToNavHeader(vm: ProfileFragmentViewModel) {
+        navHeaderBinding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.nav_header,
+            binding.navviewActivityMain,
+            true
+        )
         vm.profile.observe(this, Observer { data ->
             navHeaderBinding.profile = data
 
@@ -67,7 +72,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun preventGestureIfNotOnStartDestination(drawerLayout: DrawerLayout, navController: NavController){
+    private fun preventGestureIfNotOnStartDestination(
+        drawerLayout: DrawerLayout,
+        navController: NavController
+    ) {
         navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, _: Bundle? ->
             if (nd.id == nc.graph.startDestination) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -78,7 +86,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun setupNaviationDrawer(drawerLayout: DrawerLayout, navController: NavController){
+    private fun setupNaviationDrawer(drawerLayout: DrawerLayout, navController: NavController) {
 
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
@@ -86,15 +94,15 @@ class MainActivity : AppCompatActivity() {
         setupNavigationListener(drawerLayout, navController)
     }
 
-    private fun setupNavigationListener(drawerLayout: DrawerLayout, navController: NavController){
+    private fun setupNavigationListener(drawerLayout: DrawerLayout, navController: NavController) {
         (drawerLayout.navview_activity_main as NavigationView).setNavigationItemSelectedListener {
-            if (  it.itemId == R.id.btn_navdrawer_logout ){
+            if (it.itemId == R.id.btn_navdrawer_logout) {
                 AccountApi.logout()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
 
-            if ( it.itemId == R.id.btn_navdrawer_friends ){
+            if (it.itemId == R.id.btn_navdrawer_friends) {
                 val action = ProfileFragmentDirections
                     .actionFragmentProfileToFriendListFragment(
                         navHeaderBinding.profile!!
@@ -108,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupOnTokenExpiredRestartApp() {
         AuthInterceptor.shouldRestart.observe(this, Observer {
-            if(it){
+            if (it) {
                 val intent = Intent(this.baseContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 this.startActivity(intent)
@@ -118,7 +126,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun setSharedPreferences(){
-        AccountApi.sharedPreferences = this.getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
+    private fun setSharedPreferences() {
+        AccountApi.sharedPreferences =
+            this.getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
     }
 }

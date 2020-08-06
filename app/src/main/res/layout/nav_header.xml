@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <import type="com.example.fair2share.models.dto_models.ProfileDTOProperty"/>
+
+        <import type="com.example.fair2share.models.dto_models.ProfileDTOProperty" />
+
         <variable
             name="profile"
             type="ProfileDTOProperty" />

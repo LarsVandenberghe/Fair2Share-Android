@@ -7,7 +7,10 @@ import com.example.fair2share.database.ActivityRepository
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.data_models.ActivityProperty
 
-class AddEditActivityFragmentViewModel(val activity: ActivityProperty, database: Fair2ShareDatabase): ViewModel() {
+class AddEditActivityFragmentViewModel(
+    val activity: ActivityProperty,
+    database: Fair2ShareDatabase
+) : ViewModel() {
     private val activityRepository = ActivityRepository(database)
 
     val errorMessage: LiveData<String> = activityRepository.errorMessage
@@ -17,7 +20,7 @@ class AddEditActivityFragmentViewModel(val activity: ActivityProperty, database:
         get() = activity.activityId == null
 
 
-    fun createOrUpdate(resources: Resources){
+    fun createOrUpdate(resources: Resources) {
         activityRepository.createOrUpdate(resources, isNewActivity, activity)
     }
 }

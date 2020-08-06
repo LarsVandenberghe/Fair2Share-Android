@@ -9,8 +9,17 @@ import com.example.fair2share.models.database_models.ActivitySummaryDatabaseProp
 import com.example.fair2share.models.database_models.ProfileDatabaseProperty
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty
 
-@Database(entities = [ProfileDatabaseProperty::class, ActivityDatabaseProperty::class, ActivitySummaryDatabaseProperty::class, TransactionDatabaseProperty::class], version = 1, exportSchema = false)
-abstract class Fair2ShareDatabase : RoomDatabase(){
+@Database(
+    entities = [
+        ProfileDatabaseProperty::class,
+        ActivityDatabaseProperty::class,
+        ActivitySummaryDatabaseProperty::class,
+        TransactionDatabaseProperty::class
+    ],
+    version = 1,
+    exportSchema = false
+)
+abstract class Fair2ShareDatabase : RoomDatabase() {
     abstract val profileDao: ProfileDao
     abstract val activityDao: ActivityDao
     abstract val summaryDao: SummaryDao

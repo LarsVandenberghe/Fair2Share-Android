@@ -23,7 +23,7 @@ class FriendListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val profile : ProfileDTOProperty = safeArgs.profile
+        val profile: ProfileDTOProperty = safeArgs.profile
         makeViewModel(profile)
         setupObservables()
     }
@@ -33,7 +33,12 @@ class FriendListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = DataBindingUtil.inflate<FragmentFriendlistBinding>(inflater, R.layout.fragment_friendlist, container, false)
+        val binding = DataBindingUtil.inflate<FragmentFriendlistBinding>(
+            inflater,
+            R.layout.fragment_friendlist,
+            container,
+            false
+        )
         configureAdapters(binding)
         viewModel.update(resources)
         return binding.root
@@ -44,7 +49,8 @@ class FriendListFragment : Fragment() {
         val fab: View = requireView().findViewById(R.id.fab_friendlst_addfriend)
 
         fab.setOnClickListener {
-            val action = FriendListFragmentDirections.actionFriendListFragmentToAddFriendFragment(viewModel.profile.value!!.email!!)
+            val action =
+                FriendListFragmentDirections.actionFriendListFragmentToAddFriendFragment(viewModel.profile.value!!.email!!)
             findNavController().navigate(action)
         }
     }
@@ -56,10 +62,12 @@ class FriendListFragment : Fragment() {
 
         viewModel.friendRequests.observe(viewLifecycleOwner, Observer {
             friendRequestAdapter.data = it
-            if (it.isEmpty()){
-                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriendrequests).visibility = View.VISIBLE
+            if (it.isEmpty()) {
+                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriendrequests)
+                    .visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriendrequests).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriendrequests)
+                    .visibility = View.GONE
             }
 
         })
@@ -67,10 +75,12 @@ class FriendListFragment : Fragment() {
         viewModel.profile.observe(viewLifecycleOwner, Observer {
             val friends = it.friends ?: emptyList()
             friendsAdapter.data = friends
-            if (friends.isEmpty()){
-                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriends).visibility = View.VISIBLE
+            if (friends.isEmpty()) {
+                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriends).visibility =
+                    View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriends).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_friendlst_nofriends).visibility =
+                    View.GONE
             }
         })
 
@@ -78,19 +88,20 @@ class FriendListFragment : Fragment() {
         binding.rvFriendlstFriends.adapter = friendsAdapter
     }
 
-    private fun makeViewModel(profile: ProfileDTOProperty){
+    private fun makeViewModel(profile: ProfileDTOProperty) {
         val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory = FriendListViewModelFactory(profile, database)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
     }
 
-    private fun setupObservables(){
+    private fun setupObservables() {
         viewModel.errorMessage.observe(this, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
 
         viewModel.success.observe(this, Observer {
-            if (it){
+            if (it) {
                 viewModel.update(resources)
             }
         })

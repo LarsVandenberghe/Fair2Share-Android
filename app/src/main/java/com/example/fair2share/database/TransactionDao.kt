@@ -10,7 +10,11 @@ import com.example.fair2share.models.database_models.TransactionDatabaseProperty
 @Dao
 interface TransactionDao {
     @Query("select * from transaction_table where profileId = :profileId and activityId = :activityId and transactionId = :transactionId")
-    fun getTransaction(profileId:Long, activityId:Long, transactionId:Long): LiveData<TransactionDatabaseProperty>
+    fun getTransaction(
+        profileId: Long,
+        activityId: Long,
+        transactionId: Long
+    ): LiveData<TransactionDatabaseProperty>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTransaction(vararg transaction: TransactionDatabaseProperty)
