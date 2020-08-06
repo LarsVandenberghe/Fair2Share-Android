@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fair2share.ConstraintRowItemViewHolder
 import com.example.fair2share.R
 import com.example.fair2share.Utils
-import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
 class TransactionParticipantsAdapter(val viewModel: ManagePeopleInTransactionViewModel): RecyclerView.Adapter<ConstraintRowItemViewHolder>() {

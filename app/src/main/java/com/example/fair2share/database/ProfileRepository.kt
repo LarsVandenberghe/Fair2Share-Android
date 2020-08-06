@@ -15,16 +15,19 @@ import com.example.fair2share.network.AuthInterceptor
 import com.example.fair2share.network.FriendRequestApi
 import com.example.fair2share.network.ProfileApi
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.lang.Exception
 import java.net.ConnectException
 
 class ProfileRepository(private val database: Fair2ShareDatabase) {
-    private val sharedPreferences: SharedPreferences = AccountApi.sharedPreferences
-    private val jsonAdapter = Moshi.Builder().build().adapter(ProfileDTOProperty::class.java)
     private var _viewModelJob = Job()
     private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.IO)
+
+    private val sharedPreferences: SharedPreferences = AccountApi.sharedPreferences
+    private val jsonAdapter = Moshi.Builder().build().adapter(ProfileDTOProperty::class.java)
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String>
@@ -50,40 +53,17 @@ class ProfileRepository(private val database: Fair2ShareDatabase) {
         _profile.postValue(profile)
     }
 
-    fun updateProfileWithRoom(){
-        val profileId = sharedPreferences.getLong("profileId", 0L)
-        if (profileId == 0L){
-            return
-        }
-
-        Transformations.map(database.profileDao.getProfile(profileId)){ property : ProfileDatabaseProperty? ->
-        if (property != null){
-            jsonAdapter.fromJson(property.data)
-        } else {
-            null
-        }
-        }.observeForever{data ->  if (data != null) _profile.postValue(data)}
+    fun update(resouces: Resources){
+        updateProfileWithRoom()
+        updateProfileWithApi(resouces)
     }
 
-    fun updateProfileWithApi(resources: Resources){
-        _coroutineScope.launch {
-            try {
-                val data = ProfileApi.retrofitService.profile().await()
-                _profile.postValue(data)
-                sharedPreferences.edit().putLong("profileId", data.profileId)?.apply()
-                database.profileDao.insertProfile(data.makeDatabaseModel())
-            } catch (e: ConnectException){
-                AccountApi.setIsOfflineValue(true)
-                _errorMessage.postValue(resources.getString(R.string.offline_error))
-            } catch (t: Throwable){
-                if (AuthInterceptor.throwableIs401(t)){
-                    _errorMessage.postValue(resources.getString(R.string.fragment_startup_tokenexipred))
-                    _shouldRelog.postValue(true)
-                } else {
-                    _errorMessage.postValue(t.message)
-                }
-            }
-        }
+    fun updateOnStartUpCheckOnline(resouces: Resources){
+        updateProfileWithApi(resouces)
+    }
+
+    fun updateWithCachedProfileOnStartUp(){
+        updateProfileWithRoom()
     }
 
     fun updateFriendRequestsWithApi(resources: Resources){
@@ -161,6 +141,42 @@ class ProfileRepository(private val database: Fair2ShareDatabase) {
             } catch (e: ConnectException){
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
+            }
+        }
+    }
+
+    private fun updateProfileWithRoom(){
+        val profileId = sharedPreferences.getLong("profileId", 0L)
+        if (profileId == 0L){
+            return
+        }
+
+        Transformations.map(database.profileDao.getProfile(profileId)){ property : ProfileDatabaseProperty? ->
+            if (property != null){
+                jsonAdapter.fromJson(property.data)
+            } else {
+                null
+            }
+        }.observeForever{data ->  if (data != null) _profile.postValue(data)}
+    }
+
+    private fun updateProfileWithApi(resources: Resources){
+        _coroutineScope.launch {
+            try {
+                val data = ProfileApi.retrofitService.profile().await()
+                _profile.postValue(data)
+                sharedPreferences.edit().putLong("profileId", data.profileId)?.apply()
+                database.profileDao.insertProfile(data.makeDatabaseModel())
+            } catch (e: ConnectException){
+                AccountApi.setIsOfflineValue(true)
+                _errorMessage.postValue(resources.getString(R.string.offline_error))
+            } catch (t: Throwable){
+                if (AuthInterceptor.throwableIs401(t)){
+                    _errorMessage.postValue(resources.getString(R.string.fragment_startup_tokenexipred))
+                    _shouldRelog.postValue(true)
+                } else {
+                    _errorMessage.postValue(t.message)
+                }
             }
         }
     }

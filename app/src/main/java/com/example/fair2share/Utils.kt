@@ -10,12 +10,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.network.AccountApi
-import com.squareup.moshi.*
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
+import com.squareup.moshi.Moshi
 import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
-import java.lang.Exception
-import java.lang.StringBuilder
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -69,7 +70,7 @@ class Utils {
 
 
         fun getProfilePicUrl(imageId:Long): GlideUrl {
-            val token = AccountApi.sharedPreferences?.getString("token", "") ?: ""
+            val token = AccountApi.sharedPreferences.getString("token", "") ?: ""
             return GlideUrl(String.format("%sProfile/image/%s", BuildConfig.BASE_URL, imageId), LazyHeaders.Builder()
                 .addHeader("Authorization", String.format("Bearer %s", token)).build())
         }
@@ -101,7 +102,6 @@ object Converter {
 // The solution
 // https://github.com/loewenfels/dep-graph-releaser/blob/66c822830aa38ac6b4a2278dfe0020d551782bf0/dep-graph-releaser-serialization/src/main/kotlin/ch/loewenfels/depgraph/serialization/PairAdapterFactory.kt
 object PairAdapterFactory : JsonAdapter.Factory {
-
     override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
         if (type !is ParameterizedType) {
             return null

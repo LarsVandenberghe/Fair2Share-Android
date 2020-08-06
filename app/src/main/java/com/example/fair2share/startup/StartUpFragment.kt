@@ -1,27 +1,21 @@
 package com.example.fair2share.startup
 
-import android.app.Activity
 import android.content.Intent
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
-import android.util.AttributeSet
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
+import androidx.lifecycle.ViewModelProviders
 import com.example.fair2share.LoginActivity
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.database.DatabaseOnlyViewModelFactory
 import com.example.fair2share.database.Fair2ShareDatabase
-import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
-import com.example.fair2share.network.AccountApi
 
 class StartUpFragment : Fragment() {
 
@@ -29,14 +23,41 @@ class StartUpFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        makeViewModel()
+        setupObservables()
+    }
 
-        AccountApi.sharedPreferences = requireActivity()
-            .getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_startup, container, false)
+    }
 
+    private fun handleLoginState(){
+        val handler = Handler()
+        handler.postDelayed({
+            val intent = Intent(context, LoginActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }, 1000)
+    }
+
+    private fun navigateToMainActivity(profile: ProfileDTOProperty){
+        val intent = Intent(context, MainActivity::class.java)
+        intent.putExtra("profile", profile)
+        startActivity(intent)
+        requireActivity().finish()
+    }
+
+    private fun makeViewModel(){
         val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory = DatabaseOnlyViewModelFactory(database)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(StartUpViewModel::class.java)
+    }
 
+    private fun setupObservables(){
         viewModel.errorMessage.observe(this, Observer {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         })
@@ -62,29 +83,5 @@ class StartUpFragment : Fragment() {
         } else {
             handleLoginState()
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_startup, container, false)
-    }
-
-    private fun handleLoginState(){
-        val handler = Handler()
-        handler.postDelayed({
-            val intent = Intent(context, LoginActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
-        }, 1000)
-    }
-
-    private fun navigateToMainActivity(profile: ProfileDTOProperty){
-        val intent = Intent(context, MainActivity::class.java)
-        intent.putExtra("profile", profile)
-        startActivity(intent)
-        requireActivity().finish()
     }
 }

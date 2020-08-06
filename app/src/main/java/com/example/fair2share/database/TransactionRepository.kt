@@ -6,24 +6,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.fair2share.R
 import com.example.fair2share.Utils
-import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.TransactionProperty
-import com.example.fair2share.models.database_models.ActivityDatabaseProperty
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
-import com.example.fair2share.models.dto_models.asDataModel2
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.ActivityApi
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.Response
-import java.lang.Exception
-import java.lang.StringBuilder
 import java.net.ConnectException
 
 class TransactionRepository(private val database: Fair2ShareDatabase) {
+    private var _viewModelJob = Job()
+    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.IO)
+
     private val jsonAdapter = Moshi.Builder().build().adapter(TransactionDTOProperty::class.java)
 
     private val _errorMessage = MutableLiveData<String>()
@@ -46,8 +47,10 @@ class TransactionRepository(private val database: Fair2ShareDatabase) {
     val resetSelected: LiveData<Boolean>
         get() = _resetSelected
 
-    private var _viewModelJob = Job()
-    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.IO)
+    fun update(resources: Resources, activityId: Long, transactionId: Long){
+        updateTransactionWithRoom(activityId, transactionId)
+        updateTransactionWithApi(resources, activityId, transactionId)
+    }
 
     fun createOrUpdate(resources: Resources, isNewTransaction: Boolean, activity: ActivityDTOProperty, transaction: TransactionProperty){
         _coroutineScope.launch {
@@ -98,8 +101,31 @@ class TransactionRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
+    fun postTransactionParticipants(resources: Resources, activityId:Long, transactionId: Long,toBeAdded: List<Long>, toBeRemoved: List<Long>){
+        _coroutineScope.launch {
+            try {
+                if (toBeRemoved.size > 0) {
+                    val result = ActivityApi.retrofitService.removeTransactionParticipants(activityId, transactionId, toBeRemoved).await()
+                    Utils.throwExceptionIfHttpNotSuccessful(result)
+                }
+                if (toBeAdded.size > 0) {
+                    val result = ActivityApi.retrofitService.addTransactionParticipants(activityId, transactionId, toBeAdded).await()
+                    Utils.throwExceptionIfHttpNotSuccessful(result)
+                }
+                _success.postValue(true)
+            } catch (e: HttpException){
+                _errorMessage.postValue(Utils.formExceptionsToString(e))
+                _resetSelected.postValue(true)
+            } catch (e: ConnectException){
+                AccountApi.setIsOfflineValue(true)
+                _errorMessage.postValue(resources.getString(R.string.offline_error))
+            } catch (t: Throwable){
+                _errorMessage.postValue(t.message)
+            }
+        }
+    }
 
-    fun updateTransactionWithRoom(activityId: Long, transactionId: Long){
+    private fun updateTransactionWithRoom(activityId: Long, transactionId: Long){
         val profileId = AccountApi.sharedPreferences.getLong("profileId", 0L)
         if (profileId == 0L){
             throw Exception("ProfileID sharedPreferences not set!")
@@ -116,37 +142,12 @@ class TransactionRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
-    fun updateTransactionWithApi(resources: Resources, activityId: Long, transactionId: Long){
+    private fun updateTransactionWithApi(resources: Resources, activityId: Long, transactionId: Long){
         _coroutineScope.launch {
             try {
                 val transaction = ActivityApi.retrofitService.getActivityTransactionById(activityId, transactionId).await()
                 val profileId = AccountApi.sharedPreferences.getLong("profileId", 0L)
                 database.transactionDao.insertTransaction(transaction.makeDatabaseModel(profileId, activityId))
-            } catch (e: ConnectException){
-                AccountApi.setIsOfflineValue(true)
-                _errorMessage.postValue(resources.getString(R.string.offline_error))
-            } catch (t: Throwable){
-                _errorMessage.postValue(t.message)
-            }
-        }
-    }
-
-
-    fun postTransactionParticipants(resources: Resources, activityId:Long, transactionId: Long,toBeAdded: List<Long>, toBeRemoved: List<Long>){
-        _coroutineScope.launch {
-            try {
-                if (toBeRemoved.size > 0) {
-                    val result = ActivityApi.retrofitService.removeTransactionParticipants(activityId, transactionId, toBeRemoved).await()
-                    Utils.throwExceptionIfHttpNotSuccessful(result)
-                }
-                if (toBeAdded.size > 0) {
-                    val result = ActivityApi.retrofitService.addTransactionParticipants(activityId, transactionId, toBeAdded).await()
-                    Utils.throwExceptionIfHttpNotSuccessful(result)
-                }
-                _success.postValue(true)
-            } catch (e: HttpException){
-                _errorMessage.postValue(Utils.formExceptionsToString(e))
-                _resetSelected.postValue(true)
             } catch (e: ConnectException){
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))

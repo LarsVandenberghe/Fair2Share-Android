@@ -1,10 +1,6 @@
 package com.example.fair2share.models.data_models
 
-import android.os.Parcel
-import android.os.Parcelable
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
-import com.example.fair2share.models.dto_models.LoginDTOProperty
-import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
 
 data class ActivityProperty (

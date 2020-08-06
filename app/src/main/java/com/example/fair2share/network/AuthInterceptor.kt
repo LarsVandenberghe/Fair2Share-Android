@@ -14,6 +14,10 @@ class AuthInterceptor: Interceptor {
         val shouldRestart: LiveData<Boolean>
             get() = _shouldRestart
 
+        fun loginSucceeded(){
+            _shouldRestart.postValue(false)
+        }
+
         fun throwableIs401(throwable: Throwable) : Boolean {
             if (throwable is HttpException && throwable.code() == 401){
                 return true

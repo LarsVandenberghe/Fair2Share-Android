@@ -1,10 +1,5 @@
 package com.example.fair2share.models.data_models
 
-import android.os.Parcel
-import android.os.Parcelable
-import android.view.View
-import androidx.databinding.BindingAdapter
-import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
 data class ProfileProperty (

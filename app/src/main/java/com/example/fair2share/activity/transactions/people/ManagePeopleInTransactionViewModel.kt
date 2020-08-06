@@ -5,29 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.fair2share.Utils
 import com.example.fair2share.database.ActivityRepository
 import com.example.fair2share.database.Fair2ShareDatabase
-import com.example.fair2share.database.ProfileRepository
 import com.example.fair2share.database.TransactionRepository
-import com.example.fair2share.models.data_models.ActivityProperty
-import com.example.fair2share.models.data_models.ProfileProperty
-import com.example.fair2share.models.data_models.TransactionProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
-import com.example.fair2share.network.ActivityApi
-import com.example.fair2share.network.ProfileApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOProperty, private var transactionArg: TransactionDTOProperty, database: Fair2ShareDatabase) : ViewModel() {
     private val activityRepository = ActivityRepository(database)
     private val transactionRepository = TransactionRepository(database)
-
 
     val success: LiveData<Boolean> = transactionRepository.success
     val errorMessage: LiveData<String> = transactionRepository.errorMessage
@@ -112,10 +99,8 @@ class ManagePeopleInTransactionViewModel(private val activityArg: ActivityDTOPro
     }
 
     fun update(resources:Resources){
-        transactionRepository.updateTransactionWithRoom(activityArg.activityId!!, transactionArg.transactionId!!)
-        transactionRepository.updateTransactionWithApi(resources, activityArg.activityId, transactionArg.transactionId!!)
-        activityRepository.updateActivityWithRoom(activityArg.activityId)
-        activityRepository.updateActivityWithApi(resources, activityArg.activityId)
+        transactionRepository.update(resources, activityArg.activityId!!, transactionArg.transactionId!!)
+        activityRepository.update(resources, activityArg.activityId)
     }
 
     private fun candidatesAndParticipantsListenToUpdates(){

@@ -2,10 +2,8 @@ package com.example.fair2share.models.dto_models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.models.database_models.ProfileDatabaseProperty
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 
 data class ProfileDTOProperty (

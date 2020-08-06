@@ -1,12 +1,13 @@
 package com.example.fair2share
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.example.fair2share.network.AccountApi
 
 
 class LoginActivity : AppCompatActivity() {
@@ -16,12 +17,12 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setSharedPreferences()
         setContentView(R.layout.activity_login)
 
         navController = this.findNavController(R.id.navhostfragment_login)
         NavigationUI.setupActionBarWithNavController(this, navController)
         appBarConfiguration = AppBarConfiguration(navController.graph)
-
     }
 
     override fun onBackPressed() {
@@ -43,5 +44,9 @@ class LoginActivity : AppCompatActivity() {
 
     fun setIsOnLoginFragment(bool: Boolean){
         isOnLoginFragment = bool
+    }
+
+    private fun setSharedPreferences(){
+        AccountApi.sharedPreferences = this.getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
     }
 }

@@ -1,21 +1,18 @@
 package com.example.fair2share.profile
 
-import android.content.res.Resources
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.database.DatabaseOnlyViewModelFactory
 import com.example.fair2share.database.Fair2ShareDatabase
-import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.databinding.FragmentProfileBinding
-import com.example.fair2share.models.data_models.asDTO
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.google.android.material.navigation.NavigationView
 
@@ -23,27 +20,12 @@ import com.google.android.material.navigation.NavigationView
 class ProfileFragment : Fragment() {
 
     private lateinit var viewModel: ProfileFragmentViewModel
-    var firstLoad : Boolean = true
+    private var firstLoad : Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val database = Fair2ShareDatabase.getInstance(requireContext())
-        val viewModelFactory = DatabaseOnlyViewModelFactory(database)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProfileFragmentViewModel::class.java)
-
-        viewModel.errorMessage.observe(this, Observer { errorMsg ->
-            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
-        })
-
-        viewModel.activityErrorMessage.observe(this, Observer { errorMsg ->
-            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
-        })
-
-        viewModel.activityDeleteSuccess.observe(this, Observer {
-            if(it){
-                viewModel.update(resources)
-            }
-        })
+        makeViewModel()
+        setupObservables()
         setHasOptionsMenu(true)
     }
 
@@ -54,14 +36,11 @@ class ProfileFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<FragmentProfileBinding>(inflater, R.layout.fragment_profile, container, false)
-        val adapter = ActivityBindingAdapter(viewModel)
-        binding.rvProfileActivitylist.adapter = adapter
 
-        receiveProfileData(binding, adapter)
+        val adapter = bindViewModelData(binding)
+        setupUIObservables(binding, adapter)
+        receiveProfileData()
 
-        binding.fabProfileAddactivity.setOnClickListener{
-            navigateToCreateActivity()
-        }
         return binding.root
     }
 
@@ -96,16 +75,29 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun receiveProfileData(binding: FragmentProfileBinding, adapter: ActivityBindingAdapter) {
-        val profile = requireActivity().intent.getParcelableExtra<ProfileDTOProperty>("profile")
+    private fun makeViewModel(){
+        val database = Fair2ShareDatabase.getInstance(requireContext())
+        val viewModelFactory = DatabaseOnlyViewModelFactory(database)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProfileFragmentViewModel::class.java)
+    }
 
-        if (!firstLoad || profile == null){
-            viewModel.update(resources)
-        } else {
-            viewModel.update(resources, profile)
-            firstLoad = false
-        }
+    private fun setupObservables(){
+        viewModel.errorMessage.observe(this, Observer { errorMsg ->
+            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+        })
 
+        viewModel.activityErrorMessage.observe(this, Observer { errorMsg ->
+            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.activityDeleteSuccess.observe(this, Observer {
+            if(it){
+                viewModel.update(resources)
+            }
+        })
+    }
+
+    private fun setupUIObservables(binding: FragmentProfileBinding, adapter: ActivityBindingAdapter){
         viewModel.profile.observe(viewLifecycleOwner, Observer{ data ->
             data.activities?.let{
                 if (it.size == 0){
@@ -117,5 +109,31 @@ class ProfileFragment : Fragment() {
             }
             addFriendRequests(data.amountOfFriendRequests ?: 0)
         })
+    }
+
+    private fun bindViewModelData(binding: FragmentProfileBinding): ActivityBindingAdapter {
+        val adapter = ActivityBindingAdapter(viewModel)
+        binding.rvProfileActivitylist.adapter = adapter
+
+        binding.fabProfileAddactivity.setOnClickListener{
+            navigateToCreateActivity()
+        }
+
+        binding.refreshlayoutProfile.setOnRefreshListener{
+            viewModel.update(resources)
+            binding.refreshlayoutProfile.setRefreshing(false)
+        }
+        return adapter
+    }
+
+    private fun receiveProfileData() {
+        val profile = requireActivity().intent.getParcelableExtra<ProfileDTOProperty>("profile")
+
+        if (!firstLoad || profile == null){
+            viewModel.update(resources)
+        } else {
+            viewModel.update(resources, profile)
+            firstLoad = false
+        }
     }
 }

@@ -4,8 +4,6 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fair2share.BuildConfig
-import com.example.fair2share.models.data_models.LoginProperty
-import com.example.fair2share.models.data_models.RegisterProperty
 import com.example.fair2share.models.dto_models.LoginDTOProperty
 import com.example.fair2share.models.dto_models.RegisterDTOProperty
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -59,7 +57,7 @@ object AccountApi {
     }
 
     fun logout(){
-        sharedPreferences.edit()?.remove("profileId")?.apply()
-        sharedPreferences.edit()?.remove("token")?.apply()
+        sharedPreferences.edit().remove("profileId").apply()
+        sharedPreferences.edit().remove("token").apply()
     }
 }

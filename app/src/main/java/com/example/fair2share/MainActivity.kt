@@ -1,9 +1,10 @@
 package com.example.fair2share
 
+import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -14,42 +15,32 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.fair2share.database.Fair2ShareDatabase
-import com.example.fair2share.database.ProfileRepository
 import com.example.fair2share.databinding.ActivityMainBinding
 import com.example.fair2share.databinding.NavHeaderBinding
-import com.example.fair2share.models.data_models.asDTO
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AuthInterceptor
-import com.example.fair2share.network.AccountApi.sharedPreferences
 import com.example.fair2share.profile.ProfileFragmentDirections
 import com.example.fair2share.profile.ProfileFragmentViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.view.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration : AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navHeaderBinding: NavHeaderBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setSharedPreferences()
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        drawerLayout = binding.drawerlayoutActivityMain
         val navController = this.findNavController(R.id.navhostfragment_main)
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+        val drawerLayout = binding.drawerlayoutActivityMain
 
-        preventGestureIfNotOnStartDestination(navController)
-
-        NavigationUI.setupWithNavController(binding.navviewActivityMain, navController)
-        setupNavigationListener(navController)
-
+        setupNaviationDrawer(drawerLayout, navController)
+        preventGestureIfNotOnStartDestination(drawerLayout, navController)
         setupOnTokenExpiredRestartApp()
     }
-
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = this.findNavController(R.id.navhostfragment_main)
@@ -61,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         return super.onPrepareOptionsMenu(menu)
     }
 
+    //This code is being called from the root fragment of this activity (ProfileFragment and passes its viewModel)
     fun bindProfileToNavHeader(vm: ProfileFragmentViewModel){
         navHeaderBinding = DataBindingUtil.inflate(layoutInflater, R.layout.nav_header, binding.navviewActivityMain, true)
         vm.profile.observe(this, Observer { data ->
@@ -75,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun preventGestureIfNotOnStartDestination(navController: NavController){
+    private fun preventGestureIfNotOnStartDestination(drawerLayout: DrawerLayout, navController: NavController){
         navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, _: Bundle? ->
             if (nd.id == nc.graph.startDestination) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -85,7 +77,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupNavigationListener(navController: NavController){
+
+    private fun setupNaviationDrawer(drawerLayout: DrawerLayout, navController: NavController){
+
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+        NavigationUI.setupWithNavController(binding.navviewActivityMain, navController)
+        setupNavigationListener(drawerLayout, navController)
+    }
+
+    private fun setupNavigationListener(drawerLayout: DrawerLayout, navController: NavController){
         (drawerLayout.navview_activity_main as NavigationView).setNavigationItemSelectedListener {
             if (  it.itemId == R.id.btn_navdrawer_logout ){
                 AccountApi.logout()
@@ -115,5 +116,9 @@ class MainActivity : AppCompatActivity() {
                 Runtime.getRuntime().exit(0)
             }
         })
+    }
+
+    private fun setSharedPreferences(){
+        AccountApi.sharedPreferences = this.getSharedPreferences(getString(R.string.app_name), Activity.MODE_PRIVATE)
     }
 }

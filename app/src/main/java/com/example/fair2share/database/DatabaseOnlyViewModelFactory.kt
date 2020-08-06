@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.fair2share.profile.ProfileFragmentViewModel
 import com.example.fair2share.startup.StartUpViewModel
 
+@Suppress("UNCHECKED_CAST")
 class DatabaseOnlyViewModelFactory(private val database: Fair2ShareDatabase): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(StartUpViewModel::class.java)){

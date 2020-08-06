@@ -1,6 +1,5 @@
 package com.example.fair2share.login
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -22,9 +21,31 @@ class RegisterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel =
-            ViewModelProviders.of(this).get(RegisterViewModel::class.java)
+        makeViewModel()
+        setupObservables()
+    }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        val binding: FragmentRegisterBinding =  DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_register,
+            container,
+            false
+        )
+
+        bindViewModelData(binding)
+        return binding.root
+    }
+
+    private fun makeViewModel(){
+        viewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
+    }
+
+    private fun setupObservables(){
         viewModel.errorMessage.observe(this, Observer { message ->
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         })
@@ -37,22 +58,14 @@ class RegisterFragment : Fragment() {
         })
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val binding: FragmentRegisterBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
+    private fun bindViewModelData(binding: FragmentRegisterBinding){
         binding.registerData = viewModel.registerData
-
         binding.btnRegisterRegister.setOnClickListener {
             viewModel.register()
         }
-
         binding.linearlayoutRegister.setOnClickListener{ view: View ->
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
-
-        return binding.root
     }
 }

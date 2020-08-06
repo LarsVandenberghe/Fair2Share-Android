@@ -13,13 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
-import com.example.fair2share.activity.ActivityFragmentViewModelFactory
-import com.example.fair2share.activity.people.ActivityCandidatesAdapter
-import com.example.fair2share.activity.people.ActivityParticipantsAdapter
-import com.example.fair2share.activity.people.ManagePeopleInActivityFragmentArgs
-import com.example.fair2share.activity.people.ManagePeopleInActivityViewModel
 import com.example.fair2share.database.Fair2ShareDatabase
-import com.example.fair2share.databinding.FragmentManagepeopleinactivityBinding
 import com.example.fair2share.databinding.FragmentManagepeopleintransactionBinding
 
 class ManagePeopleInTransactionFragment : Fragment() {
@@ -28,27 +22,15 @@ class ManagePeopleInTransactionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val database = Fair2ShareDatabase.getInstance(requireContext())
-        val viewModelFactory = ManagePeopleInTransactionViewModelFacotry(safeArgs.activity, safeArgs.transaction, database)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(
-            ManagePeopleInTransactionViewModel::class.java
-        )
-
-        viewModel.success.observe(this, Observer {
-            findNavController().navigateUp()
-        })
-
-        viewModel.errorMessage.observe(this, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        })
+        makeViewModel()
+        setupObservables()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding
-                = DataBindingUtil.inflate<FragmentManagepeopleintransactionBinding>(
+        val binding = DataBindingUtil.inflate<FragmentManagepeopleintransactionBinding>(
             inflater,
             R.layout.fragment_managepeopleintransaction,
             container,
@@ -70,20 +52,24 @@ class ManagePeopleInTransactionFragment : Fragment() {
 
         viewModel.candidates.observe(viewLifecycleOwner, Observer {
             candidateAdapter.data = it
-            if (it.isEmpty()){
-                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates).visibility = View.VISIBLE
+            if (it.isEmpty()) {
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates)
+                    .visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_nocandidates)
+                    .visibility = View.GONE
             }
 
         })
 
         viewModel.participants.observe(viewLifecycleOwner, Observer {
             participantAdapter.data = it
-            if (it.isEmpty()){
-                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants).visibility = View.VISIBLE
+            if (it.isEmpty()) {
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants)
+                    .visibility = View.VISIBLE
             } else {
-                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants).visibility = View.GONE
+                requireView().findViewById<TextView>(R.id.txt_managepeopleintransaction_noparticipants)
+                    .visibility = View.GONE
             }
         })
 
@@ -94,5 +80,27 @@ class ManagePeopleInTransactionFragment : Fragment() {
     override fun onDestroyView() {
         viewModel.resetSelected()
         super.onDestroyView()
+    }
+
+    private fun makeViewModel() {
+        val database = Fair2ShareDatabase.getInstance(requireContext())
+        val viewModelFactory = ManagePeopleInTransactionViewModelFacotry(
+            safeArgs.activity,
+            safeArgs.transaction,
+            database
+        )
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(
+            ManagePeopleInTransactionViewModel::class.java
+        )
+    }
+
+    private fun setupObservables() {
+        viewModel.success.observe(this, Observer {
+            findNavController().navigateUp()
+        })
+
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
     }
 }

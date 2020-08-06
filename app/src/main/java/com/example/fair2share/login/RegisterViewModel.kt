@@ -1,6 +1,5 @@
 package com.example.fair2share.login
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,14 +11,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import retrofit2.HttpException
-import java.lang.StringBuilder
 
 class RegisterViewModel: ViewModel() {
     private var _viewModelJob = Job()
     private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.Main)
-    var registerData: RegisterProperty
+    var registerData: RegisterProperty = RegisterProperty.makeEmpty()
 
     private val _loggedIn = MutableLiveData<Boolean>()
     val loggedIn: LiveData<Boolean>
@@ -28,10 +25,6 @@ class RegisterViewModel: ViewModel() {
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String>
         get() = _errorMessage
-
-    init {
-        registerData = RegisterProperty.makeEmpty()
-    }
 
     fun register(){
         _coroutineScope.launch {

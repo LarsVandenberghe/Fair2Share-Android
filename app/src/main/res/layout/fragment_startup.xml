@@ -13,9 +13,16 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/fair2share_logo"
+            android:paddingBottom="@dimen/bottom_margin"
+            android:src="@drawable/fair2share_transparent" />
 
         <TextView
             android:id="@+id/txt_startup_logo"

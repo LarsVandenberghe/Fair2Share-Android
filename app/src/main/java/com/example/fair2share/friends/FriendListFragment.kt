@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.database.Fair2ShareDatabase
-import com.example.fair2share.models.data_models.ProfileProperty
 import com.example.fair2share.databinding.FragmentFriendlistBinding
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
@@ -24,21 +23,9 @@ class FriendListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val profile : ProfileDTOProperty = safeArgs.profile
-        val database = Fair2ShareDatabase.getInstance(requireContext())
-        val viewModelFactory = FriendListViewModelFactory(profile, database)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
-
-        viewModel.errorMessage.observe(this, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        })
-
-        viewModel.success.observe(this, Observer {
-            if (it){
-                viewModel.update(resources)
-            }
-        })
+        makeViewModel(profile)
+        setupObservables()
     }
 
     override fun onCreateView(
@@ -89,5 +76,23 @@ class FriendListFragment : Fragment() {
 
         binding.rvFriendlstFriendsrequests.adapter = friendRequestAdapter
         binding.rvFriendlstFriends.adapter = friendsAdapter
+    }
+
+    private fun makeViewModel(profile: ProfileDTOProperty){
+        val database = Fair2ShareDatabase.getInstance(requireContext())
+        val viewModelFactory = FriendListViewModelFactory(profile, database)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(FriendListViewModel::class.java)
+    }
+
+    private fun setupObservables(){
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.success.observe(this, Observer {
+            if (it){
+                viewModel.update(resources)
+            }
+        })
     }
 }

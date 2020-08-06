@@ -1,17 +1,14 @@
 package com.example.fair2share.profile
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.RecyclerView
-import com.example.fair2share.R
-import com.example.fair2share.ConstraintRowItemViewHolder
-import com.example.fair2share.models.data_models.ActivityProperty
 import androidx.navigation.Navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.example.fair2share.ConstraintRowItemViewHolder
+import com.example.fair2share.R
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 
 class ActivityBindingAdapter(val viewModel: ProfileFragmentViewModel) : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {

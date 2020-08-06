@@ -4,6 +4,7 @@ import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.example.fair2share.PairAdapterFactory
 import com.example.fair2share.R
 import com.example.fair2share.Utils
 import com.example.fair2share.models.data_models.ActivityProperty
@@ -16,25 +17,24 @@ import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AccountApi.sharedPreferences
 import com.example.fair2share.network.ActivityApi
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.*
-import retrofit2.HttpException
-import java.lang.Exception
-import java.lang.StringBuilder
-import java.net.ConnectException
 import com.squareup.moshi.Types
-import com.example.fair2share.PairAdapterFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.net.ConnectException
 
 
 class ActivityRepository(private val database: Fair2ShareDatabase) {
+    private var _viewModelJob = Job()
+    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.IO)
     private val jsonAdapter = Moshi.Builder().build().adapter(ActivityDTOProperty::class.java)
 
     private var stringlistTypes = Types.newParameterizedType(List::class.java, String::class.java)
     private var pairTypes = Types.newParameterizedType(Pair::class.java, ProfileDTOProperty::class.java, Double::class.javaObjectType)
     private val jsonSummaryListAdapter = Moshi.Builder().build().adapter<List<String>>(stringlistTypes)
     private val jsonSummaryPairAdapter = Moshi.Builder().add(PairAdapterFactory).build().adapter<Pair<ProfileDTOProperty, Double>>(pairTypes)
-
-    private var _viewModelJob = Job()
-    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.IO)
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String>
@@ -43,7 +43,6 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
     private val _success = MutableLiveData<Boolean>()
     val success: LiveData<Boolean>
         get() = _success
-
 
     private val _activity = MutableLiveData<ActivityDTOProperty>()
     val activity: LiveData<ActivityDTOProperty>
@@ -60,6 +59,16 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
     private val _resetSelected = MutableLiveData<Boolean>()
     val resetSelected: LiveData<Boolean>
         get() = _resetSelected
+
+    fun update(resources: Resources, activityId: Long){
+        updateActivityWithRoom(activityId)
+        updateActivityWithApi(resources, activityId)
+    }
+
+    fun updateSummary(resources: Resources, activity: ActivityDTOProperty){
+        updateActivitySummaryWithRoom(activity.activityId!!)
+        updateActivitySummaryWithApi(resources, activity)
+    }
 
     fun removeActivity(resources: Resources, activityId: Long){
          _coroutineScope.launch {
@@ -103,7 +112,33 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
-    fun updateActivityWithRoom(activityId: Long){
+    fun postActivityParticipants(resources: Resources, activityId:Long, toBeAdded: List<Long>, toBeRemoved: List<Long>){
+        _coroutineScope.launch {
+            try {
+                if (toBeRemoved.size > 0) {
+                    val result = ActivityApi.retrofitService.removeActivityParticipants(activityId, toBeRemoved).await()
+                    Utils.throwExceptionIfHttpNotSuccessful(result)
+                }
+                if (toBeAdded.size > 0) {
+                    val result = ActivityApi.retrofitService.addActivityParticipants(activityId, toBeAdded).await()
+                    Utils.throwExceptionIfHttpNotSuccessful(result)
+                }
+                _success.postValue(true)
+            } catch (e: HttpException){
+                _errorMessage.postValue(Utils.formExceptionsToString(e))
+                _resetSelected.postValue(true)
+            } catch (e: ConnectException){
+                AccountApi.setIsOfflineValue(true)
+                _errorMessage.postValue(resources.getString(R.string.offline_error))
+            } catch (t: Throwable){
+                _errorMessage.postValue(t.message)
+            }
+        }
+    }
+
+
+
+    private fun updateActivityWithRoom(activityId: Long){
         val profileId = sharedPreferences.getLong("profileId", 0L)
         if (profileId == 0L){
             throw Exception("ProfileID sharedPreferences not set!")
@@ -120,7 +155,7 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
-    fun updateActivityWithApi(resources: Resources, activityId: Long){
+    private fun updateActivityWithApi(resources: Resources, activityId: Long){
         _coroutineScope.launch {
             try {
                 val activity = ActivityApi.retrofitService.getActivityParticipants(activityId).await().makeDataModel()
@@ -139,7 +174,7 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
-    fun updateActivitySummaryWithRoom(activityId: Long){
+    private fun updateActivitySummaryWithRoom(activityId: Long){
         val profileId = sharedPreferences.getLong("profileId", 0L)
         if (profileId == 0L){
             throw Exception("ProfileID sharedPreferences not set!")
@@ -158,7 +193,7 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
-    fun updateActivitySummaryWithApi(resources: Resources, activity: ActivityDTOProperty){
+    private fun updateActivitySummaryWithApi(resources: Resources, activity: ActivityDTOProperty){
         _coroutineScope.launch {
             try {
                 val profileId = sharedPreferences.getLong("profileId", 0L)
@@ -184,30 +219,6 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
                 database.summaryDao.insertActivitySummary(
                     ActivitySummaryDatabaseProperty(profileId, activity.activityId, jsonData)
                 )
-            } catch (e: ConnectException){
-                AccountApi.setIsOfflineValue(true)
-                _errorMessage.postValue(resources.getString(R.string.offline_error))
-            } catch (t: Throwable){
-                _errorMessage.postValue(t.message)
-            }
-        }
-    }
-
-    fun postActivityParticipants(resources: Resources, activityId:Long, toBeAdded: List<Long>, toBeRemoved: List<Long>){
-        _coroutineScope.launch {
-            try {
-                if (toBeRemoved.size > 0) {
-                    val result = ActivityApi.retrofitService.removeActivityParticipants(activityId, toBeRemoved).await()
-                    Utils.throwExceptionIfHttpNotSuccessful(result)
-                }
-                if (toBeAdded.size > 0) {
-                    val result = ActivityApi.retrofitService.addActivityParticipants(activityId, toBeAdded).await()
-                    Utils.throwExceptionIfHttpNotSuccessful(result)
-                }
-                _success.postValue(true)
-            } catch (e: HttpException){
-                _errorMessage.postValue(Utils.formExceptionsToString(e))
-                _resetSelected.postValue(true)
             } catch (e: ConnectException){
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))

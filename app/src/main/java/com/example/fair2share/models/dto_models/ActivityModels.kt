@@ -5,7 +5,6 @@ import android.os.Parcelable
 import com.example.fair2share.models.data_models.ActivityProperty
 import com.example.fair2share.models.data_models.TransactionProperty
 import com.example.fair2share.models.database_models.ActivityDatabaseProperty
-import com.example.fair2share.models.database_models.ProfileDatabaseProperty
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty
 import com.squareup.moshi.Moshi
 

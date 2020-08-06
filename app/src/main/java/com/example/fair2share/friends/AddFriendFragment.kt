@@ -2,13 +2,13 @@ package com.example.fair2share.friends
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -24,10 +24,26 @@ class AddFriendFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        makeViewModel()
+        setupObservables()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = DataBindingUtil.inflate<FragmentAddfriendBinding>(inflater, R.layout.fragment_addfriend, container, false)
+        bindViewModelData(binding)
+        return binding.root
+    }
+
+    private fun makeViewModel(){
         val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory = AddFriendViewModelFactory(safeArgs.email, database)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddFriendViewModel::class.java)
+    }
 
+    private fun setupObservables(){
         viewModel.errorMessage.observe(this, Observer {message ->
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         })
@@ -38,15 +54,9 @@ class AddFriendFragment : Fragment() {
                 findNavController().navigateUp()
             }
         })
-
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val binding = DataBindingUtil.inflate<FragmentAddfriendBinding>(inflater, R.layout.fragment_addfriend, container, false)
-
+    private fun bindViewModelData(binding: FragmentAddfriendBinding){
         binding.btnRecycleraddandremovefriendAddfriend.setOnClickListener {
             viewModel.addFriendByEmail(binding.editAddfriendEmail.text.toString(), resources)
         }
@@ -56,6 +66,5 @@ class AddFriendFragment : Fragment() {
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
-        return binding.root
     }
 }

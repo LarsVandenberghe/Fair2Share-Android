@@ -1,8 +1,6 @@
 package com.example.fair2share.network
 
 import com.example.fair2share.BuildConfig
-import com.example.fair2share.models.data_models.ActivityProperty
-import com.example.fair2share.models.data_models.TransactionProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -26,7 +24,6 @@ private val retrofitJsonMap =
     Retrofit.Builder()
         .client(httpClient)
         .addConverterFactory(MoshiConverterFactory.create(moshi))
-        //.addConverterFactory(ScalarsConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .baseUrl(BuildConfig.BASE_URL)
         .build()
