@@ -5,83 +5,81 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshlayout_friendlst"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/bottom_margin">
+        style="@style/AppTheme.RefreshLayout">
 
-        <ScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/txt_friendlst_fiendrequest"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/bottom_margin"
-                    android:text="@string/friend_requests_title"
-                    android:textSize="@dimen/title" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txt_friendlst_nofriendrequests"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_friend_requests"
-                    android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/txt_friendlst_fiendrequest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/bottom_margin"
+                        android:text="@string/friend_requests_title"
+                        android:textSize="@dimen/title" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_friendlst_friendsrequests"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/bottom_margin"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+                    <TextView
+                        android:id="@+id/txt_friendlst_nofriendrequests"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_friend_requests"
+                        android:visibility="gone" />
 
-                </androidx.recyclerview.widget.RecyclerView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_friendlst_friendsrequests"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/bottom_margin"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-                <TextView
-                    android:id="@+id/txt_friendlst_friends"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/bottom_margin"
-                    android:layout_marginBottom="@dimen/bottom_margin"
-                    android:text="@string/friend_lst_title"
-                    android:textSize="@dimen/title" />
+                    </androidx.recyclerview.widget.RecyclerView>
 
-                <TextView
-                    android:id="@+id/txt_friendlst_nofriends"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_friends"
-                    android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/txt_friendlst_friends"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/bottom_margin"
+                        android:layout_marginBottom="@dimen/bottom_margin"
+                        android:text="@string/friend_lst_title"
+                        android:textSize="@dimen/title" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_friendlst_friends"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    <TextView
+                        android:id="@+id/txt_friendlst_nofriends"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_friends"
+                        android:visibility="gone" />
 
-            </LinearLayout>
-        </ScrollView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_friendlst_friends"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_friendlst_addfriend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_baseline_add_24"
-            app:backgroundTint="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+                </LinearLayout>
+            </ScrollView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                style="@style/AppTheme.FloatinActionButton"
+                android:id="@+id/fab_friendlst_addfriend"
+                app:backgroundTint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

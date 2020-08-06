@@ -38,9 +38,7 @@
         <EditText
             android:id="@+id/edit_addedittransaction_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:ems="10"
             android:hint="@string/hint_name"
@@ -49,7 +47,8 @@
             android:text="@={transaction.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_name" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_name"
+            style="@style/FormInput" />
 
         <TextView
             android:id="@+id/txt_addedittransaction_payment"
@@ -63,16 +62,15 @@
         <EditText
             android:id="@+id/edit_addedittransaction_payment"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:ems="10"
             android:hint="@string/hint_payment"
             android:importantForAutofill="no"
             android:inputType="numberDecimal"
             android:text="@={Converter.doubleToString(transaction.payment)}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_payment" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_payment"
+            style="@style/FormInput" />
 
         <TextView
             android:id="@+id/txt_addedittransaction_paidby"
@@ -86,14 +84,13 @@
         <Spinner
             android:id="@+id/cbo_addedittransaction_paidby"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:selectedItemPosition="@={Converter.friendToListIndex(activityParticipants, transaction.paidBy)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/edit_addedittransaction_payment"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_paidby" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_paidby"
+            style="@style/FormInput" />
 
         <TextView
             android:id="@+id/txt_addedittransaction_description"
@@ -108,9 +105,7 @@
         <EditText
             android:id="@+id/edit_addedittransaction_description"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:ems="10"
             android:hint="@string/fragment_create_activity_description_placeholder"
@@ -119,7 +114,8 @@
             android:text="@={transaction.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_description" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addedittransaction_description"
+            style="@style/FormInput" />
 
         <Button
             android:id="@+id/btn_addedittransaction"

@@ -22,9 +22,7 @@
         <EditText
             android:id="@+id/edit_addfriend_email"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:ems="10"
             android:hint="@string/hint_login_email"
@@ -32,7 +30,8 @@
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addfriend_email" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addfriend_email"
+            style="@style/FormInput" />
 
         <Button
             android:id="@+id/btn_recycleraddandremovefriend_addfriend"

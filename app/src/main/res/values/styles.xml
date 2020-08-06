@@ -16,4 +16,31 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.RefreshLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">@dimen/bottom_margin</item>
+    </style>
+
+    <style name="AppTheme.FloatinActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:visibility">visible</item>
+        <item name="android:src">@drawable/ic_baseline_add_24</item>
+    </style>
+
+    <style name="FormInput">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="TextViewNoContent" parent="FormInput">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:visibility">gone</item>
+    </style>
 </resources>

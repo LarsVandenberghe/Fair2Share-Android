@@ -48,9 +48,7 @@
                     <EditText
                         android:id="@+id/edit_register_firstname"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:ems="10"
                         android:hint="@string/hint_first_name"
@@ -59,7 +57,8 @@
                         android:text="@={registerData.firstName}"
                         app:layout_constraintEnd_toStartOf="@+id/txt_register_lastname"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_register_firstname" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_register_firstname"
+                        style="@style/FormInput" />
 
                     <TextView
                         android:id="@+id/txt_register_lastname"
@@ -73,8 +72,6 @@
                     <EditText
                         android:id="@+id/edit_register_lastname"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:ems="10"
                         android:hint="@string/hint_last_name"
@@ -82,7 +79,8 @@
                         android:inputType="textPersonName"
                         android:text="@={registerData.lastName}"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_register_lastname" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_register_lastname"
+                        style="@style/FormInput" />
 
                     <TextView
                         android:id="@+id/txt_register_email"
@@ -97,9 +95,7 @@
                     <EditText
                         android:id="@+id/edit_register_email"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:ems="10"
                         android:hint="@string/hint_login_email"
@@ -108,7 +104,8 @@
                         android:text="@={registerData.email}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_register_email" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_register_email"
+                        style="@style/FormInput" />
 
                     <TextView
                         android:id="@+id/txt_register_password"
@@ -123,9 +120,7 @@
                     <EditText
                         android:id="@+id/edit_register_password"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:ems="10"
                         android:hint="@string/hint_password"
@@ -135,14 +130,13 @@
                         app:layout_constraintEnd_toStartOf="@+id/edit_register_confirmpassword"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_register_password" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_register_password"
+                        style="@style/FormInput" />
 
                     <EditText
                         android:id="@+id/edit_register_confirmpassword"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:ems="10"
                         android:hint="@string/hint_confirm_password"
@@ -152,7 +146,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.4"
                         app:layout_constraintStart_toEndOf="@+id/edit_register_password"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_register_password" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_register_password"
+                        style="@style/FormInput" />
 
                     <Button
                         android:id="@+id/btn_register_register"

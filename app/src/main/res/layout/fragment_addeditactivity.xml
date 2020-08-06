@@ -31,16 +31,15 @@
         <EditText
             android:id="@+id/edit_addeditactivity_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:ems="10"
             android:hint="@string/fragment_create_activity_name_placeholder"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
             android:text="@={activity.name}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_name" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_name"
+            style="@style/FormInput" />
 
         <TextView
             android:id="@+id/txt_addeditactivity_description"
@@ -55,9 +54,7 @@
         <EditText
             android:id="@+id/edit_addeditactivity_description"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:ems="10"
             android:hint="@string/fragment_create_activity_description_placeholder"
@@ -66,7 +63,8 @@
             android:text="@={activity.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_description" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_description"
+            style="@style/FormInput" />
 
         <TextView
             android:id="@+id/txt_addeditactivity_valuta"
@@ -81,15 +79,14 @@
         <Spinner
             android:id="@+id/cbo_addeditactivity_valuta"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:selectedItemPosition="@={activity.currencyType}"
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_valuta" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_valuta"
+            style="@style/FormInput" />
 
         <Button
             android:id="@+id/btn_addeditactivity"
