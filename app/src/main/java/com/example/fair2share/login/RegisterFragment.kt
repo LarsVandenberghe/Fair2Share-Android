@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.databinding.FragmentRegisterBinding
-import com.example.fair2share.repositories.IAccountRepository
 
 class RegisterFragment : Fragment() {
     private lateinit var viewModel: RegisterViewModel

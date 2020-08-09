@@ -74,8 +74,8 @@
             </ScrollView>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                style="@style/AppTheme.FloatinActionButton"
                 android:id="@+id/fab_friendlst_addfriend"
+                style="@style/AppTheme.FloatinActionButton"
                 app:backgroundTint="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />

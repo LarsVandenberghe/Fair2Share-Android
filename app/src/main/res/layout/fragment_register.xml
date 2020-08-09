@@ -47,6 +47,7 @@
 
                     <EditText
                         android:id="@+id/edit_register_firstname"
+                        style="@style/FormInput"
                         android:layout_width="0dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
@@ -57,8 +58,7 @@
                         android:text="@={registerData.firstName}"
                         app:layout_constraintEnd_toStartOf="@+id/txt_register_lastname"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_register_firstname"
-                        style="@style/FormInput" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_register_firstname" />
 
                     <TextView
                         android:id="@+id/txt_register_lastname"
@@ -71,6 +71,7 @@
 
                     <EditText
                         android:id="@+id/edit_register_lastname"
+                        style="@style/FormInput"
                         android:layout_width="0dp"
                         android:layout_marginEnd="10dp"
                         android:ems="10"
@@ -79,8 +80,7 @@
                         android:inputType="textPersonName"
                         android:text="@={registerData.lastName}"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_register_lastname"
-                        style="@style/FormInput" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_register_lastname" />
 
                     <TextView
                         android:id="@+id/txt_register_email"
@@ -94,6 +94,7 @@
 
                     <EditText
                         android:id="@+id/edit_register_email"
+                        style="@style/FormInput"
                         android:layout_width="0dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
@@ -104,8 +105,7 @@
                         android:text="@={registerData.email}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_register_email"
-                        style="@style/FormInput" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_register_email" />
 
                     <TextView
                         android:id="@+id/txt_register_password"
@@ -119,6 +119,7 @@
 
                     <EditText
                         android:id="@+id/edit_register_password"
+                        style="@style/FormInput"
                         android:layout_width="0dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
@@ -130,11 +131,11 @@
                         app:layout_constraintEnd_toStartOf="@+id/edit_register_confirmpassword"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_register_password"
-                        style="@style/FormInput" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_register_password" />
 
                     <EditText
                         android:id="@+id/edit_register_confirmpassword"
+                        style="@style/FormInput"
                         android:layout_width="0dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
@@ -146,8 +147,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.4"
                         app:layout_constraintStart_toEndOf="@+id/edit_register_password"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_register_password"
-                        style="@style/FormInput" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_register_password" />
 
                     <Button
                         android:id="@+id/btn_register_register"

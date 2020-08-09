@@ -6,10 +6,20 @@ import com.example.fair2share.models.dto_models.TransactionDTOProperty
 import org.junit.Test
 
 class TransactionDTOPropertyTest {
-    private val paidByProfile = ProfileDTOProperty(1, "Lars", "Vandenberghe", null, null, null, null, 0)
+    private val paidByProfile =
+        ProfileDTOProperty(
+            1,
+            "Lars",
+            "Vandenberghe",
+            null,
+            null,
+            null,
+            null,
+            0
+        )
 
     @Test
-    fun `Transaction with a name, a description and currencyType should work`(){
+    fun `Transaction with a name, a description and currencyType should work`() {
         TransactionDTOProperty(
             null,
             "transaction",
@@ -22,7 +32,7 @@ class TransactionDTOPropertyTest {
     }
 
     @Test
-    fun `Transaction without a description should work`(){
+    fun `Transaction without a description should work`() {
         TransactionDTOProperty(
             null,
             "transaction",
@@ -35,7 +45,7 @@ class TransactionDTOPropertyTest {
     }
 
     @Test
-    fun `Transaction with an empty a description should work`(){
+    fun `Transaction with an empty a description should work`() {
         TransactionDTOProperty(
             null,
             "transaction",
@@ -48,7 +58,7 @@ class TransactionDTOPropertyTest {
     }
 
     @Test
-    fun `Transaction with large payment should work`(){
+    fun `Transaction with large payment should work`() {
         TransactionDTOProperty(
             null,
             "transaction",
@@ -61,7 +71,7 @@ class TransactionDTOPropertyTest {
     }
 
     @Test(expected = InvalidFormDataException::class)
-    fun `Transaction with negative payment throws InvalidFormDataException`(){
+    fun `Transaction with negative payment throws InvalidFormDataException`() {
         TransactionDTOProperty(
             null,
             "transaction",
@@ -74,7 +84,7 @@ class TransactionDTOPropertyTest {
     }
 
     @Test(expected = InvalidFormDataException::class)
-    fun `Transaction name with 2 characters throws InvalidFormDataException`(){
+    fun `Transaction name with 2 characters throws InvalidFormDataException`() {
         TransactionDTOProperty(
             null,
             "tr",
@@ -87,7 +97,7 @@ class TransactionDTOPropertyTest {
     }
 
     @Test
-    fun `Transaction name with 3 characters is allowed`(){
+    fun `Transaction name with 3 characters is allowed`() {
         TransactionDTOProperty(
             null,
             "tra",
@@ -100,7 +110,7 @@ class TransactionDTOPropertyTest {
     }
 
     @Test
-    fun `Transaction name with 3 numbers is allowed`(){
+    fun `Transaction name with 3 numbers is allowed`() {
         TransactionDTOProperty(
             null,
             "123",

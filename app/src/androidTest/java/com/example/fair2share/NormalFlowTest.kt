@@ -23,12 +23,13 @@ import org.junit.Test
 @LargeTest
 class NormalFlowTest {
     private fun resetSharedPreferences() {
-        val sharedPreferences = InstrumentationRegistry.getInstrumentation().targetContext.getSharedPreferences("Fair2Share", Activity.MODE_PRIVATE)
+        val sharedPreferences = InstrumentationRegistry.getInstrumentation()
+            .targetContext.getSharedPreferences("Fair2Share", Activity.MODE_PRIVATE)
         sharedPreferences.edit().remove("token").remove("profileId").apply()
     }
 
     @get:Rule
-    val activityRule =object : ActivityTestRule<StartUpActivity>(StartUpActivity::class.java){
+    val activityRule = object : ActivityTestRule<StartUpActivity>(StartUpActivity::class.java) {
         override fun beforeActivityLaunched() {
             resetSharedPreferences()
             super.beforeActivityLaunched()
@@ -36,7 +37,7 @@ class NormalFlowTest {
     }
 
     @After
-    fun server(){
+    fun server() {
         resetSharedPreferences()
     }
 
@@ -45,8 +46,14 @@ class NormalFlowTest {
     fun test() {
         SystemClock.sleep(1100)
         onView(withId(R.id.loginFragment))
-        onView(withId(R.id.edit_login_email)).perform(typeText("test@account.be"), closeSoftKeyboard())
-        onView(withId(R.id.edit_login_password)).perform(typeText("testPassword1"), closeSoftKeyboard())
+        onView(withId(R.id.edit_login_email)).perform(
+            typeText("test@account.be"),
+            closeSoftKeyboard()
+        )
+        onView(withId(R.id.edit_login_password)).perform(
+            typeText("testPassword1"),
+            closeSoftKeyboard()
+        )
         onView(withId(R.id.btn_login_login)).perform(click())
         SystemClock.sleep(2000)
 
@@ -58,11 +65,23 @@ class NormalFlowTest {
         }
         onView(withId(R.id.fab_activitytransactions_addtransaction)).perform(click())
 
-        onView(withId(R.id.edit_addedittransaction_name)).perform(typeText("my test transaction"), closeSoftKeyboard())
-        onView(withId(R.id.edit_addedittransaction_payment)).perform(replaceText("10.00"), closeSoftKeyboard())
+        onView(withId(R.id.edit_addedittransaction_name)).perform(
+            typeText("my test transaction"),
+            closeSoftKeyboard()
+        )
+        onView(withId(R.id.edit_addedittransaction_payment)).perform(
+            replaceText("10.00"),
+            closeSoftKeyboard()
+        )
         onView(withId(R.id.cbo_addedittransaction_paidby)).perform(click())
         onData(allOf(`is`(instanceOf(String::class.java)), `is`("new account"))).perform(click())
-        onView(withId(R.id.cbo_addedittransaction_paidby)).check(matches(withSpinnerText(containsString("new account"))))
+        onView(withId(R.id.cbo_addedittransaction_paidby)).check(
+            matches(
+                withSpinnerText(
+                    containsString("new account")
+                )
+            )
+        )
         onView(withId(R.id.btn_addedittransaction)).perform(click())
 
         onView(withId(R.id.rv_mmanagepeopleintransaction_candidates)).perform(
@@ -78,7 +97,11 @@ class NormalFlowTest {
         onView(withId(R.id.btn_managepeopleintransaction_confirm)).perform(click())
         SystemClock.sleep(1000)
 
-        onView(withId(R.id.rv_activitytransactions_list)).check(RecyclerViewItemCountAssertion(itemCount + 1))
+        onView(withId(R.id.rv_activitytransactions_list)).check(
+            RecyclerViewItemCountAssertion(
+                itemCount + 1
+            )
+        )
     }
 }
 

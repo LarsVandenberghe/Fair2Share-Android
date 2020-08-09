@@ -71,14 +71,16 @@ class Utils {
         fun getProfilePicUrl(imageId: Long): GlideUrl {
             val token = AccountApi.sharedPreferences.getString("token", "") ?: ""
             return GlideUrl(
-                String.format("%sProfile/image/%s",
-                    BuildConfig.BASE_URL, imageId),
+                String.format(
+                    "%sProfile/image/%s",
+                    BuildConfig.BASE_URL, imageId
+                ),
                 LazyHeaders.Builder()
                     .addHeader("Authorization", String.format("Bearer %s", token)).build()
             )
         }
 
-        fun stopRefreshingAnimationAfter700ms(refreshLayout: SwipeRefreshLayout){
+        fun stopRefreshingAnimationAfter700ms(refreshLayout: SwipeRefreshLayout) {
             Timer("SettingUp", false).schedule(700) {
                 refreshLayout.isRefreshing = false
             }

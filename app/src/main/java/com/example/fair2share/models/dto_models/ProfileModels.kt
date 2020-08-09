@@ -34,23 +34,23 @@ data class ProfileDTOProperty(
         checkValid()
     }
 
-    private fun checkValid(){
+    private fun checkValid() {
         val exceptionsList = ArrayList<Int>()
         val spacesAndAllUnicodeChars = Pattern.compile("^[0-9\\p{L} .'-]+$")
 
-        if (!spacesAndAllUnicodeChars.matcher(firstname).matches()){
+        if (!spacesAndAllUnicodeChars.matcher(firstname).matches()) {
             exceptionsList.add(R.string.firtsname_not_valid)
         }
 
-        if (!spacesAndAllUnicodeChars.matcher(lastname).matches()){
+        if (!spacesAndAllUnicodeChars.matcher(lastname).matches()) {
             exceptionsList.add(R.string.lastname_not_valid)
         }
 
-        if (email != null && !EMAIL_ADDRESS.matcher(email).matches()){
+        if (email != null && !EMAIL_ADDRESS.matcher(email).matches()) {
             exceptionsList.add(R.string.email_not_valid)
         }
 
-        if (exceptionsList.size > 0){
+        if (exceptionsList.size > 0) {
             throw InvalidFormDataException(exceptionsList)
         }
     }

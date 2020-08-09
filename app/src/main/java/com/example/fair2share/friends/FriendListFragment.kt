@@ -41,7 +41,7 @@ class FriendListFragment : Fragment() {
             false
         )
         configureAdapters(binding)
-        binding.refreshlayoutFriendlst.setOnRefreshListener{
+        binding.refreshlayoutFriendlst.setOnRefreshListener {
             viewModel.update(resources)
             Utils.stopRefreshingAnimationAfter700ms(binding.refreshlayoutFriendlst)
         }

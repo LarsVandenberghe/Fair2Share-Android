@@ -7,7 +7,7 @@ import org.junit.Test
 
 class ActivityDTOPropertyTest {
     @Test
-    fun `Activity with a name, a description and currencyType should work`(){
+    fun `Activity with a name, a description and currencyType should work`() {
         ActivityDTOProperty(
             null,
             "activity",
@@ -19,7 +19,7 @@ class ActivityDTOPropertyTest {
     }
 
     @Test
-    fun `Activity description is allowed to be null`(){
+    fun `Activity description is allowed to be null`() {
         ActivityDTOProperty(
             null,
             "activity",
@@ -31,7 +31,7 @@ class ActivityDTOPropertyTest {
     }
 
     @Test
-    fun `Activity description is allowed to be empty`(){
+    fun `Activity description is allowed to be empty`() {
         ActivityDTOProperty(
             null,
             "activity",
@@ -43,7 +43,7 @@ class ActivityDTOPropertyTest {
     }
 
     @Test(expected = InvalidFormDataException::class)
-    fun `Activity without a name throws an InvalidFormDataException`(){
+    fun `Activity without a name throws an InvalidFormDataException`() {
         ActivityDTOProperty(
             null,
             "",
@@ -55,7 +55,7 @@ class ActivityDTOPropertyTest {
     }
 
     @Test
-    fun `Activity without only 3 letters in the name should work`(){
+    fun `Activity without only 3 letters in the name should work`() {
         ActivityDTOProperty(
             null,
             "abc",
@@ -67,7 +67,7 @@ class ActivityDTOPropertyTest {
     }
 
     @Test(expected = InvalidFormDataException::class)
-    fun `Activity without only 2 letters throws an InvalidFormDataException`(){
+    fun `Activity without only 2 letters throws an InvalidFormDataException`() {
         ActivityDTOProperty(
             null,
             "ab",
@@ -79,7 +79,7 @@ class ActivityDTOPropertyTest {
     }
 
     @Test
-    fun `Activity name only containing digits is allowed`(){
+    fun `Activity name only containing digits is allowed`() {
         ActivityDTOProperty(
             null,
             "123",
@@ -91,7 +91,7 @@ class ActivityDTOPropertyTest {
     }
 
     @Test
-    fun `Activity name only containing unicode is allowed`(){
+    fun `Activity name only containing unicode is allowed`() {
         ActivityDTOProperty(
             null,
             "日本人の氏名",
@@ -103,7 +103,7 @@ class ActivityDTOPropertyTest {
     }
 
     @Test(expected = InvalidFormDataException::class)
-    fun `Activity with a currencyType that does not exist throws InvalidFormDataException`(){
+    fun `Activity with a currencyType that does not exist throws InvalidFormDataException`() {
         ActivityDTOProperty(
             null,
             "activity",
@@ -115,7 +115,7 @@ class ActivityDTOPropertyTest {
     }
 
     @Test
-    fun `Activity with a the last available currencyType is allowed`(){
+    fun `Activity with a the last available currencyType is allowed`() {
         ActivityDTOProperty(
             null,
             "activity",
@@ -127,7 +127,7 @@ class ActivityDTOPropertyTest {
     }
 
     @Test(expected = InvalidFormDataException::class)
-    fun `Activity with a negative currencyType throws InvalidFormDataException`(){
+    fun `Activity with a negative currencyType throws InvalidFormDataException`() {
         ActivityDTOProperty(
             null,
             "activity",

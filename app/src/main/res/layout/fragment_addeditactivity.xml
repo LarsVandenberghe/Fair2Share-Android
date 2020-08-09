@@ -30,6 +30,7 @@
 
         <EditText
             android:id="@+id/edit_addeditactivity_name"
+            style="@style/FormInput"
             android:layout_width="wrap_content"
             android:layout_marginStart="10dp"
             android:ems="10"
@@ -38,8 +39,7 @@
             android:inputType="textPersonName"
             android:text="@={activity.name}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_name"
-            style="@style/FormInput" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_name" />
 
         <TextView
             android:id="@+id/txt_addeditactivity_description"
@@ -53,6 +53,7 @@
 
         <EditText
             android:id="@+id/edit_addeditactivity_description"
+            style="@style/FormInput"
             android:layout_width="0dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
@@ -63,8 +64,7 @@
             android:text="@={activity.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_description"
-            style="@style/FormInput" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_description" />
 
         <TextView
             android:id="@+id/txt_addeditactivity_valuta"
@@ -78,6 +78,7 @@
 
         <Spinner
             android:id="@+id/cbo_addeditactivity_valuta"
+            style="@style/FormInput"
             android:layout_width="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
@@ -85,8 +86,7 @@
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_valuta"
-            style="@style/FormInput" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addeditactivity_valuta" />
 
         <Button
             android:id="@+id/btn_addeditactivity"

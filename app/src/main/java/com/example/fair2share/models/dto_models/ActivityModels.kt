@@ -67,17 +67,17 @@ data class ActivityDTOProperty(
     }
 
 
-    private fun checkValid(){
+    private fun checkValid() {
         val exceptionsList = ArrayList<Int>()
-        if (name.length < 3){
+        if (name.length < 3) {
             exceptionsList.add(R.string.name_not_valid)
         }
 
-        if (!Valutas.values().map { it.ordinal }.contains(currencyType)){
+        if (!Valutas.values().map { it.ordinal }.contains(currencyType)) {
             exceptionsList.add(R.string.no_valuta_found)
         }
 
-        if (exceptionsList.size > 0){
+        if (exceptionsList.size > 0) {
             throw InvalidFormDataException(exceptionsList)
         }
     }
@@ -153,17 +153,17 @@ data class TransactionDTOProperty(
         )
     }
 
-    private fun checkValid(){
+    private fun checkValid() {
         val exceptionsList = ArrayList<Int>()
-        if (name.length < 3){
+        if (name.length < 3) {
             exceptionsList.add(R.string.name_not_valid)
         }
 
-        if (payment < 0){
+        if (payment < 0) {
             exceptionsList.add(R.string.transaction_payment_not_valid)
         }
 
-        if (exceptionsList.size > 0){
+        if (exceptionsList.size > 0) {
             throw InvalidFormDataException(exceptionsList)
         }
     }

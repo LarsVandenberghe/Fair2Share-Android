@@ -28,7 +28,7 @@ import retrofit2.HttpException
 import java.net.ConnectException
 
 
-class ActivityRepository(private val database: Fair2ShareDatabase): IActivityRepository {
+class ActivityRepository(private val database: Fair2ShareDatabase) : IActivityRepository {
     private var _repositoryJob = Job()
     private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
     private val jsonAdapter = Moshi.Builder().build().adapter(ActivityDTOProperty::class.java)
@@ -99,7 +99,11 @@ class ActivityRepository(private val database: Fair2ShareDatabase): IActivityRep
         }
     }
 
-    override fun createOrUpdate(resources: Resources, isNewActivity: Boolean, activity: ActivityFormProperty) {
+    override fun createOrUpdate(
+        resources: Resources,
+        isNewActivity: Boolean,
+        activity: ActivityFormProperty
+    ) {
         _coroutineScope.launch {
             try {
                 val response = if (isNewActivity) {
@@ -117,7 +121,7 @@ class ActivityRepository(private val database: Fair2ShareDatabase): IActivityRep
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
             } catch (e: HttpException) {
                 _errorMessage.postValue(Utils.formExceptionsToString(e))
-            } catch (e: InvalidFormDataException){
+            } catch (e: InvalidFormDataException) {
                 _errorMessage.value = e.buildErrorMessage(resources)
             } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)

@@ -21,6 +21,7 @@
 
         <EditText
             android:id="@+id/edit_addfriend_email"
+            style="@style/FormInput"
             android:layout_width="0dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
@@ -30,8 +31,7 @@
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_addfriend_email"
-            style="@style/FormInput" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_addfriend_email" />
 
         <Button
             android:id="@+id/btn_recycleraddandremovefriend_addfriend"

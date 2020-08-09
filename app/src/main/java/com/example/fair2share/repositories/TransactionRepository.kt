@@ -23,7 +23,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.net.ConnectException
 
-class TransactionRepository(private val database: Fair2ShareDatabase): ITransactionRepository {
+class TransactionRepository(private val database: Fair2ShareDatabase) : ITransactionRepository {
     private var _repositoryJob = Job()
     private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
 
@@ -87,7 +87,7 @@ class TransactionRepository(private val database: Fair2ShareDatabase): ITransact
             } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
-            } catch (e: InvalidFormDataException){
+            } catch (e: InvalidFormDataException) {
                 _errorMessage.value = e.buildErrorMessage(resources)
             } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)

@@ -34,11 +34,11 @@
 
                 <TextView
                     android:id="@+id/txt_managepeopleinactivity_noparticipants"
+                    style="@style/TextViewNoContent"
                     android:layout_marginStart="10dp"
                     android:text="@string/no_participants"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_managepeopleinactivity_participants"
-                    style="@style/TextViewNoContent" />
+                    app:layout_constraintTop_toBottomOf="@+id/txt_managepeopleinactivity_participants" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_managepeopleinactivity_participants"
@@ -71,11 +71,11 @@
 
                 <TextView
                     android:id="@+id/txt_managepeopleinactivity_nocandidates"
+                    style="@style/TextViewNoContent"
                     android:layout_marginStart="10dp"
                     android:text="@string/no_candidates"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_managepeopleinactivity_candidates"
-                    style="@style/TextViewNoContent" />
+                    app:layout_constraintTop_toBottomOf="@+id/txt_managepeopleinactivity_candidates" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_managepeopleinactivity_candidates"

@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.net.ConnectException
 
-class ProfileRepository(private val database: Fair2ShareDatabase): IProfileRepository {
+class ProfileRepository(private val database: Fair2ShareDatabase) : IProfileRepository {
     private var _repositoryJob = Job()
     private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
 
@@ -117,7 +117,11 @@ class ProfileRepository(private val database: Fair2ShareDatabase): IProfileRepos
         }
     }
 
-    override fun addFriendByEmail(myProfileEmailAddress: String, email: String, resources: Resources) {
+    override fun addFriendByEmail(
+        myProfileEmailAddress: String,
+        email: String,
+        resources: Resources
+    ) {
         _coroutineScope.launch {
             try {
                 if (myProfileEmailAddress.equals(email)) {

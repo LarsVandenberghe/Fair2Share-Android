@@ -24,10 +24,10 @@
 
             <TextView
                 android:id="@+id/txt_activitytransactions_notransactions"
+                style="@style/TextViewNoContent"
                 android:text="@string/txt_activitytransactions_notransactions"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_activitytransactions_title"
-                style="@style/TextViewNoContent" />
+                app:layout_constraintTop_toBottomOf="@+id/txt_activitytransactions_title" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_activitytransactions_list"
@@ -44,10 +44,10 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_activitytransactions_addtransaction"
+                style="@style/AppTheme.FloatinActionButton"
                 app:backgroundTint="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                style="@style/AppTheme.FloatinActionButton" />
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

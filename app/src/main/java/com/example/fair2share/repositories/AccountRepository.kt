@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.net.ConnectException
 
-class AccountRepository: IAccountRepository {
+class AccountRepository : IAccountRepository {
     private var _repositoryJob = Job()
     private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
 
@@ -30,7 +30,7 @@ class AccountRepository: IAccountRepository {
         get() = _errorMessage
 
 
-    override fun login(resources: Resources, loginData: LoginDTOProperty){
+    override fun login(resources: Resources, loginData: LoginDTOProperty) {
         _coroutineScope.launch {
             try {
                 val getJWTDeffered = AccountApi.retrofitService.login(loginData)
@@ -51,7 +51,7 @@ class AccountRepository: IAccountRepository {
             } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
-            } catch (e: InvalidFormDataException){
+            } catch (e: InvalidFormDataException) {
                 _errorMessage.postValue(e.buildErrorMessage(resources))
             } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)
@@ -70,7 +70,7 @@ class AccountRepository: IAccountRepository {
                 _loggedIn.postValue(true)
             } catch (e: HttpException) {
                 _errorMessage.postValue(Utils.formExceptionsToString(e))
-            } catch (e: InvalidFormDataException){
+            } catch (e: InvalidFormDataException) {
                 _errorMessage.postValue(e.buildErrorMessage(resources))
             } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)

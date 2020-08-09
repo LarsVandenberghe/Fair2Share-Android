@@ -2,10 +2,10 @@ package com.example.fair2share.activity.exceptions
 
 import android.content.res.Resources
 
-class InvalidFormDataException(private val exceptionsList: List<Int>) : IllegalArgumentException(){
-    fun buildErrorMessage(resources: Resources): String{
+class InvalidFormDataException(private val exceptionsList: List<Int>) : IllegalArgumentException() {
+    fun buildErrorMessage(resources: Resources): String {
         val stringBuilder = StringBuilder()
-        exceptionsList.forEach{
+        exceptionsList.forEach {
             stringBuilder.append(String.format("%s%n", resources.getString(it)))
         }
         return stringBuilder.toString()
