@@ -33,7 +33,7 @@ Na het opstarten van de applicatie is het belangrijk dat er internet is! Er zal 
 Email:
 
 ```
-test@hogent.be
+sandbox@hogent.be
 ```
 
 Paswoord:
@@ -63,6 +63,8 @@ De app bevat opzich weinig domein logica omdat de server de complexe bewerkingen
 ## References
 
 * [PairAdapterFactory](https://github.com/loewenfels/dep-graph-releaser/blob/66c822830aa38ac6b4a2278dfe0020d551782bf0/dep-graph-releaser-serialization/src/main/kotlin/ch/loewenfels/depgraph/serialization/PairAdapterFactory.kt) - Deze klasse is een oplossing voor de: [moshi pair parsing issue](https://github.com/square/moshi/issues/508)
+* [MyViewAction](https://stackoverflow.com/questions/28476507/using-espresso-to-click-view-inside-recyclerview-item) - Deze klasse maakt het mogelijk om in espresso op een recyclerViewHolder te zoeken naar een id en daar op de klikken.
+* [RecyclerViewItemCountAssertion](https://stackoverflow.com/questions/36399787/how-to-count-recyclerview-items-with-espresso/39446889) - Deze klasse zorgt ervoor dat kan vergelijken hoeveel items een recyclerviewer heeft.
 
 
 
