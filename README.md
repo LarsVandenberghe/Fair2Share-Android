@@ -50,7 +50,7 @@ Het inloggen moet slechts enkel moeten gebeuren bij de eerste keer dat de applic
 Er zijn Unit-testen en UI-testen aanwezig voor deze applicatie.
 De app bevat opzich weinig domein logica omdat de server de complexe bewerkingen uitvoerd.
 * Om de Unit-testen uit te voeren, opent men java folder en vervolgens wordt er rechtermuisknop op de `com.example.fair2share ( test )` folder. Kies Run 'fair2share'.
-*Om de UI-testen uit te voeren, opent men java folder en vervolgens wordt er rechtermuisknop op de `com.example.fair2share ( androidTest )` folder. Kies Run 'Tests in com.example.fai...'.
+* Om de UI-testen uit te voeren, opent men java folder en vervolgens wordt er rechtermuisknop op de `com.example.fair2share ( androidTest )` folder. Kies Run 'Tests in com.example.fai...'.
 
 
 
