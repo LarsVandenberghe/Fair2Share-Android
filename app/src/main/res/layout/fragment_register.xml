@@ -4,11 +4,11 @@
 
     <data>
 
-        <import type="com.example.fair2share.models.data_models.RegisterProperty" />
+        <import type="com.example.fair2share.models.formdata_models.RegisterFormProperty" />
 
         <variable
             name="registerData"
-            type="com.example.fair2share.models.data_models.RegisterProperty" />
+            type="com.example.fair2share.models.formdata_models.RegisterFormProperty" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
-import com.example.fair2share.Utils
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentActivitysummaryBinding
+import com.example.fair2share.util.Utils
 
 
 class ActivitySummaryFragment : Fragment() {

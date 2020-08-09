@@ -2,10 +2,13 @@ package com.example.fair2share.models.dto_models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.example.fair2share.models.data_models.ActivityProperty
-import com.example.fair2share.models.data_models.TransactionProperty
+import com.example.fair2share.R
+import com.example.fair2share.activity.exceptions.InvalidFormDataException
+import com.example.fair2share.models.Valutas
 import com.example.fair2share.models.database_models.ActivityDatabaseProperty
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty
+import com.example.fair2share.models.formdata_models.ActivityFormProperty
+import com.example.fair2share.models.formdata_models.TransactionFormProperty
 import com.squareup.moshi.Moshi
 
 data class ActivityDTOProperty(
@@ -25,6 +28,10 @@ data class ActivityDTOProperty(
         parcel.createTypedArrayList(TransactionDTOProperty)
     )
 
+    init {
+        checkValid()
+    }
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(activityId!!)
         parcel.writeString(name)
@@ -38,14 +45,14 @@ data class ActivityDTOProperty(
         return 0
     }
 
-    fun makeDataModel(): ActivityProperty {
-        return ActivityProperty(
+    fun makeFormDataModel(): ActivityFormProperty {
+        return ActivityFormProperty(
             activityId,
             name,
             description,
             currencyType,
-            participants?.asDataModel(),
-            transactions?.asDataModel2()
+            participants?.asFormDataModel(),
+            transactions?.asFormDataModel2()
         )
     }
 
@@ -57,6 +64,22 @@ data class ActivityDTOProperty(
             activityId!!,
             jsonAdapter.toJson(this)
         )
+    }
+
+
+    private fun checkValid(){
+        val exceptionsList = ArrayList<Int>()
+        if (name.length < 3){
+            exceptionsList.add(R.string.name_not_valid)
+        }
+
+        if (!Valutas.values().map { it.ordinal }.contains(currencyType)){
+            exceptionsList.add(R.string.no_valuta_found)
+        }
+
+        if (exceptionsList.size > 0){
+            throw InvalidFormDataException(exceptionsList)
+        }
     }
 
     companion object CREATOR : Parcelable.Creator<ActivityDTOProperty> {
@@ -89,6 +112,10 @@ data class TransactionDTOProperty(
         parcel.readParcelable(ProfileDTOProperty::class.java.classLoader)!!
     )
 
+    init {
+        checkValid()
+    }
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(transactionId!!)
         parcel.writeString(name)
@@ -103,15 +130,15 @@ data class TransactionDTOProperty(
         return 0
     }
 
-    fun makeDataModel(): TransactionProperty {
-        return TransactionProperty(
+    fun makeFormDataModel(): TransactionFormProperty {
+        return TransactionFormProperty(
             transactionId,
             name,
             description,
             timeStamp,
             payment,
-            profilesInTransaction?.asDataModel(),
-            paidBy.makeDataModel()
+            profilesInTransaction?.asFormDataModel(),
+            paidBy.makeFormDataModel()
         )
     }
 
@@ -126,6 +153,21 @@ data class TransactionDTOProperty(
         )
     }
 
+    private fun checkValid(){
+        val exceptionsList = ArrayList<Int>()
+        if (name.length < 3){
+            exceptionsList.add(R.string.name_not_valid)
+        }
+
+        if (payment < 0){
+            exceptionsList.add(R.string.transaction_payment_not_valid)
+        }
+
+        if (exceptionsList.size > 0){
+            throw InvalidFormDataException(exceptionsList)
+        }
+    }
+
     companion object CREATOR : Parcelable.Creator<TransactionDTOProperty> {
         override fun createFromParcel(parcel: Parcel): TransactionDTOProperty {
             return TransactionDTOProperty(parcel)
@@ -137,14 +179,14 @@ data class TransactionDTOProperty(
     }
 }
 
-fun List<ActivityDTOProperty>.asDataModel(): List<ActivityProperty> {
+fun List<ActivityDTOProperty>.asFormDataModel(): List<ActivityFormProperty> {
     return map {
-        it.makeDataModel()
+        it.makeFormDataModel()
     }
 }
 
-fun List<TransactionDTOProperty>.asDataModel2(): List<TransactionProperty> {
+fun List<TransactionDTOProperty>.asFormDataModel2(): List<TransactionFormProperty> {
     return map {
-        it.makeDataModel()
+        it.makeFormDataModel()
     }
 }

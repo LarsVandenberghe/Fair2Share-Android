@@ -5,20 +5,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.fair2share.database.ActivityRepository
 import com.example.fair2share.database.Fair2ShareDatabase
-import com.example.fair2share.database.TransactionRepository
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
+import com.example.fair2share.repositories.ActivityRepository
+import com.example.fair2share.repositories.IActivityRepository
+import com.example.fair2share.repositories.ITransactionRepository
+import com.example.fair2share.repositories.TransactionRepository
 
 class ManagePeopleInTransactionViewModel(
     private val activityArg: ActivityDTOProperty,
     private var transactionArg: TransactionDTOProperty,
     database: Fair2ShareDatabase
 ) : ViewModel() {
-    private val activityRepository = ActivityRepository(database)
-    private val transactionRepository = TransactionRepository(database)
+    private val activityRepository: IActivityRepository =
+        ActivityRepository(database)
+    private val transactionRepository: ITransactionRepository =
+        TransactionRepository(database)
 
     val success: LiveData<Boolean> = transactionRepository.success
     val errorMessage: LiveData<String> = transactionRepository.errorMessage

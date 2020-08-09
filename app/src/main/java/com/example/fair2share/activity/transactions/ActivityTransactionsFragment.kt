@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
-import com.example.fair2share.Utils
 import com.example.fair2share.activity.ActivityFragmentViewModelFactory
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentActivitytransactionsBinding
+import com.example.fair2share.util.Utils
 
 class ActivityTransactionsFragment : Fragment() {
     private lateinit var viewModel: ActivityTransactionsFragmentViewModel
@@ -107,7 +107,7 @@ class ActivityTransactionsFragment : Fragment() {
             transactionAdapter.data = activity.transactions?.reversed() ?: emptyList()
         })
 
-        binding.fabActivitytransactionsAddactivity.setOnClickListener {
+        binding.fabActivitytransactionsAddtransaction.setOnClickListener {
             val action =
                 ActivityTransactionsFragmentDirections.actionActivityTransactionsFragmentToAddEditTransactionFragment(
                     null,

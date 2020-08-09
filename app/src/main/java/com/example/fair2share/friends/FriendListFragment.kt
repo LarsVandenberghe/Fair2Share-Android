@@ -13,10 +13,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
-import com.example.fair2share.Utils
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentFriendlistBinding
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
+import com.example.fair2share.util.Utils
 
 class FriendListFragment : Fragment() {
     private lateinit var viewModel: FriendListViewModel

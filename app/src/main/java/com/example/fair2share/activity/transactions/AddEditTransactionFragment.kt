@@ -15,8 +15,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentAddedittransactionBinding
-import com.example.fair2share.models.data_models.TransactionProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
+import com.example.fair2share.models.formdata_models.TransactionFormProperty
 
 class AddEditTransactionFragment : Fragment() {
 
@@ -84,14 +84,14 @@ class AddEditTransactionFragment : Fragment() {
             setHasOptionsMenu(true)
             AddEditTransactionViewModelFactory(
                 safeArgs.activity,
-                (safeArgs.transaction as TransactionDTOProperty).makeDataModel(),
+                (safeArgs.transaction as TransactionDTOProperty).makeFormDataModel(),
                 false,
                 database
             )
         } else {
             AddEditTransactionViewModelFactory(
                 safeArgs.activity,
-                TransactionProperty.makeEmpty(),
+                TransactionFormProperty.makeEmpty(),
                 true,
                 database
             )

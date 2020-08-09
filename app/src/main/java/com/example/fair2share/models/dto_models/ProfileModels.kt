@@ -2,9 +2,12 @@ package com.example.fair2share.models.dto_models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.example.fair2share.models.data_models.ProfileProperty
+import com.example.fair2share.R
+import com.example.fair2share.activity.exceptions.InvalidFormDataException
 import com.example.fair2share.models.database_models.ProfileDatabaseProperty
+import com.example.fair2share.models.formdata_models.ProfileFormProperty
 import com.squareup.moshi.Moshi
+import java.util.regex.Pattern
 
 data class ProfileDTOProperty(
     val profileId: Long,
@@ -27,6 +30,31 @@ data class ProfileDTOProperty(
         parcel.readValue(Int::class.java.classLoader) as? Int
     )
 
+    init {
+        checkValid()
+    }
+
+    private fun checkValid(){
+        val exceptionsList = ArrayList<Int>()
+        val spacesAndAllUnicodeChars = Pattern.compile("^[0-9\\p{L} .'-]+$")
+
+        if (!spacesAndAllUnicodeChars.matcher(firstname).matches()){
+            exceptionsList.add(R.string.firtsname_not_valid)
+        }
+
+        if (!spacesAndAllUnicodeChars.matcher(lastname).matches()){
+            exceptionsList.add(R.string.lastname_not_valid)
+        }
+
+        if (email != null && !EMAIL_ADDRESS.matcher(email).matches()){
+            exceptionsList.add(R.string.email_not_valid)
+        }
+
+        if (exceptionsList.size > 0){
+            throw InvalidFormDataException(exceptionsList)
+        }
+    }
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(profileId)
         parcel.writeString(firstname)
@@ -46,15 +74,15 @@ data class ProfileDTOProperty(
         return String.format("%s %s", firstname, lastname)
     }
 
-    fun makeDataModel(): ProfileProperty {
-        return ProfileProperty(
+    fun makeFormDataModel(): ProfileFormProperty {
+        return ProfileFormProperty(
             profileId,
             firstname,
             lastname,
             email,
-            friends?.asDataModel(),
+            friends?.asFormDataModel(),
             friendRequestState,
-            activities?.asDataModel(),
+            activities?.asFormDataModel(),
             amountOfFriendRequests
         )
     }
@@ -79,8 +107,19 @@ data class ProfileDTOProperty(
     }
 }
 
-fun List<ProfileDTOProperty>.asDataModel(): List<ProfileProperty> {
+fun List<ProfileDTOProperty>.asFormDataModel(): List<ProfileFormProperty> {
     return map {
-        it.makeDataModel()
+        it.makeFormDataModel()
     }
 }
+
+// This regex is built into android.util.Patterns, but returns null on parameterized tests.
+private val EMAIL_ADDRESS = Pattern.compile(
+    "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+            "\\@" +
+            "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+            "(" +
+            "\\." +
+            "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+            ")+"
+)

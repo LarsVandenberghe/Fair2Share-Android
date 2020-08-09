@@ -1,15 +1,15 @@
-package com.example.fair2share.models.data_models
+package com.example.fair2share.models.formdata_models
 
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
 
-data class ActivityProperty(
+data class ActivityFormProperty(
     var activityId: Long?,
     var name: String,
     var description: String?,
     var currencyType: Int,
-    var participants: List<ProfileProperty>?,
-    var transactions: List<TransactionProperty>?
+    var participants: List<ProfileFormProperty>?,
+    var transactions: List<TransactionFormProperty>?
 ) {
     fun makeDTO(): ActivityDTOProperty {
         return ActivityDTOProperty(
@@ -23,8 +23,8 @@ data class ActivityProperty(
     }
 
     companion object {
-        fun makeEmpty(): ActivityProperty {
-            return ActivityProperty(
+        fun makeEmpty(): ActivityFormProperty {
+            return ActivityFormProperty(
                 null,
                 "",
                 null,
@@ -36,14 +36,14 @@ data class ActivityProperty(
     }
 }
 
-data class TransactionProperty(
+data class TransactionFormProperty(
     var transactionId: Long?,
     var name: String,
     var description: String?,
     val timeStamp: String?,
     var payment: Double,
-    var profilesInTransaction: List<ProfileProperty>?,
-    var paidBy: ProfileProperty?
+    var profilesInTransaction: List<ProfileFormProperty>?,
+    var paidBy: ProfileFormProperty?
 ) {
     fun makeDTO(): TransactionDTOProperty {
         return TransactionDTOProperty(
@@ -58,8 +58,8 @@ data class TransactionProperty(
     }
 
     companion object {
-        fun makeEmpty(): TransactionProperty {
-            return TransactionProperty(
+        fun makeEmpty(): TransactionFormProperty {
+            return TransactionFormProperty(
                 null,
                 "",
                 null,
@@ -72,13 +72,13 @@ data class TransactionProperty(
     }
 }
 
-fun List<ActivityProperty>.asDTO(): List<ActivityDTOProperty> {
+fun List<ActivityFormProperty>.asDTO(): List<ActivityDTOProperty> {
     return map {
         it.makeDTO()
     }
 }
 
-fun List<TransactionProperty>.asDTO2(): List<TransactionDTOProperty> {
+fun List<TransactionFormProperty>.asDTO2(): List<TransactionDTOProperty> {
     return map {
         it.makeDTO()
     }

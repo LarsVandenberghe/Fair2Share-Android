@@ -17,9 +17,9 @@ import androidx.navigation.fragment.navArgs
 import com.example.fair2share.R
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentAddeditactivityBinding
-import com.example.fair2share.models.data_models.ActivityProperty
-import com.example.fair2share.models.data_models.Valutas
+import com.example.fair2share.models.Valutas
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
+import com.example.fair2share.models.formdata_models.ActivityFormProperty
 
 class AddEditActivityFragment : Fragment() {
     private lateinit var viewModel: AddEditActivityFragmentViewModel
@@ -57,11 +57,11 @@ class AddEditActivityFragment : Fragment() {
         val database = Fair2ShareDatabase.getInstance(requireContext())
         val viewModelFactory = if (safeArgs.activity != null) {
             AddEditActivityFragmentViewModelFactory(
-                (safeArgs.activity as ActivityDTOProperty).makeDataModel(),
+                (safeArgs.activity as ActivityDTOProperty).makeFormDataModel(),
                 database
             )
         } else {
-            AddEditActivityFragmentViewModelFactory(ActivityProperty.makeEmpty(), database)
+            AddEditActivityFragmentViewModelFactory(ActivityFormProperty.makeEmpty(), database)
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)

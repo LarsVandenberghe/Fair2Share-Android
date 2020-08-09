@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
 import com.example.fair2share.databinding.FragmentRegisterBinding
+import com.example.fair2share.repositories.IAccountRepository
 
 class RegisterFragment : Fragment() {
     private lateinit var viewModel: RegisterViewModel
@@ -61,7 +62,7 @@ class RegisterFragment : Fragment() {
     private fun bindViewModelData(binding: FragmentRegisterBinding) {
         binding.registerData = viewModel.registerData
         binding.btnRegisterRegister.setOnClickListener {
-            viewModel.register()
+            viewModel.register(resources)
         }
         binding.linearlayoutRegister.setOnClickListener { view: View ->
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

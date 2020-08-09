@@ -1,17 +1,19 @@
-package com.example.fair2share.database
+package com.example.fair2share.repositories
 
 import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.fair2share.R
-import com.example.fair2share.Utils
-import com.example.fair2share.models.data_models.TransactionProperty
+import com.example.fair2share.activity.exceptions.InvalidFormDataException
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
+import com.example.fair2share.models.formdata_models.TransactionFormProperty
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.ActivityApi
+import com.example.fair2share.util.Utils
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,42 +23,42 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.net.ConnectException
 
-class TransactionRepository(private val database: Fair2ShareDatabase) {
-    private var _viewModelJob = Job()
-    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.IO)
+class TransactionRepository(private val database: Fair2ShareDatabase): ITransactionRepository {
+    private var _repositoryJob = Job()
+    private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
 
     private val jsonAdapter = Moshi.Builder().build().adapter(TransactionDTOProperty::class.java)
 
     private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
+    override val errorMessage: LiveData<String>
         get() = _errorMessage
 
     private val _success = MutableLiveData<Boolean>()
-    val success: LiveData<Boolean>
+    override val success: LiveData<Boolean>
         get() = _success
 
     private val _navigate = MutableLiveData<Boolean>()
-    val navigate: LiveData<Boolean>
+    override val navigate: LiveData<Boolean>
         get() = _navigate
 
     private val _transaction = MutableLiveData<TransactionDTOProperty>()
-    val transaction: LiveData<TransactionDTOProperty>
+    override val transaction: LiveData<TransactionDTOProperty>
         get() = _transaction
 
     private val _resetSelected = MutableLiveData<Boolean>()
-    val resetSelected: LiveData<Boolean>
+    override val resetSelected: LiveData<Boolean>
         get() = _resetSelected
 
-    fun update(resources: Resources, activityId: Long, transactionId: Long) {
+    override fun update(resources: Resources, activityId: Long, transactionId: Long) {
         updateTransactionWithRoom(activityId, transactionId)
         updateTransactionWithApi(resources, activityId, transactionId)
     }
 
-    fun createOrUpdate(
+    override fun createOrUpdate(
         resources: Resources,
         isNewTransaction: Boolean,
         activity: ActivityDTOProperty,
-        transaction: TransactionProperty
+        transaction: TransactionFormProperty
     ) {
         _coroutineScope.launch {
             try {
@@ -85,6 +87,8 @@ class TransactionRepository(private val database: Fair2ShareDatabase) {
             } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
+            } catch (e: InvalidFormDataException){
+                _errorMessage.value = e.buildErrorMessage(resources)
             } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)
             }
@@ -92,7 +96,7 @@ class TransactionRepository(private val database: Fair2ShareDatabase) {
     }
 
 
-    fun removeTransaction(resources: Resources, activityId: Long, transactionId: Long) {
+    override fun removeTransaction(resources: Resources, activityId: Long, transactionId: Long) {
         _coroutineScope.launch {
             try {
                 val deferred =
@@ -114,7 +118,7 @@ class TransactionRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
-    fun postTransactionParticipants(
+    override fun postTransactionParticipants(
         resources: Resources,
         activityId: Long,
         transactionId: Long,

@@ -1,15 +1,15 @@
-package com.example.fair2share.models.data_models
+package com.example.fair2share.models.formdata_models
 
 import com.example.fair2share.models.dto_models.LoginDTOProperty
 import com.example.fair2share.models.dto_models.RegisterDTOProperty
 
-data class LoginProperty(
+data class LoginFormProperty(
     var email: String,
     var password: String
 ) {
     companion object {
-        fun makeEmpty(): LoginProperty {
-            return LoginProperty("", "")
+        fun makeEmpty(): LoginFormProperty {
+            return LoginFormProperty("", "")
         }
     }
 
@@ -18,7 +18,7 @@ data class LoginProperty(
     }
 }
 
-data class RegisterProperty(
+data class RegisterFormProperty(
     var email: String,
     var password: String,
     var firstName: String,
@@ -27,8 +27,8 @@ data class RegisterProperty(
 ) {
 
     companion object {
-        fun makeEmpty(): RegisterProperty {
-            return RegisterProperty("", "", "", "", "")
+        fun makeEmpty(): RegisterFormProperty {
+            return RegisterFormProperty("", "", "", "", "")
         }
     }
 

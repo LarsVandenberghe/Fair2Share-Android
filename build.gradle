@@ -18,7 +18,7 @@ buildscript {
         version_material = "1.0.0"
         version_annotation = "1.0.2"
         version_espresso = "3.1.1"
-        version_junit = "4.12"
+        version_junit = "1.1.0"
         version_testrunner = "1.1.1"
         version_legacysupport = "1.0.0"
     }

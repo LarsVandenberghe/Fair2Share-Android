@@ -1,16 +1,16 @@
-package com.example.fair2share.models.data_models
+package com.example.fair2share.models.formdata_models
 
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 
-data class ProfileProperty(
+data class ProfileFormProperty(
     val profileId: Long,
-    val firstname: String,
-    val lastname: String,
-    val email: String?,
-    val friends: List<ProfileProperty>?,
-    val friendRequestState: Int?,
-    val activities: List<ActivityProperty>?,
-    val amountOfFriendRequests: Int?
+    var firstname: String,
+    var lastname: String,
+    var email: String?,
+    var friends: List<ProfileFormProperty>?,
+    var friendRequestState: Int?,
+    var activities: List<ActivityFormProperty>?,
+    var amountOfFriendRequests: Int?
 ) {
     fun makeDTO(): ProfileDTOProperty {
         return ProfileDTOProperty(
@@ -31,7 +31,7 @@ data class ProfileProperty(
 }
 
 
-fun List<ProfileProperty>.asDTO(): List<ProfileDTOProperty> {
+fun List<ProfileFormProperty>.asDTO(): List<ProfileDTOProperty> {
     return map {
         it.makeDTO()
     }

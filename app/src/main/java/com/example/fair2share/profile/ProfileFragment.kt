@@ -10,11 +10,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.fair2share.MainActivity
 import com.example.fair2share.R
-import com.example.fair2share.Utils
 import com.example.fair2share.database.DatabaseOnlyViewModelFactory
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.databinding.FragmentProfileBinding
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
+import com.example.fair2share.util.Utils
 import com.google.android.material.navigation.NavigationView
 
 

@@ -8,8 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fair2share.ConstraintRowItemViewHolder
 import com.example.fair2share.R
-import com.example.fair2share.Utils
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
+import com.example.fair2share.util.Utils
 
 class FriendBindingAdapter : RecyclerView.Adapter<ConstraintRowItemViewHolder>() {
     var data = listOf<ProfileDTOProperty>()

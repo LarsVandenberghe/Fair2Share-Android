@@ -1,4 +1,4 @@
-package com.example.fair2share.database
+package com.example.fair2share.repositories
 
 import android.content.SharedPreferences
 import android.content.res.Resources
@@ -6,14 +6,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.fair2share.R
-import com.example.fair2share.Utils
-import com.example.fair2share.models.data_models.FriendRequestStates
+import com.example.fair2share.database.Fair2ShareDatabase
+import com.example.fair2share.models.FriendRequestStates
 import com.example.fair2share.models.database_models.ProfileDatabaseProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AuthInterceptor
 import com.example.fair2share.network.FriendRequestApi
 import com.example.fair2share.network.ProfileApi
+import com.example.fair2share.util.Utils
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,51 +23,51 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.net.ConnectException
 
-class ProfileRepository(private val database: Fair2ShareDatabase) {
-    private var _viewModelJob = Job()
-    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.IO)
+class ProfileRepository(private val database: Fair2ShareDatabase): IProfileRepository {
+    private var _repositoryJob = Job()
+    private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
 
     private val sharedPreferences: SharedPreferences = AccountApi.sharedPreferences
     private val jsonAdapter = Moshi.Builder().build().adapter(ProfileDTOProperty::class.java)
 
     private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
+    override val errorMessage: LiveData<String>
         get() = _errorMessage
 
     private val _shouldRelog = MutableLiveData<Boolean>()
-    val shouldRelog: LiveData<Boolean>
+    override val shouldRelog: LiveData<Boolean>
         get() = _shouldRelog
 
     private val _profile = MutableLiveData<ProfileDTOProperty>()
-    val profile: LiveData<ProfileDTOProperty>
+    override val profile: LiveData<ProfileDTOProperty>
         get() = _profile
 
     private val _friendRequests = MutableLiveData<List<ProfileDTOProperty>>(emptyList())
-    val friendRequests: LiveData<List<ProfileDTOProperty>>
+    override val friendRequests: LiveData<List<ProfileDTOProperty>>
         get() = _friendRequests
 
     private val _success = MutableLiveData<Boolean>()
-    val success: LiveData<Boolean>
+    override val success: LiveData<Boolean>
         get() = _success
 
-    fun updateFromSafeArgs(profile: ProfileDTOProperty) {
+    override fun updateFromSafeArgs(profile: ProfileDTOProperty) {
         _profile.postValue(profile)
     }
 
-    fun update(resouces: Resources) {
+    override fun update(resouces: Resources) {
         updateProfileWithRoom()
         updateProfileWithApi(resouces)
     }
 
-    fun updateOnStartUpCheckOnline(resouces: Resources) {
+    override fun updateOnStartUpCheckOnline(resouces: Resources) {
         updateProfileWithApi(resouces)
     }
 
-    fun updateWithCachedProfileOnStartUp() {
+    override fun updateWithCachedProfileOnStartUp() {
         updateProfileWithRoom()
     }
 
-    fun updateFriendRequestsWithApi(resources: Resources) {
+    override fun updateFriendRequestsWithApi(resources: Resources) {
         _coroutineScope.launch {
             try {
                 val deffered = FriendRequestApi.retrofitService.getFriendRequest()
@@ -89,7 +90,7 @@ class ProfileRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
-    fun handleFriendRequest(userId: Long, accept: Boolean, resources: Resources) {
+    override fun handleFriendRequest(userId: Long, accept: Boolean, resources: Resources) {
         _coroutineScope.launch {
             try {
                 val getJWTDeffered =
@@ -116,7 +117,7 @@ class ProfileRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
-    fun addFriendByEmail(myProfileEmailAddress: String, email: String, resources: Resources) {
+    override fun addFriendByEmail(myProfileEmailAddress: String, email: String, resources: Resources) {
         _coroutineScope.launch {
             try {
                 if (myProfileEmailAddress.equals(email)) {

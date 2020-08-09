@@ -1,21 +1,23 @@
-package com.example.fair2share.database
+package com.example.fair2share.repositories
 
 import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.example.fair2share.PairAdapterFactory
 import com.example.fair2share.R
-import com.example.fair2share.Utils
-import com.example.fair2share.models.data_models.ActivityProperty
+import com.example.fair2share.activity.exceptions.InvalidFormDataException
+import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.database_models.ActivityDatabaseProperty
 import com.example.fair2share.models.database_models.ActivitySummaryDatabaseProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
-import com.example.fair2share.models.dto_models.asDataModel2
+import com.example.fair2share.models.dto_models.asFormDataModel2
+import com.example.fair2share.models.formdata_models.ActivityFormProperty
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AccountApi.sharedPreferences
 import com.example.fair2share.network.ActivityApi
+import com.example.fair2share.util.PairAdapterFactory
+import com.example.fair2share.util.Utils
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import kotlinx.coroutines.CoroutineScope
@@ -26,9 +28,9 @@ import retrofit2.HttpException
 import java.net.ConnectException
 
 
-class ActivityRepository(private val database: Fair2ShareDatabase) {
-    private var _viewModelJob = Job()
-    private val _coroutineScope = CoroutineScope(_viewModelJob + Dispatchers.IO)
+class ActivityRepository(private val database: Fair2ShareDatabase): IActivityRepository {
+    private var _repositoryJob = Job()
+    private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
     private val jsonAdapter = Moshi.Builder().build().adapter(ActivityDTOProperty::class.java)
 
     private var stringlistTypes = Types.newParameterizedType(List::class.java, String::class.java)
@@ -43,40 +45,40 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
         .adapter<Pair<ProfileDTOProperty, Double>>(pairTypes)
 
     private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
+    override val errorMessage: LiveData<String>
         get() = _errorMessage
 
     private val _success = MutableLiveData<Boolean>()
-    val success: LiveData<Boolean>
+    override val success: LiveData<Boolean>
         get() = _success
 
     private val _activity = MutableLiveData<ActivityDTOProperty>()
-    val activity: LiveData<ActivityDTOProperty>
+    override val activity: LiveData<ActivityDTOProperty>
         get() = _activity
 
     private val _summary = MutableLiveData<List<Pair<ProfileDTOProperty, Double>>>()
-    val summary: LiveData<List<Pair<ProfileDTOProperty, Double>>>
+    override val summary: LiveData<List<Pair<ProfileDTOProperty, Double>>>
         get() = _summary
 
     private val _navigate = MutableLiveData<Boolean>()
-    val navigate: LiveData<Boolean>
+    override val navigate: LiveData<Boolean>
         get() = _navigate
 
     private val _resetSelected = MutableLiveData<Boolean>()
-    val resetSelected: LiveData<Boolean>
+    override val resetSelected: LiveData<Boolean>
         get() = _resetSelected
 
-    fun update(resources: Resources, activityId: Long) {
+    override fun update(resources: Resources, activityId: Long) {
         updateActivityWithRoom(activityId)
         updateActivityWithApi(resources, activityId)
     }
 
-    fun updateSummary(resources: Resources, activity: ActivityDTOProperty) {
+    override fun updateSummary(resources: Resources, activity: ActivityDTOProperty) {
         updateActivitySummaryWithRoom(activity.activityId!!)
         updateActivitySummaryWithApi(resources, activity)
     }
 
-    fun removeActivity(resources: Resources, activityId: Long) {
+    override fun removeActivity(resources: Resources, activityId: Long) {
         _coroutineScope.launch {
             try {
                 val deferred = ActivityApi.retrofitService.removeActivity(activityId).await()
@@ -97,7 +99,7 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
         }
     }
 
-    fun createOrUpdate(resources: Resources, isNewActivity: Boolean, activity: ActivityProperty) {
+    override fun createOrUpdate(resources: Resources, isNewActivity: Boolean, activity: ActivityFormProperty) {
         _coroutineScope.launch {
             try {
                 val response = if (isNewActivity) {
@@ -115,13 +117,15 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
             } catch (e: HttpException) {
                 _errorMessage.postValue(Utils.formExceptionsToString(e))
+            } catch (e: InvalidFormDataException){
+                _errorMessage.value = e.buildErrorMessage(resources)
             } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)
             }
         }
     }
 
-    fun postActivityParticipants(
+    override fun postActivityParticipants(
         resources: Resources,
         activityId: Long,
         toBeAdded: List<Long>,
@@ -183,10 +187,10 @@ class ActivityRepository(private val database: Fair2ShareDatabase) {
             try {
                 val activity =
                     ActivityApi.retrofitService.getActivityParticipants(activityId).await()
-                        .makeDataModel()
+                        .makeFormDataModel()
                 activity.transactions =
                     ActivityApi.retrofitService.getActivityTransactions(activityId).await()
-                        .asDataModel2()
+                        .asFormDataModel2()
                 val activityDTO = activity.makeDTO()
                 val profileId = sharedPreferences.getLong("profileId", 0L)
                 _activity.postValue(activityDTO)

@@ -6,11 +6,11 @@
 
     <data>
 
-        <import type="com.example.fair2share.models.data_models.ActivityProperty" />
+        <import type="com.example.fair2share.models.formdata_models.ActivityFormProperty" />
 
         <variable
             name="activity"
-            type="com.example.fair2share.models.data_models.ActivityProperty" />
+            type="com.example.fair2share.models.formdata_models.ActivityFormProperty" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

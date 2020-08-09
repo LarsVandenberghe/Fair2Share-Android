@@ -43,7 +43,7 @@
             </androidx.recyclerview.widget.RecyclerView>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_activitytransactions_addactivity"
+                android:id="@+id/fab_activitytransactions_addtransaction"
                 app:backgroundTint="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

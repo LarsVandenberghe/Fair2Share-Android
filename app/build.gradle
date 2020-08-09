@@ -81,9 +81,18 @@ dependencies {
     implementation "androidx.annotation:annotation:$version_annotation"
 
     //JUnitTest
-    testImplementation "junit:junit:$version_junit"
+    testImplementation "androidx.test.ext:junit:$version_junit"
 
     //AndroidTest
+    androidTestImplementation "androidx.test:rules:$version_testrunner"
     androidTestImplementation "androidx.test:runner:$version_testrunner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso"
+    androidTestCompile("com.android.support.test.espresso:espresso-contrib:2.2.2") {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-v7'
+        exclude group: 'com.android.support', module: 'design'
+        exclude module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
 }

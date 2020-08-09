@@ -70,4 +70,12 @@
     <string name="fragment_startup_tokenexipred">Token expired, please relog.</string>
     <string name="offline_error">You are offline, make sure you have an internet conncetion!</string>
     <string name="fair2share_logo">Fair2Share Logo</string>
+    <string name="email_not_valid">Email is not valid!</string>
+    <string name="passwords_not_equal">Password and confirm password have to be the same!</string>
+    <string name="firtsname_not_valid">Firstname can only contain spaces and unicode characters!</string>
+    <string name="lastname_not_valid">Lastname can only contain spaces and unicode characters!</string>
+    <string name="password_not_valid">Password has to be minimum eight characters, at least one uppercase letter, one lowercase letter and one number</string>
+    <string name="name_not_valid">Name has to be at least 3 characters long.</string>
+    <string name="transaction_payment_not_valid">Transaction payment amount cannot be negative!</string>
+    <string name="no_valuta_found">Selected valuta does not exist!</string>
 </resources>

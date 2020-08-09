@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fair2share.network.AccountApi
 
+
 class StartUpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

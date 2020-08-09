@@ -6,15 +6,15 @@
 
     <data>
 
-        <import type="com.example.fair2share.models.data_models.TransactionProperty" />
+        <import type="com.example.fair2share.models.formdata_models.TransactionFormProperty" />
 
         <import type="com.example.fair2share.models.dto_models.ProfileDTOProperty" />
 
-        <import type="com.example.fair2share.Converter" />
+        <import type="com.example.fair2share.util.Converter" />
 
         <variable
             name="transaction"
-            type="TransactionProperty" />
+            type="TransactionFormProperty" />
 
         <variable
             name="activityParticipants"

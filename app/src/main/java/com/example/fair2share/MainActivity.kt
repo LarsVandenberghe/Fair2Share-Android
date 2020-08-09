@@ -21,6 +21,7 @@ import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AuthInterceptor
 import com.example.fair2share.profile.ProfileFragmentDirections
 import com.example.fair2share.profile.ProfileFragmentViewModel
+import com.example.fair2share.util.Utils
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.view.*
 

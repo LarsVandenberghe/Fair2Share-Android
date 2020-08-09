@@ -6,11 +6,11 @@
 
     <data>
 
-        <import type="com.example.fair2share.models.data_models.LoginProperty" />
+        <import type="com.example.fair2share.models.formdata_models.LoginFormProperty" />
 
         <variable
             name="loginData"
-            type="com.example.fair2share.models.data_models.LoginProperty" />
+            type="com.example.fair2share.models.formdata_models.LoginFormProperty" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
