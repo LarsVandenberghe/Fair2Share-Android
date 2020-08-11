@@ -2,7 +2,7 @@ package com.example.fair2share.models.dto_models
 
 
 import com.example.fair2share.R
-import com.example.fair2share.activity.exceptions.InvalidFormDataException
+import com.example.fair2share.exceptions.InvalidFormDataException
 import java.util.regex.Pattern
 
 data class LoginDTOProperty(

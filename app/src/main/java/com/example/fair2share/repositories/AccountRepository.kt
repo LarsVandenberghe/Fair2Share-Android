@@ -4,7 +4,7 @@ import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fair2share.R
-import com.example.fair2share.activity.exceptions.InvalidFormDataException
+import com.example.fair2share.exceptions.InvalidFormDataException
 import com.example.fair2share.models.dto_models.LoginDTOProperty
 import com.example.fair2share.models.dto_models.RegisterDTOProperty
 import com.example.fair2share.network.AccountApi

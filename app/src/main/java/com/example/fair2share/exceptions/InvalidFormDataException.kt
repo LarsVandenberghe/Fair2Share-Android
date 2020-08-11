@@ -1,4 +1,4 @@
-package com.example.fair2share.activity.exceptions
+package com.example.fair2share.exceptions
 
 import android.content.res.Resources
 

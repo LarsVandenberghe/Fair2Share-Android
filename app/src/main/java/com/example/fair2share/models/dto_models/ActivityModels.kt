@@ -3,7 +3,7 @@ package com.example.fair2share.models.dto_models
 import android.os.Parcel
 import android.os.Parcelable
 import com.example.fair2share.R
-import com.example.fair2share.activity.exceptions.InvalidFormDataException
+import com.example.fair2share.exceptions.InvalidFormDataException
 import com.example.fair2share.models.Valutas
 import com.example.fair2share.models.database_models.ActivityDatabaseProperty
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.fair2share.R
-import com.example.fair2share.activity.exceptions.InvalidFormDataException
+import com.example.fair2share.exceptions.InvalidFormDataException
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty

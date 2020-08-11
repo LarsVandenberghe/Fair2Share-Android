@@ -1,6 +1,6 @@
 package com.example.fair2share
 
-import com.example.fair2share.activity.exceptions.InvalidFormDataException
+import com.example.fair2share.exceptions.InvalidFormDataException
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
 import org.junit.Test
