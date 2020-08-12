@@ -2,12 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation"
     app:startDestination="@id/fragmentProfile">
 
     <fragment
         android:id="@+id/fragmentProfile"
-        android:name="com.example.fair2share.profile.ProfileFragment"
+        android:name="com.example.fair2share.views.profile.ProfileFragment"
         android:label="@string/fragment_profile_title"
         tools:layout="@layout/fragment_profile">
         <action
@@ -25,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditActivityFragment"
-        android:name="com.example.fair2share.activity.AddEditActivityFragment"
+        android:name="com.example.fair2share.views.activity.AddEditActivityFragment"
         android:label="@string/fragment_add_edit_activity_title"
         tools:layout="@layout/fragment_addeditactivity">
         <argument
@@ -36,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/friendListFragment"
-        android:name="com.example.fair2share.friends.FriendListFragment"
+        android:name="com.example.fair2share.views.friends.FriendListFragment"
         android:label="@string/friend_lst_title"
         tools:layout="@layout/fragment_friendlist">
         <action
@@ -49,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/addFriendFragment"
-        android:name="com.example.fair2share.friends.AddFriendFragment"
+        android:name="com.example.fair2share.views.friends.AddFriendFragment"
         android:label="@string/fragment_add_friend_title"
         tools:layout="@layout/fragment_addfriend">
         <argument
@@ -58,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/activityTransactionsFragment"
-        android:name="com.example.fair2share.activity.transactions.ActivityTransactionsFragment"
+        android:name="com.example.fair2share.views.activity.transactions.ActivityTransactionsFragment"
         android:label="fragment_activity_transactions"
         tools:layout="@layout/fragment_activitytransactions">
         <action
@@ -79,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/activitySummaryFragment"
-        android:name="com.example.fair2share.activity.summary.ActivitySummaryFragment"
+        android:name="com.example.fair2share.views.activity.summary.ActivitySummaryFragment"
         android:label="ActivitySummaryFragment"
         tools:layout="@layout/fragment_activitysummary">
         <action
@@ -92,7 +91,7 @@
     </fragment>
     <fragment
         android:id="@+id/managePeopleInActivityFragment"
-        android:name="com.example.fair2share.activity.people.ManagePeopleInActivityFragment"
+        android:name="com.example.fair2share.views.activity.people.ManagePeopleInActivityFragment"
         android:label="@string/fragment_manage_people_in_activity"
         tools:layout="@layout/fragment_managepeopleinactivity">
         <argument
@@ -101,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditTransactionFragment"
-        android:name="com.example.fair2share.activity.transactions.AddEditTransactionFragment"
+        android:name="com.example.fair2share.views.activity.transactions.AddEditTransactionFragment"
         android:label="@string/add_edit_transaction_fragment_title"
         tools:layout="@layout/fragment_addedittransaction">
         <argument
@@ -118,7 +117,7 @@
     </fragment>
     <fragment
         android:id="@+id/managePeopleInTransactionFragment"
-        android:name="com.example.fair2share.activity.transactions.people.ManagePeopleInTransactionFragment"
+        android:name="com.example.fair2share.views.activity.transactions.people.ManagePeopleInTransactionFragment"
         android:label="@string/fragment_manage_people_in_transaction"
         tools:layout="@layout/fragment_managepeopleintransaction">
         <argument

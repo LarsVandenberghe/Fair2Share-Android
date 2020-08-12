@@ -5,15 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.fair2share.R
-import com.example.fair2share.exceptions.InvalidFormDataException
 import com.example.fair2share.database.Fair2ShareDatabase
+import com.example.fair2share.exceptions.InvalidFormDataException
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
 import com.example.fair2share.models.formdata_models.TransactionFormProperty
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.ActivityApi
-import com.example.fair2share.util.Utils
+import com.example.fair2share.utils.Constants
+import com.example.fair2share.utils.Utils
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -88,7 +89,7 @@ class TransactionRepository(private val database: Fair2ShareDatabase) : ITransac
                 AccountApi.setIsOfflineValue(true)
                 _errorMessage.postValue(resources.getString(R.string.offline_error))
             } catch (e: InvalidFormDataException) {
-                _errorMessage.value = e.buildErrorMessage(resources)
+                _errorMessage.postValue(e.buildErrorMessage(resources))
             } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)
             }
@@ -127,7 +128,7 @@ class TransactionRepository(private val database: Fair2ShareDatabase) : ITransac
     ) {
         _coroutineScope.launch {
             try {
-                if (toBeRemoved.size > 0) {
+                if (toBeRemoved.isNotEmpty()) {
                     val result = ActivityApi.retrofitService.removeTransactionParticipants(
                         activityId,
                         transactionId,
@@ -135,7 +136,7 @@ class TransactionRepository(private val database: Fair2ShareDatabase) : ITransac
                     ).await()
                     Utils.throwExceptionIfHttpNotSuccessful(result)
                 }
-                if (toBeAdded.size > 0) {
+                if (toBeAdded.isNotEmpty()) {
                     val result = ActivityApi.retrofitService.addTransactionParticipants(
                         activityId,
                         transactionId,
@@ -157,9 +158,11 @@ class TransactionRepository(private val database: Fair2ShareDatabase) : ITransac
     }
 
     private fun updateTransactionWithRoom(activityId: Long, transactionId: Long) {
-        val profileId = AccountApi.sharedPreferences.getLong("profileId", 0L)
+        val profileId = AccountApi.sharedPreferences
+            .getLong(Constants.SHARED_PREFERENCES_KEY_PROFILEID, 0L)
+
         if (profileId == 0L) {
-            throw Exception("ProfileID sharedPreferences not set!")
+            throw Exception(Constants.SHARED_PREFERENCES_PROFILEID_NOT_SET)
         }
 
         Transformations.map(
@@ -190,7 +193,9 @@ class TransactionRepository(private val database: Fair2ShareDatabase) : ITransac
                     activityId,
                     transactionId
                 ).await()
-                val profileId = AccountApi.sharedPreferences.getLong("profileId", 0L)
+                val profileId = AccountApi.sharedPreferences
+                    .getLong(Constants.SHARED_PREFERENCES_KEY_PROFILEID, 0L)
+
                 database.transactionDao.insertTransaction(
                     transaction.makeDatabaseModel(
                         profileId,

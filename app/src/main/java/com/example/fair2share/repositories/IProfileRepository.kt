@@ -12,8 +12,8 @@ interface IProfileRepository {
     val success: LiveData<Boolean>
 
     fun updateFromSafeArgs(profile: ProfileDTOProperty)
-    fun update(resouces: Resources)
-    fun updateOnStartUpCheckOnline(resouces: Resources)
+    fun update(resources: Resources)
+    fun updateOnStartUpCheckOnline(resources: Resources)
     fun updateWithCachedProfileOnStartUp()
     fun updateFriendRequestsWithApi(resources: Resources)
     fun handleFriendRequest(userId: Long, accept: Boolean, resources: Resources)

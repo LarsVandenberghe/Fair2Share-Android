@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.AddEditActivityFragment">
+    tools:context=".views.activity.AddEditActivityFragment">
 
     <data>
 
@@ -76,6 +76,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_addeditactivity_description" />
 
+        <!-- The selectedItemPosition does seem to have an effect on the behaviour of this Spinner -->
+        <!--suppress AndroidUnknownAttribute -->
         <Spinner
             android:id="@+id/cbo_addeditactivity_valuta"
             style="@style/FormInput"

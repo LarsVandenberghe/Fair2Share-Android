@@ -6,6 +6,7 @@ import com.example.fair2share.R
 import com.example.fair2share.exceptions.InvalidFormDataException
 import com.example.fair2share.models.database_models.ProfileDatabaseProperty
 import com.example.fair2share.models.formdata_models.ProfileFormProperty
+import com.example.fair2share.utils.Constants
 import com.squareup.moshi.Moshi
 import java.util.regex.Pattern
 
@@ -36,7 +37,8 @@ data class ProfileDTOProperty(
 
     private fun checkValid() {
         val exceptionsList = ArrayList<Int>()
-        val spacesAndAllUnicodeChars = Pattern.compile("^[0-9\\p{L} .'-]+$")
+        val spacesAndAllUnicodeChars = Pattern.compile(Constants.REGEX_SPACES_AND_UNICODE)
+        val emailPattern = Pattern.compile(Constants.REGEX_EMAIL_ADDRESS_PATTERN)
 
         if (!spacesAndAllUnicodeChars.matcher(firstname).matches()) {
             exceptionsList.add(R.string.firtsname_not_valid)
@@ -46,7 +48,7 @@ data class ProfileDTOProperty(
             exceptionsList.add(R.string.lastname_not_valid)
         }
 
-        if (email != null && !EMAIL_ADDRESS.matcher(email).matches()) {
+        if (email != null && !emailPattern.matcher(email).matches()) {
             exceptionsList.add(R.string.email_not_valid)
         }
 
@@ -112,14 +114,3 @@ fun List<ProfileDTOProperty>.asFormDataModel(): List<ProfileFormProperty> {
         it.makeFormDataModel()
     }
 }
-
-// This regex is built into android.util.Patterns, but returns null on parameterized tests.
-private val EMAIL_ADDRESS = Pattern.compile(
-    "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
-            "\\@" +
-            "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
-            "(" +
-            "\\." +
-            "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
-            ")+"
-)

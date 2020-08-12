@@ -7,7 +7,7 @@
         android:id="@+id/constraintlayout_addfriend"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".friends.AddFriendFragment">
+        tools:context=".views.friends.AddFriendFragment">
 
         <TextView
             android:id="@+id/txt_addfriend_email"

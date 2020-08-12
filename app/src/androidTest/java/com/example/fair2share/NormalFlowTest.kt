@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
+import com.example.fair2share.utils.ConstraintRowItemViewHolder
 import com.example.fair2share.utils.MyViewAction
 import com.example.fair2share.utils.RecyclerViewItemCountAssertion
 import org.hamcrest.CoreMatchers.*
@@ -55,7 +56,7 @@ class NormalFlowTest {
             closeSoftKeyboard()
         )
         onView(withId(R.id.btn_login_login)).perform(click())
-        SystemClock.sleep(2000)
+        SystemClock.sleep(3000)
 
         onView(withText("my activity")).perform(click())
         SystemClock.sleep(1000)

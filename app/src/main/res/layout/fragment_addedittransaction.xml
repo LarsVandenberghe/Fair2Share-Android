@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidUnknownAttribute -->
+<!-- The selectedItemPosition does seem to have an effect on the behaviour of this Spinner -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.transactions.AddEditTransactionFragment">
+    tools:context=".views.activity.transactions.AddEditTransactionFragment">
 
     <data>
 
@@ -10,7 +12,7 @@
 
         <import type="com.example.fair2share.models.dto_models.ProfileDTOProperty" />
 
-        <import type="com.example.fair2share.util.Converter" />
+        <import type="com.example.fair2share.utils.Converter" />
 
         <variable
             name="transaction"
@@ -81,6 +83,10 @@
             app:layout_constraintStart_toStartOf="@+id/cbo_addedittransaction_paidby"
             app:layout_constraintTop_toBottomOf="@+id/edit_addedittransaction_name" />
 
+        <!--suppress Annotator -->
+        <!-- For some odd reason this Converter gets flagged as not being able to work as
+        two-way binding. But when the code is being executed the binding does
+        seem to work in both ways -->
         <Spinner
             android:id="@+id/cbo_addedittransaction_paidby"
             style="@style/FormInput"

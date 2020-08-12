@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.fair2share.BuildConfig
 import com.example.fair2share.models.dto_models.LoginDTOProperty
 import com.example.fair2share.models.dto_models.RegisterDTOProperty
+import com.example.fair2share.utils.Constants
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -57,7 +58,7 @@ object AccountApi {
     }
 
     fun logout() {
-        sharedPreferences.edit().remove("profileId").apply()
-        sharedPreferences.edit().remove("token").apply()
+        sharedPreferences.edit().remove(Constants.SHARED_PREFERENCES_KEY_PROFILEID).apply()
+        sharedPreferences.edit().remove(Constants.SHARED_PREFERENCES_KEY_TOKEN).apply()
     }
 }

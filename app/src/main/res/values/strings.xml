@@ -4,8 +4,6 @@
     <string name="btn_login">Login</string>
     <string name="txt_login_email">Email</string>
     <string name="txt_login_password">Password</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="action_settings">Settings</string>
     <string name="btn_add">Add</string>
     <string name="profile_lbl_activities">Activities</string>
     <string name="fragment_activity_summary_title">Summary</string>
@@ -18,11 +16,7 @@
     <string name="fragment_create_activity_description_lbl">Description</string>
     <string name="fragment_create_activity_description_placeholder">description</string>
     <string name="fragment_create_activity_valuta_lbl">Valuta*</string>
-    <string name="fragment_create_transaction_title">Add Transaction</string>
     <string name="fragment_manage_people_in_activity">Activity Participants</string>
-    <string name="title_activity_friends">FriendsActivity</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
     <string name="friend_requests_title">Friend requests</string>
     <string name="friend_lst_title">Friends</string>

@@ -8,6 +8,7 @@ import com.example.fair2share.models.database_models.ActivityDatabaseProperty
 import com.example.fair2share.models.database_models.ActivitySummaryDatabaseProperty
 import com.example.fair2share.models.database_models.ProfileDatabaseProperty
 import com.example.fair2share.models.database_models.TransactionDatabaseProperty
+import com.example.fair2share.utils.Constants
 
 @Database(
     entities = [
@@ -36,7 +37,7 @@ abstract class Fair2ShareDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         Fair2ShareDatabase::class.java,
-                        "databasefair2share"
+                        Constants.DATABASE_NAME
                     ).fallbackToDestructiveMigration().build()
                     INSTANCE = instance
                 }

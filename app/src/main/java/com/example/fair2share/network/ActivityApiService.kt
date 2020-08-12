@@ -29,7 +29,7 @@ private val retrofitJsonMap =
         .build()
 
 
-interface ActvityApiService {
+interface ActivityApiService {
     @GET("Activity/{id}")
     fun getActivity(@Path("id") id: Long):
             Deferred<ActivityDTOProperty>
@@ -96,7 +96,7 @@ interface ActvityApiService {
 }
 
 object ActivityApi {
-    val retrofitService: ActvityApiService by lazy {
-        retrofitJsonMap.create(ActvityApiService::class.java)
+    val retrofitService: ActivityApiService by lazy {
+        retrofitJsonMap.create(ActivityApiService::class.java)
     }
 }

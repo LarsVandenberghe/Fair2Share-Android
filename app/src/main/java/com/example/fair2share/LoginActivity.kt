@@ -13,7 +13,7 @@ import com.example.fair2share.network.AccountApi
 class LoginActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var isOnLoginFragment: Boolean = false
-    lateinit var navController: NavController
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,11 +34,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        if (isOnLoginFragment) {
+        return if (isOnLoginFragment) {
             finish()
-            return false
+            false
         } else {
-            return NavigationUI.navigateUp(navController, appBarConfiguration)
+            NavigationUI.navigateUp(navController, appBarConfiguration)
         }
     }
 

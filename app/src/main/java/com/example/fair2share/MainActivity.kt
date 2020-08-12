@@ -19,9 +19,9 @@ import com.example.fair2share.databinding.ActivityMainBinding
 import com.example.fair2share.databinding.NavHeaderBinding
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AuthInterceptor
-import com.example.fair2share.profile.ProfileFragmentDirections
-import com.example.fair2share.profile.ProfileFragmentViewModel
-import com.example.fair2share.util.Utils
+import com.example.fair2share.utils.Utils
+import com.example.fair2share.viewmodels.profile.ProfileFragmentViewModel
+import com.example.fair2share.views.profile.ProfileFragmentDirections
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.view.*
 
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val navController = this.findNavController(R.id.navhostfragment_main)
         val drawerLayout = binding.drawerlayoutActivityMain
 
-        setupNaviationDrawer(drawerLayout, navController)
+        setupNavigationDrawer(drawerLayout, navController)
         preventGestureIfNotOnStartDestination(drawerLayout, navController)
         setupOnTokenExpiredRestartApp()
     }
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun setupNaviationDrawer(drawerLayout: DrawerLayout, navController: NavController) {
+    private fun setupNavigationDrawer(drawerLayout: DrawerLayout, navController: NavController) {
 
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)

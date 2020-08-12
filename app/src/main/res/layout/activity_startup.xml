@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment_startup_fragment"
-        android:name="com.example.fair2share.startup.StartUpFragment"
+        android:name="com.example.fair2share.views.startup.StartUpFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

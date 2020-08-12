@@ -9,7 +9,8 @@ import com.example.fair2share.models.dto_models.LoginDTOProperty
 import com.example.fair2share.models.dto_models.RegisterDTOProperty
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AuthInterceptor
-import com.example.fair2share.util.Utils
+import com.example.fair2share.utils.Constants
+import com.example.fair2share.utils.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -33,10 +34,10 @@ class AccountRepository : IAccountRepository {
     override fun login(resources: Resources, loginData: LoginDTOProperty) {
         _coroutineScope.launch {
             try {
-                val getJWTDeffered = AccountApi.retrofitService.login(loginData)
-                val token = getJWTDeffered.await()
+                val getJWTDeferred = AccountApi.retrofitService.login(loginData)
+                val token = getJWTDeferred.await()
                 val edit = AccountApi.sharedPreferences.edit()
-                edit.putString("token", token)
+                edit.putString(Constants.SHARED_PREFERENCES_KEY_TOKEN, token)
                 edit.apply()
                 AuthInterceptor.loginSucceeded()
 
@@ -62,10 +63,10 @@ class AccountRepository : IAccountRepository {
     override fun register(resources: Resources, registerData: RegisterDTOProperty) {
         _coroutineScope.launch {
             try {
-                val getJWTDeffered = AccountApi.retrofitService.register(registerData)
-                val token = getJWTDeffered.await()
+                val getJWTDeferred = AccountApi.retrofitService.register(registerData)
+                val token = getJWTDeferred.await()
                 val edit = AccountApi.sharedPreferences.edit()
-                edit.putString("token", token)
+                edit.putString(Constants.SHARED_PREFERENCES_KEY_TOKEN, token)
                 edit.apply()
                 _loggedIn.postValue(true)
             } catch (e: HttpException) {

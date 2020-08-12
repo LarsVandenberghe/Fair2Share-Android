@@ -2,11 +2,10 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/start_up_navigation"
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.fair2share.login.LoginFragment"
+        android:name="com.example.fair2share.views.login.LoginFragment"
         android:label="@string/btn_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -16,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.fair2share.login.RegisterFragment"
+        android:name="com.example.fair2share.views.login.RegisterFragment"
         android:label="@string/btn_register"
         tools:layout="@layout/fragment_register" />
 </navigation>

@@ -10,5 +10,4 @@ class InvalidFormDataException(private val exceptionsList: List<Int>) : IllegalA
         }
         return stringBuilder.toString()
     }
-
 }

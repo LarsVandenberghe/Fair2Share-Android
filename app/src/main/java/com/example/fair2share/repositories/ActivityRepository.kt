@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.fair2share.R
-import com.example.fair2share.exceptions.InvalidFormDataException
 import com.example.fair2share.database.Fair2ShareDatabase
+import com.example.fair2share.exceptions.InvalidFormDataException
 import com.example.fair2share.models.database_models.ActivityDatabaseProperty
 import com.example.fair2share.models.database_models.ActivitySummaryDatabaseProperty
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
@@ -16,8 +16,9 @@ import com.example.fair2share.models.formdata_models.ActivityFormProperty
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AccountApi.sharedPreferences
 import com.example.fair2share.network.ActivityApi
-import com.example.fair2share.util.PairAdapterFactory
-import com.example.fair2share.util.Utils
+import com.example.fair2share.utils.Constants
+import com.example.fair2share.utils.PairAdapterFactory
+import com.example.fair2share.utils.Utils
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import kotlinx.coroutines.CoroutineScope
@@ -122,7 +123,7 @@ class ActivityRepository(private val database: Fair2ShareDatabase) : IActivityRe
             } catch (e: HttpException) {
                 _errorMessage.postValue(Utils.formExceptionsToString(e))
             } catch (e: InvalidFormDataException) {
-                _errorMessage.value = e.buildErrorMessage(resources)
+                _errorMessage.postValue(e.buildErrorMessage(resources))
             } catch (t: Throwable) {
                 _errorMessage.postValue(t.message)
             }
@@ -137,14 +138,14 @@ class ActivityRepository(private val database: Fair2ShareDatabase) : IActivityRe
     ) {
         _coroutineScope.launch {
             try {
-                if (toBeRemoved.size > 0) {
+                if (toBeRemoved.isNotEmpty()) {
                     val result = ActivityApi.retrofitService.removeActivityParticipants(
                         activityId,
                         toBeRemoved
                     ).await()
                     Utils.throwExceptionIfHttpNotSuccessful(result)
                 }
-                if (toBeAdded.size > 0) {
+                if (toBeAdded.isNotEmpty()) {
                     val result =
                         ActivityApi.retrofitService.addActivityParticipants(activityId, toBeAdded)
                             .await()
@@ -165,9 +166,10 @@ class ActivityRepository(private val database: Fair2ShareDatabase) : IActivityRe
 
 
     private fun updateActivityWithRoom(activityId: Long) {
-        val profileId = sharedPreferences.getLong("profileId", 0L)
+        val profileId = sharedPreferences
+            .getLong(Constants.SHARED_PREFERENCES_KEY_PROFILEID, 0L)
         if (profileId == 0L) {
-            throw Exception("ProfileID sharedPreferences not set!")
+            throw Exception(Constants.SHARED_PREFERENCES_PROFILEID_NOT_SET)
         }
 
         Transformations.map(
@@ -196,7 +198,9 @@ class ActivityRepository(private val database: Fair2ShareDatabase) : IActivityRe
                     ActivityApi.retrofitService.getActivityTransactions(activityId).await()
                         .asFormDataModel2()
                 val activityDTO = activity.makeDTO()
-                val profileId = sharedPreferences.getLong("profileId", 0L)
+                val profileId = sharedPreferences
+                    .getLong(Constants.SHARED_PREFERENCES_KEY_PROFILEID, 0L)
+
                 _activity.postValue(activityDTO)
                 database.activityDao.insertActivity(activityDTO.makeDatabaseModel(profileId))
             } catch (e: ConnectException) {
@@ -210,9 +214,11 @@ class ActivityRepository(private val database: Fair2ShareDatabase) : IActivityRe
     }
 
     private fun updateActivitySummaryWithRoom(activityId: Long) {
-        val profileId = sharedPreferences.getLong("profileId", 0L)
+        val profileId = sharedPreferences
+            .getLong(Constants.SHARED_PREFERENCES_KEY_PROFILEID, 0L)
+
         if (profileId == 0L) {
-            throw Exception("ProfileID sharedPreferences not set!")
+            throw Exception(Constants.SHARED_PREFERENCES_PROFILEID_NOT_SET)
         }
 
         Transformations.map(
@@ -236,9 +242,10 @@ class ActivityRepository(private val database: Fair2ShareDatabase) : IActivityRe
     private fun updateActivitySummaryWithApi(resources: Resources, activity: ActivityDTOProperty) {
         _coroutineScope.launch {
             try {
-                val profileId = sharedPreferences.getLong("profileId", 0L)
+                val profileId = sharedPreferences
+                    .getLong(Constants.SHARED_PREFERENCES_KEY_PROFILEID, 0L)
                 if (profileId == 0L) {
-                    throw Exception("ProfileID sharedPreferences not set!")
+                    throw Exception(Constants.SHARED_PREFERENCES_PROFILEID_NOT_SET)
                 }
 
                 val summary =

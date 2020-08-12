@@ -14,7 +14,8 @@ import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AuthInterceptor
 import com.example.fair2share.network.FriendRequestApi
 import com.example.fair2share.network.ProfileApi
-import com.example.fair2share.util.Utils
+import com.example.fair2share.utils.Constants
+import com.example.fair2share.utils.Utils
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -70,9 +71,9 @@ class ProfileRepository(private val database: Fair2ShareDatabase) : IProfileRepo
     override fun updateFriendRequestsWithApi(resources: Resources) {
         _coroutineScope.launch {
             try {
-                val deffered = FriendRequestApi.retrofitService.getFriendRequest()
+                val deferred = FriendRequestApi.retrofitService.getFriendRequest()
                 _friendRequests.postValue(
-                    deffered.await().filter { potentialFriend ->
+                    deferred.await().filter { potentialFriend ->
                         potentialFriend.friendRequestState == FriendRequestStates.PENDING.ordinal
                     }
                 )
@@ -93,9 +94,9 @@ class ProfileRepository(private val database: Fair2ShareDatabase) : IProfileRepo
     override fun handleFriendRequest(userId: Long, accept: Boolean, resources: Resources) {
         _coroutineScope.launch {
             try {
-                val getJWTDeffered =
+                val getJWTDeferred =
                     FriendRequestApi.retrofitService.handleFriendRequest(userId, accept)
-                val result = getJWTDeffered.await()
+                val result = getJWTDeferred.await()
                 when (result.code()) {
                     500 -> _errorMessage.postValue(resources.getString(R.string.fragment_friendrequest_defaulterror))
                     204 -> _success.postValue(true)
@@ -124,11 +125,11 @@ class ProfileRepository(private val database: Fair2ShareDatabase) : IProfileRepo
     ) {
         _coroutineScope.launch {
             try {
-                if (myProfileEmailAddress.equals(email)) {
+                if (myProfileEmailAddress == email) {
                     _errorMessage.postValue(resources.getString(R.string.fragment_addfriend_errorsendyourself))
                 } else {
-                    val deffered = FriendRequestApi.retrofitService.addFriendByEmail(email)
-                    val result = deffered.await()
+                    val deferred = FriendRequestApi.retrofitService.addFriendByEmail(email)
+                    val result = deferred.await()
                     when (result.code()) {
                         500 -> _errorMessage.postValue(resources.getString(R.string.fragment_addfriend_alreadpending))
                         404 -> _errorMessage.postValue(resources.getString(R.string.fragment_addfriend_emailnotfound))
@@ -152,7 +153,9 @@ class ProfileRepository(private val database: Fair2ShareDatabase) : IProfileRepo
     }
 
     private fun updateProfileWithRoom() {
-        val profileId = sharedPreferences.getLong("profileId", 0L)
+        val profileId = sharedPreferences
+            .getLong(Constants.SHARED_PREFERENCES_KEY_PROFILEID, 0L)
+
         if (profileId == 0L) {
             return
         }
@@ -171,7 +174,9 @@ class ProfileRepository(private val database: Fair2ShareDatabase) : IProfileRepo
             try {
                 val data = ProfileApi.retrofitService.profile().await()
                 _profile.postValue(data)
-                sharedPreferences.edit().putLong("profileId", data.profileId)?.apply()
+                sharedPreferences.edit()
+                    .putLong(Constants.SHARED_PREFERENCES_KEY_PROFILEID, data.profileId)?.apply()
+
                 database.profileDao.insertProfile(data.makeDatabaseModel())
             } catch (e: ConnectException) {
                 AccountApi.setIsOfflineValue(true)
