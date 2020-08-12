@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
+import com.example.fair2share.utils.Constants
 import com.example.fair2share.utils.ConstraintRowItemViewHolder
 import com.example.fair2share.utils.MyViewAction
 import com.example.fair2share.utils.RecyclerViewItemCountAssertion
@@ -26,7 +27,10 @@ class NormalFlowTest {
     private fun resetSharedPreferences() {
         val sharedPreferences = InstrumentationRegistry.getInstrumentation()
             .targetContext.getSharedPreferences("Fair2Share", Activity.MODE_PRIVATE)
-        sharedPreferences.edit().remove("token").remove("profileId").apply()
+        sharedPreferences.edit()
+            .remove(Constants.SHARED_PREFERENCES_KEY_TOKEN)
+            .remove(Constants.SHARED_PREFERENCES_KEY_PROFILEID)
+            .apply()
     }
 
     @get:Rule
@@ -61,7 +65,7 @@ class NormalFlowTest {
         onView(withText("my activity")).perform(click())
         SystemClock.sleep(1000)
         var itemCount = 0
-        onView(withId(R.id.rv_activitytransactions_list)).check { view, noViewFoundException ->
+        onView(withId(R.id.rv_activitytransactions_list)).check { view, _ ->
             itemCount = (view as RecyclerView).adapter!!.itemCount
         }
         onView(withId(R.id.fab_activitytransactions_addtransaction)).perform(click())
