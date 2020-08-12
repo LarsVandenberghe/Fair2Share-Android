@@ -30,10 +30,6 @@ private val retrofitJsonMap =
 
 
 interface ActivityApiService {
-    @GET("Activity/{id}")
-    fun getActivity(@Path("id") id: Long):
-            Deferred<ActivityDTOProperty>
-
     @GET("Activity/{id}/transactions")
     fun getActivityTransactions(@Path("id") id: Long):
             Deferred<List<TransactionDTOProperty>>

@@ -136,7 +136,7 @@ class ManagePeopleInActivityViewModel(
         val friends = _friends.value
         val candidateIds = candidates?.map {
             it.profileId
-        } ?: ArrayList<Long>()
+        } ?: ArrayList()
 
         friends?.let {
             participants.addAll(it.filter { paticipant ->

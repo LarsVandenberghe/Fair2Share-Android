@@ -34,16 +34,16 @@ class SummaryBindingAdapter(val viewModel: ActivitySummaryViewModel) :
     override fun onBindViewHolder(holder: ConstraintRowItemViewHolder, position: Int) {
         holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_name).text =
             String.format("%s %s", data[position].first.firstname, data[position].first.lastname)
-        val money_field = holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_price)
-        money_field.text = String.format(
+        val moneyField = holder.rowView.findViewById<TextView>(R.id.txt_recyclertransaction_price)
+        moneyField.text = String.format(
             "%s %.2f",
             Valutas.values()[viewModel.activityArg.currencyType].getSymbol(),
             data[position].second
         )
         if (data[position].second < 0) {
-            setTextColor(money_field, holder, R.color.colorNegativeBalance)
+            setTextColor(moneyField, holder, R.color.colorNegativeBalance)
         } else {
-            setTextColor(money_field, holder, R.color.colorPositiveBalance)
+            setTextColor(moneyField, holder, R.color.colorPositiveBalance)
         }
     }
 

@@ -146,11 +146,11 @@ class ManagePeopleInTransactionViewModel(
         val friends = _friends.value
         val candidateIds = candidates?.map {
             it.profileId
-        } ?: ArrayList<Long>()
+        } ?: ArrayList()
 
         friends?.let {
-            participants.addAll(it.filter { paticipant ->
-                !candidateIds.contains(paticipant.profileId)
+            participants.addAll(it.filter { participant ->
+                !candidateIds.contains(participant.profileId)
             })
         }
         return participants
