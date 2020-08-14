@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fair2share.R
 import com.example.fair2share.exceptions.InvalidFormDataException
-import com.example.fair2share.models.dto_models.LoginDTOProperty
-import com.example.fair2share.models.dto_models.RegisterDTOProperty
 import com.example.fair2share.models.formdata_models.LoginFormProperty
 import com.example.fair2share.models.formdata_models.RegisterFormProperty
 import com.example.fair2share.network.AccountApi
@@ -73,6 +71,9 @@ class AccountRepository : IAccountRepository {
                 _loggedIn.postValue(true)
             } catch (e: HttpException) {
                 _errorMessage.postValue(Utils.formExceptionsToString(e))
+            } catch (e: ConnectException) {
+                AccountApi.setIsOfflineValue(true)
+                _errorMessage.postValue(resources.getString(R.string.offline_error))
             } catch (e: InvalidFormDataException) {
                 _errorMessage.postValue(e.buildErrorMessage(resources))
             } catch (t: Throwable) {
