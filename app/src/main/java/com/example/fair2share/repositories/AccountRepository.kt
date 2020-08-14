@@ -7,6 +7,8 @@ import com.example.fair2share.R
 import com.example.fair2share.exceptions.InvalidFormDataException
 import com.example.fair2share.models.dto_models.LoginDTOProperty
 import com.example.fair2share.models.dto_models.RegisterDTOProperty
+import com.example.fair2share.models.formdata_models.LoginFormProperty
+import com.example.fair2share.models.formdata_models.RegisterFormProperty
 import com.example.fair2share.network.AccountApi
 import com.example.fair2share.network.AuthInterceptor
 import com.example.fair2share.utils.Constants
@@ -31,10 +33,10 @@ class AccountRepository : IAccountRepository {
         get() = _errorMessage
 
 
-    override fun login(resources: Resources, loginData: LoginDTOProperty) {
+    override fun login(resources: Resources, loginData: LoginFormProperty) {
         _coroutineScope.launch {
             try {
-                val getJWTDeferred = AccountApi.retrofitService.login(loginData)
+                val getJWTDeferred = AccountApi.retrofitService.login(loginData.makeDTO())
                 val token = getJWTDeferred.await()
                 val edit = AccountApi.sharedPreferences.edit()
                 edit.putString(Constants.SHARED_PREFERENCES_KEY_TOKEN, token)
@@ -60,10 +62,10 @@ class AccountRepository : IAccountRepository {
         }
     }
 
-    override fun register(resources: Resources, registerData: RegisterDTOProperty) {
+    override fun register(resources: Resources, registerData: RegisterFormProperty) {
         _coroutineScope.launch {
             try {
-                val getJWTDeferred = AccountApi.retrofitService.register(registerData)
+                val getJWTDeferred = AccountApi.retrofitService.register(registerData.makeDTO())
                 val token = getJWTDeferred.await()
                 val edit = AccountApi.sharedPreferences.edit()
                 edit.putString(Constants.SHARED_PREFERENCES_KEY_TOKEN, token)

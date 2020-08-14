@@ -15,6 +15,6 @@ class RegisterViewModel : ViewModel() {
     val errorMessage: LiveData<String> = repository.errorMessage
 
     fun register(resources: Resources) {
-        repository.register(resources, registerData.makeDTO())
+        repository.register(resources, registerData)
     }
 }

@@ -15,6 +15,6 @@ class LoginViewModel : ViewModel() {
     val errorMessage: LiveData<String> = repository.errorMessage
 
     fun login(resources: Resources) {
-        repository.login(resources, loginData.makeDTO())
+        repository.login(resources, loginData)
     }
 }
