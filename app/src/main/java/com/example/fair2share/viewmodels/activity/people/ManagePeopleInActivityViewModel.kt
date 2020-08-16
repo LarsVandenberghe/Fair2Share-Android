@@ -57,11 +57,6 @@ class ManagePeopleInActivityViewModel(
     private val _success = MutableLiveData<Boolean>()
     val success: LiveData<Boolean>
         get() = _success
-//
-//    private val _navigate = MutableLiveData<Boolean>()
-//    val navigate: LiveData<Boolean>
-//        get() = _navigate
-
 
     init {
         candidatesAndParticipantsListenToUpdates()

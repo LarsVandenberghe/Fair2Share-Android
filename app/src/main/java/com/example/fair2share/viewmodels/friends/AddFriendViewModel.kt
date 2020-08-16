@@ -19,8 +19,6 @@ class AddFriendViewModel(
 ) : ViewModel() {
     private var _repositoryJob = Job()
     private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
-//    val errorMessage: LiveData<String> = profileRepository.errorMessage
-//    val success: LiveData<Boolean> = profileRepository.success
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String>

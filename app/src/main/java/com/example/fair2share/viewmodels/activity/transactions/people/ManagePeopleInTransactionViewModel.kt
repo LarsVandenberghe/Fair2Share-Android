@@ -28,8 +28,7 @@ class ManagePeopleInTransactionViewModel(
 ) : ViewModel() {
     private var _repositoryJob = Job()
     private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
-//    val success: LiveData<Boolean> = transactionRepository.success
-//    val errorMessage: LiveData<String> = transactionRepository.errorMessage
+
     private val activity: LiveData<ActivityDTOProperty> = activityRepository.activity
     val transaction: LiveData<TransactionDTOProperty> = transactionRepository.transaction
 
