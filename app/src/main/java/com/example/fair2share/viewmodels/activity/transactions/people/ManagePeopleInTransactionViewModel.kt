@@ -5,27 +5,31 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.fair2share.database.Fair2ShareDatabase
+import com.example.fair2share.R
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
 import com.example.fair2share.models.dto_models.TransactionDTOProperty
-import com.example.fair2share.repositories.ActivityRepository
+import com.example.fair2share.network.AccountApi
 import com.example.fair2share.repositories.IActivityRepository
 import com.example.fair2share.repositories.ITransactionRepository
-import com.example.fair2share.repositories.TransactionRepository
+import com.example.fair2share.utils.Utils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.net.ConnectException
 
 class ManagePeopleInTransactionViewModel(
     private val activityArg: ActivityDTOProperty,
     private var transactionArg: TransactionDTOProperty,
-    database: Fair2ShareDatabase
+    private val activityRepository: IActivityRepository,
+    private val transactionRepository: ITransactionRepository
 ) : ViewModel() {
-    private val activityRepository: IActivityRepository =
-        ActivityRepository(database)
-    private val transactionRepository: ITransactionRepository =
-        TransactionRepository(database)
-
-    val success: LiveData<Boolean> = transactionRepository.success
-    val errorMessage: LiveData<String> = transactionRepository.errorMessage
+    private var _repositoryJob = Job()
+    private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
+//    val success: LiveData<Boolean> = transactionRepository.success
+//    val errorMessage: LiveData<String> = transactionRepository.errorMessage
     private val activity: LiveData<ActivityDTOProperty> = activityRepository.activity
     val transaction: LiveData<TransactionDTOProperty> = transactionRepository.transaction
 
@@ -48,16 +52,18 @@ class ManagePeopleInTransactionViewModel(
         get() = _candidates
 
 
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String>
+        get() = _errorMessage
+
+    private val _success = MutableLiveData<Boolean>()
+    val success: LiveData<Boolean>
+        get() = _success
+
     init {
         candidatesAndParticipantsListenToUpdates()
         transaction.observeForever {
             transactionArg = it
-        }
-
-        transactionRepository.resetSelected.observeForever {
-            if (it) {
-                resetSelected()
-            }
         }
     }
 
@@ -87,17 +93,28 @@ class ManagePeopleInTransactionViewModel(
     }
 
     fun confirm(resources: Resources) {
-
-        val toBeAdded = _toBeAdded.value!!
-        val toBeRemoved = _toBeRemoved.value!!
-        transactionRepository.postTransactionParticipants(
-            resources,
-            activityArg.activityId!!,
-            transactionArg.transactionId!!,
-            toBeAdded,
-            toBeRemoved
-        )
-        update(resources)
+        _coroutineScope.launch {
+            try {
+                val toBeAdded = _toBeAdded.value!!
+                val toBeRemoved = _toBeRemoved.value!!
+                transactionRepository.postTransactionParticipants(
+                    activityArg.activityId!!,
+                    transactionArg.transactionId!!,
+                    toBeAdded,
+                    toBeRemoved
+                )
+                _success.postValue(true)
+                update(resources)
+            } catch (e: HttpException) {
+                _errorMessage.postValue(Utils.formExceptionsToString(e))
+                resetSelected()
+            } catch (e: ConnectException) {
+                AccountApi.setIsOfflineValue(true)
+                _errorMessage.postValue(resources.getString(R.string.offline_error))
+            } catch (t: Throwable) {
+                _errorMessage.postValue(t.message)
+            }
+        }
     }
 
 
@@ -107,12 +124,20 @@ class ManagePeopleInTransactionViewModel(
     }
 
     fun update(resources: Resources) {
-        transactionRepository.update(
-            resources,
-            activityArg.activityId!!,
-            transactionArg.transactionId!!
-        )
-        activityRepository.update(resources, activityArg.activityId)
+        _coroutineScope.launch {
+            try {
+                transactionRepository.update(
+                    activityArg.activityId!!,
+                    transactionArg.transactionId!!
+                )
+                activityRepository.update(activityArg.activityId)
+            } catch (e: ConnectException) {
+                AccountApi.setIsOfflineValue(true)
+                _errorMessage.postValue(resources.getString(R.string.offline_error))
+            } catch (t: Throwable) {
+                _errorMessage.postValue(t.message)
+            }
+        }
     }
 
     private fun candidatesAndParticipantsListenToUpdates() {

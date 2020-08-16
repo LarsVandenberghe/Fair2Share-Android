@@ -62,7 +62,7 @@
     <string name="fragment_addfriend_emailnotfound">Email does not exist.</string>
     <string name="fragment_friendrequest_defaulterror">Something went wrong.</string>
     <string name="fragment_startup_tokenexipred">Token expired, please relog.</string>
-    <string name="offline_error">You are offline, make sure you have an internet conncetion!</string>
+    <string name="offline_error">You are offline, make sure you have an internet connection!</string>
     <string name="fair2share_logo">Fair2Share Logo</string>
     <string name="email_not_valid">Email is not valid!</string>
     <string name="passwords_not_equal">Password and confirm password have to be the same!</string>

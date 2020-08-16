@@ -5,24 +5,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.fair2share.database.Fair2ShareDatabase
+import com.example.fair2share.R
+import com.example.fair2share.exceptions.CustomHttpException
 import com.example.fair2share.models.dto_models.ActivityDTOProperty
 import com.example.fair2share.models.dto_models.ProfileDTOProperty
-import com.example.fair2share.repositories.ActivityRepository
+import com.example.fair2share.network.AccountApi
+import com.example.fair2share.network.AuthInterceptor
 import com.example.fair2share.repositories.IActivityRepository
 import com.example.fair2share.repositories.IProfileRepository
-import com.example.fair2share.repositories.ProfileRepository
+import com.example.fair2share.utils.Utils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.net.ConnectException
 
 class ManagePeopleInActivityViewModel(
     private var activityArg: ActivityDTOProperty,
-    database: Fair2ShareDatabase
+    private val activityRepository: IActivityRepository,
+    private val profileRepository: IProfileRepository
 ) : ViewModel() {
-    private val activityRepository: IActivityRepository =
-        ActivityRepository(database)
-    private val profileRepository: IProfileRepository = ProfileRepository(database)
+    private var _repositoryJob = Job()
+    private val _coroutineScope = CoroutineScope(_repositoryJob + Dispatchers.IO)
 
-    val success: LiveData<Boolean> = activityRepository.success
-    val errorMessage: LiveData<String> = activityRepository.errorMessage
     private val activity: LiveData<ActivityDTOProperty> = activityRepository.activity
     val profile: LiveData<ProfileDTOProperty> = profileRepository.profile
 
@@ -44,17 +50,23 @@ class ManagePeopleInActivityViewModel(
     val candidates: LiveData<List<ProfileDTOProperty>>
         get() = _candidates
 
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String>
+        get() = _errorMessage
+
+    private val _success = MutableLiveData<Boolean>()
+    val success: LiveData<Boolean>
+        get() = _success
+//
+//    private val _navigate = MutableLiveData<Boolean>()
+//    val navigate: LiveData<Boolean>
+//        get() = _navigate
+
 
     init {
         candidatesAndParticipantsListenToUpdates()
         activity.observeForever {
             activityArg = it
-        }
-
-        activityRepository.resetSelected.observeForever {
-            if (it) {
-                resetSelected()
-            }
         }
     }
 
@@ -85,12 +97,26 @@ class ManagePeopleInActivityViewModel(
     fun confirm(resources: Resources) {
         val toBeAdded = _toBeAdded.value!!
         val toBeRemoved = _toBeRemoved.value!!
-        activityRepository.postActivityParticipants(
-            resources,
-            activityArg.activityId!!,
-            toBeAdded,
-            toBeRemoved
-        )
+
+        _coroutineScope.launch {
+            try {
+                activityRepository.postActivityParticipants(
+                    activityArg.activityId!!,
+                    toBeAdded,
+                    toBeRemoved
+                )
+                _success.postValue(true)
+            } catch (e: HttpException) {
+                _errorMessage.postValue(Utils.formExceptionsToString(e))
+                resetSelected()
+            } catch (e: ConnectException) {
+                AccountApi.setIsOfflineValue(true)
+                _errorMessage.postValue(resources.getString(R.string.offline_error))
+            } catch (t: Throwable) {
+                _errorMessage.postValue(t.message)
+            }
+        }
+
         update(resources)
     }
 
@@ -101,8 +127,23 @@ class ManagePeopleInActivityViewModel(
     }
 
     fun update(resources: Resources) {
-        activityRepository.update(resources, activityArg.activityId!!)
-        profileRepository.update(resources)
+        _coroutineScope.launch {
+            try {
+                activityRepository.update(activityArg.activityId!!)
+                profileRepository.update()
+            } catch (e: ConnectException) {
+                AccountApi.setIsOfflineValue(true)
+                _errorMessage.postValue(resources.getString(R.string.offline_error))
+            } catch (e: CustomHttpException){
+                _errorMessage.postValue(resources.getString(e.stringId))
+            } catch (t: Throwable) {
+                if (AuthInterceptor.throwableIs401(t)) {
+                    _errorMessage.postValue(resources.getString(R.string.fragment_startup_tokenexipred))
+                } else {
+                    _errorMessage.postValue(t.message)
+                }
+            }
+        }
     }
 
     private fun candidatesAndParticipantsListenToUpdates() {
@@ -139,8 +180,8 @@ class ManagePeopleInActivityViewModel(
         } ?: ArrayList()
 
         friends?.let {
-            participants.addAll(it.filter { paticipant ->
-                !candidateIds.contains(paticipant.profileId)
+            participants.addAll(it.filter { participant ->
+                !candidateIds.contains(participant.profileId)
             })
         }
         return participants

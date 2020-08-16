@@ -102,10 +102,6 @@ class ProfileFragment : Fragment() {
             Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
         })
 
-        viewModel.activityErrorMessage.observe(this, Observer { errorMsg ->
-            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
-        })
-
         viewModel.activityDeleteSuccess.observe(this, Observer {
             if (it) {
                 viewModel.update(resources)

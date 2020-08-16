@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.fair2share.database.Fair2ShareDatabase
 import com.example.fair2share.models.formdata_models.ActivityFormProperty
+import com.example.fair2share.repositories.ActivityRepository
+import com.example.fair2share.repositories.IActivityRepository
 import com.example.fair2share.utils.Constants
 
 @Suppress("UNCHECKED_CAST")
@@ -14,7 +16,8 @@ class AddEditActivityFragmentViewModelFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(AddEditActivityFragmentViewModel::class.java) -> {
-                AddEditActivityFragmentViewModel(activity, database) as T
+                val activityRepository: IActivityRepository = ActivityRepository(database)
+                AddEditActivityFragmentViewModel(activity, activityRepository) as T
             }
             else -> throw IllegalArgumentException(Constants.UNKNOWN_VIEWMODEL)
         }
